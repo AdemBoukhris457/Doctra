@@ -9,7 +9,7 @@ from .path_resolver import resolve_tesseract_cmd
 
 class PytesseractOCREngine:
     """
-    Minimal OCR engine using pytesseract.
+    Minimal OCR engines using pytesseract.
     Accepts a cropped PIL image (e.g., a text block from layout) and returns raw text.
     """
 

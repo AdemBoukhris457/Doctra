@@ -1,4 +1,3 @@
-# doctra/engines/vlm/provider.py
 from __future__ import annotations
 
 # --- keep these imports to match your snippet style ---
