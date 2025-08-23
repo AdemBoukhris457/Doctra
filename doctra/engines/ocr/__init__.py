@@ -1,4 +1,3 @@
-# doctra/engines/ocr/__init__.py
 from .pytesseract_engine import PytesseractOCREngine
 from .api import ocr_image
 
