@@ -96,6 +96,7 @@ class VLMStructuredExtractor:
             "Convert the given chart into a table format with headers and rows. "
             "If the title is not present in the image, generate a suitable title. "
             "Ensure that the table represents the data from the chart accurately."
+            "The number of columns in the headers must match the number of columns in each row."
         )
         return self._call(prompt_text, image_path, Chart)
 
@@ -114,5 +115,6 @@ class VLMStructuredExtractor:
             "Extract the data from the given table in image format. "
             "Provide the headers and rows of the table, ensuring accuracy in the extraction. "
             "If the title is not present in the image, generate a suitable title."
+            "The number of columns in the headers must match the number of columns in each row."
         )
         return self._call(prompt_text, image_path, Table)
