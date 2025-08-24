@@ -18,11 +18,17 @@ def make_model(
     openai_model: str = "gpt-4o",
 ):
     """
-    Build a callable Outlines model exactly in your snippet's style.
-    One backend is active at a time.
+    Build a callable Outlines model for VLM processing.
+    
+    Creates an Outlines model instance configured for either Gemini or OpenAI
+    providers. Only one backend is active at a time, with Gemini as the default.
 
-    - Gemini: requires api_key passed here → Client(api_key=api_key)
-    - OpenAI: uses openai.OpenAI() (reads OPENAI_API_KEY from environment)
+    :param provider: VLM provider to use ("gemini" or "openai", default: "gemini")
+    :param api_key: API key for the VLM provider (required for Gemini)
+    :param gemini_model: Gemini model name to use (default: "gemini-1.5-flash-latest")
+    :param openai_model: OpenAI model name to use (default: "gpt-4o")
+    :return: Configured Outlines model instance
+    :raises ValueError: If provider is unsupported or API key is missing for Gemini
     """
     provider = (provider or "gemini").lower()
 

@@ -24,6 +24,25 @@ from doctra.exporters.markdown_writer import write_markdown
 
 
 class ChartTablePDFParser:
+    """
+    Specialized PDF parser for extracting charts and tables.
+    
+    Focuses specifically on chart and table extraction from PDF documents,
+    with optional VLM (Vision Language Model) processing to convert visual
+    elements into structured data.
+
+    :param extract_charts: Whether to extract charts from the document (default: True)
+    :param extract_tables: Whether to extract tables from the document (default: True)
+    :param use_vlm: Whether to use VLM for structured data extraction (default: False)
+    :param vlm_provider: VLM provider to use ("gemini" or "openai", default: "gemini")
+    :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
+    :param vlm_gemini_model: Gemini model name to use (default: "gemini-1.5-flash-latest")
+    :param vlm_openai_model: OpenAI model name to use (default: "gpt-4o")
+    :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
+    :param dpi: DPI for PDF rendering (default: 200)
+    :param min_score: Minimum confidence score for layout detection (default: 0.0)
+    """
+
     def __init__(
             self,
             *,
@@ -38,6 +57,24 @@ class ChartTablePDFParser:
             dpi: int = 200,
             min_score: float = 0.0,
     ):
+        """
+        Initialize the ChartTablePDFParser with extraction configuration.
+        
+        Sets up the layout detection engine and optionally the VLM service
+        for structured data extraction.
+
+        :param extract_charts: Whether to extract charts from the document
+        :param extract_tables: Whether to extract tables from the document
+        :param use_vlm: Whether to use VLM for structured data extraction
+        :param vlm_provider: VLM provider to use ("gemini" or "openai")
+        :param vlm_api_key: API key for VLM provider
+        :param vlm_gemini_model: Gemini model name to use
+        :param vlm_openai_model: OpenAI model name to use
+        :param layout_model_name: Layout detection model name
+        :param dpi: DPI for PDF rendering
+        :param min_score: Minimum confidence score for layout detection
+        :raises ValueError: If neither extract_charts nor extract_tables is True
+        """
         # Validation
         if not extract_charts and not extract_tables:
             raise ValueError("At least one of extract_charts or extract_tables must be True")
@@ -59,6 +96,17 @@ class ChartTablePDFParser:
             )
 
     def parse(self, pdf_path: str, output_base_dir: str = "outputs") -> None:
+        """
+        Parse a PDF document and extract charts and/or tables.
+        
+        Processes the PDF through layout detection, extracts the specified
+        element types, saves cropped images, and optionally converts them
+        to structured data using VLM.
+
+        :param pdf_path: Path to the input PDF file
+        :param output_base_dir: Base directory for output files (default: "outputs")
+        :return: None
+        """
         # Create output directory structure: outputs/structured_doc/<filename>/
         pdf_name = Path(pdf_path).stem
         out_dir = os.path.join(output_base_dir, pdf_name)

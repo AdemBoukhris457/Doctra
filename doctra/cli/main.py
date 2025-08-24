@@ -52,6 +52,9 @@ def cli(ctx):
       doctra info                                 # System information
 
     For more help on any command, use: doctra COMMAND --help
+
+    :param ctx: Click context object containing command information
+    :return: None
     """
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help())
@@ -59,7 +62,19 @@ def cli(ctx):
 
 # Common options for VLM configuration
 def vlm_options(func):
-    """Decorator to add common VLM options to commands"""
+    """
+    Decorator to add common VLM options to commands.
+    
+    Adds the following options to a Click command:
+    - --use-vlm/--no-vlm: Enable/disable VLM processing
+    - --vlm-provider: Choose between 'gemini' or 'openai'
+    - --vlm-api-key: API key for VLM provider
+    - --vlm-gemini-model: Gemini model name
+    - --vlm-openai-model: OpenAI model name
+
+    :param func: The Click command function to decorate
+    :return: Decorated function with VLM options
+    """
     func = click.option('--use-vlm/--no-vlm', default=False,
                         help='Use Vision Language Model for table/chart extraction')(func)
     func = click.option('--vlm-provider', type=click.Choice(['gemini', 'openai']), default='gemini',
@@ -75,7 +90,17 @@ def vlm_options(func):
 
 # Common options for layout detection
 def layout_options(func):
-    """Decorator to add common layout options to commands"""
+    """
+    Decorator to add common layout detection options to commands.
+    
+    Adds the following options to a Click command:
+    - --layout-model: Layout detection model name
+    - --dpi: DPI for PDF rendering
+    - --min-score: Minimum confidence score for layout detection
+
+    :param func: The Click command function to decorate
+    :return: Decorated function with layout options
+    """
     func = click.option('--layout-model', default='PP-DocLayout_plus-L',
                         help='Layout detection model name (default: PP-DocLayout_plus-L)')(func)
     func = click.option('--dpi', type=int, default=200,
@@ -87,7 +112,18 @@ def layout_options(func):
 
 # Common options for OCR
 def ocr_options(func):
-    """Decorator to add OCR options to commands"""
+    """
+    Decorator to add common OCR options to commands.
+    
+    Adds the following options to a Click command:
+    - --ocr-lang: OCR language code
+    - --ocr-psm: Tesseract page segmentation mode
+    - --ocr-oem: Tesseract OCR engine mode
+    - --ocr-config: Additional Tesseract configuration
+
+    :param func: The Click command function to decorate
+    :return: Decorated function with OCR options
+    """
     func = click.option('--ocr-lang', default='eng',
                         help='OCR language code (default: eng)')(func)
     func = click.option('--ocr-psm', type=int, default=4,
@@ -100,7 +136,17 @@ def ocr_options(func):
 
 
 def validate_vlm_config(use_vlm: bool, vlm_api_key: Optional[str]) -> None:
-    """Validate VLM configuration"""
+    """
+    Validate VLM configuration and exit with error if invalid.
+    
+    Checks if VLM is enabled but no API key is provided, and exits
+    with an appropriate error message if the configuration is invalid.
+
+    :param use_vlm: Whether VLM processing is enabled
+    :param vlm_api_key: The VLM API key (can be None if VLM is disabled)
+    :return: None
+    :raises SystemExit: If VLM is enabled but no API key is provided
+    """
     if use_vlm and not vlm_api_key:
         click.echo("❌ Error: VLM API key is required when using --use-vlm", err=True)
         click.echo("   Set the VLM_API_KEY environment variable or use --vlm-api-key", err=True)
@@ -142,6 +188,24 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
     VLM Setup:
       Set environment variable: export VLM_API_KEY=your_api_key
       Or use: --vlm-api-key your_api_key
+
+    :param pdf_path: Path to the input PDF file
+    :param output_dir: Output directory for results (optional)
+    :param use_vlm: Whether to use VLM for enhanced extraction
+    :param vlm_provider: VLM provider ('gemini' or 'openai')
+    :param vlm_api_key: API key for VLM provider
+    :param vlm_gemini_model: Gemini model name to use
+    :param vlm_openai_model: OpenAI model name to use
+    :param layout_model: Layout detection model name
+    :param dpi: DPI for PDF rendering
+    :param min_score: Minimum confidence score for layout detection
+    :param ocr_lang: OCR language code
+    :param ocr_psm: Tesseract page segmentation mode
+    :param ocr_oem: Tesseract OCR engine mode
+    :param ocr_config: Additional Tesseract configuration
+    :param box_separator: Separator between text boxes in output
+    :param verbose: Whether to enable verbose output
+    :return: None
     """
     validate_vlm_config(use_vlm, vlm_api_key)
 
@@ -235,6 +299,9 @@ def extract(ctx):
       doctra extract charts document.pdf
       doctra extract tables document.pdf --use-vlm
       doctra extract both document.pdf --output-dir ./results
+
+    :param ctx: Click context object containing command information
+    :return: None
     """
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help())
@@ -260,6 +327,19 @@ def charts(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
       doctra extract charts document.pdf
       doctra extract charts document.pdf --use-vlm --vlm-api-key your_key
       doctra extract charts document.pdf -o ./my_outputs --dpi 300
+
+    :param pdf_path: Path to the input PDF file
+    :param output_dir: Output base directory for results
+    :param use_vlm: Whether to use VLM for enhanced chart extraction
+    :param vlm_provider: VLM provider ('gemini' or 'openai')
+    :param vlm_api_key: API key for VLM provider
+    :param vlm_gemini_model: Gemini model name to use
+    :param vlm_openai_model: OpenAI model name to use
+    :param layout_model: Layout detection model name
+    :param dpi: DPI for PDF rendering
+    :param min_score: Minimum confidence score for layout detection
+    :param verbose: Whether to enable verbose output
+    :return: None
     """
     validate_vlm_config(use_vlm, vlm_api_key)
 
@@ -326,6 +406,19 @@ def tables(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
       doctra extract tables document.pdf
       doctra extract tables document.pdf --use-vlm --vlm-api-key your_key
       doctra extract tables document.pdf -o ./my_outputs --min-score 0.5
+
+    :param pdf_path: Path to the input PDF file
+    :param output_dir: Output base directory for results
+    :param use_vlm: Whether to use VLM for enhanced table extraction
+    :param vlm_provider: VLM provider ('gemini' or 'openai')
+    :param vlm_api_key: API key for VLM provider
+    :param vlm_gemini_model: Gemini model name to use
+    :param vlm_openai_model: OpenAI model name to use
+    :param layout_model: Layout detection model name
+    :param dpi: DPI for PDF rendering
+    :param min_score: Minimum confidence score for layout detection
+    :param verbose: Whether to enable verbose output
+    :return: None
     """
     validate_vlm_config(use_vlm, vlm_api_key)
 
@@ -393,6 +486,19 @@ def both(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
       doctra extract both document.pdf
       doctra extract both document.pdf --use-vlm --vlm-api-key your_key
       doctra extract both document.pdf -o ./my_outputs --dpi 300
+
+    :param pdf_path: Path to the input PDF file
+    :param output_dir: Output base directory for results
+    :param use_vlm: Whether to use VLM for enhanced extraction
+    :param vlm_provider: VLM provider ('gemini' or 'openai')
+    :param vlm_api_key: API key for VLM provider
+    :param vlm_gemini_model: Gemini model name to use
+    :param vlm_openai_model: OpenAI model name to use
+    :param layout_model: Layout detection model name
+    :param dpi: DPI for PDF rendering
+    :param min_score: Minimum confidence score for layout detection
+    :param verbose: Whether to enable verbose output
+    :return: None
     """
     validate_vlm_config(use_vlm, vlm_api_key)
 
@@ -467,6 +573,18 @@ def visualize(pdf_path: Path, pages: int, columns: int, width: int,
       doctra visualize document.pdf
       doctra visualize document.pdf --pages 5 --output layout.png
       doctra visualize document.pdf --columns 3 --width 600
+
+    :param pdf_path: Path to the input PDF file
+    :param pages: Number of pages to visualize
+    :param columns: Number of columns in the grid layout
+    :param width: Width of each page in pixels
+    :param spacing: Spacing between pages in pixels
+    :param output: Optional path to save visualization as image file
+    :param dpi: DPI for PDF rendering
+    :param min_score: Minimum confidence score for layout detection
+    :param layout_model: Layout detection model name
+    :param verbose: Whether to enable verbose output
+    :return: None
     """
     try:
         if verbose:
@@ -532,6 +650,13 @@ def analyze(pdf_path: Path, dpi: int, min_score: float, layout_model: str, verbo
       doctra analyze document.pdf
       doctra analyze document.pdf --verbose
       doctra analyze document.pdf --min-score 0.5
+
+    :param pdf_path: Path to the input PDF file
+    :param dpi: DPI for PDF rendering
+    :param min_score: Minimum confidence score for layout detection
+    :param layout_model: Layout detection model name
+    :param verbose: Whether to show detailed per-page breakdown
+    :return: None
     """
     try:
         click.echo(f"🔍 Analyzing: {pdf_path.name}")
@@ -647,6 +772,8 @@ def info():
 
     Displays Python version, dependency status, available VLM providers,
     layout models, and OCR language information.
+
+    :return: None
     """
     click.echo("🔬 Doctra System Information")
     click.echo("=" * 50)

@@ -7,14 +7,14 @@ from typing import List
 def write_markdown(md_lines: List[str], out_dir: str, filename: str = "result.md") -> str:
     """
     Convert collected Markdown lines into a single Markdown file and save it.
+    
+    Joins multiple Markdown content lines into a single file, cleans up excessive
+    blank lines, and saves it to the specified directory.
 
-    Args:
-        md_lines: List of markdown strings to join.
-        out_dir: Directory where the markdown file will be saved.
-        filename: Name of the markdown file (default: "result.md").
-
-    Returns:
-        The absolute path of the written markdown file.
+    :param md_lines: List of markdown strings to join into a single file
+    :param out_dir: Directory where the markdown file will be saved
+    :param filename: Name of the markdown file (default: "result.md")
+    :return: The absolute path of the written markdown file
     """
     os.makedirs(out_dir, exist_ok=True)
 

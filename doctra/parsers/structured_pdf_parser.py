@@ -22,6 +22,28 @@ from doctra.exporters.markdown_writer import write_markdown
 
 
 class StructuredPDFParser:
+    """
+    Comprehensive PDF parser for extracting all types of content.
+    
+    Processes PDF documents to extract text, tables, charts, and figures.
+    Supports OCR for text extraction and optional VLM processing for
+    converting visual elements into structured data.
+
+    :param use_vlm: Whether to use VLM for structured data extraction (default: False)
+    :param vlm_provider: VLM provider to use ("gemini" or "openai", default: "gemini")
+    :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
+    :param vlm_gemini_model: Gemini model name to use (default: "gemini-1.5-flash-latest")
+    :param vlm_openai_model: OpenAI model name to use (default: "gpt-4o")
+    :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
+    :param dpi: DPI for PDF rendering (default: 200)
+    :param min_score: Minimum confidence score for layout detection (default: 0.0)
+    :param ocr_lang: OCR language code (default: "eng")
+    :param ocr_psm: Tesseract page segmentation mode (default: 4)
+    :param ocr_oem: Tesseract OCR engine mode (default: 3)
+    :param ocr_extra_config: Additional Tesseract configuration (default: "")
+    :param box_separator: Separator between text boxes in output (default: "\n")
+    """
+
     def __init__(
             self,
             *,
@@ -39,6 +61,26 @@ class StructuredPDFParser:
             ocr_extra_config: str = "",
             box_separator: str = "\n",
     ):
+        """
+        Initialize the StructuredPDFParser with processing configuration.
+        
+        Sets up the layout detection engine, OCR engine, and optionally
+        the VLM service for comprehensive document processing.
+
+        :param use_vlm: Whether to use VLM for structured data extraction
+        :param vlm_provider: VLM provider to use ("gemini" or "openai")
+        :param vlm_api_key: API key for VLM provider
+        :param vlm_gemini_model: Gemini model name to use
+        :param vlm_openai_model: OpenAI model name to use
+        :param layout_model_name: Layout detection model name
+        :param dpi: DPI for PDF rendering
+        :param min_score: Minimum confidence score for layout detection
+        :param ocr_lang: OCR language code
+        :param ocr_psm: Tesseract page segmentation mode
+        :param ocr_oem: Tesseract OCR engine mode
+        :param ocr_extra_config: Additional Tesseract configuration
+        :param box_separator: Separator between text boxes in output
+        """
         self.layout_engine = PaddleLayoutEngine(model_name=layout_model_name)
         self.dpi = dpi
         self.min_score = min_score
@@ -57,6 +99,16 @@ class StructuredPDFParser:
             )
 
     def parse(self, pdf_path: str) -> None:
+        """
+        Parse a PDF document and extract all content types.
+        
+        Processes the PDF through layout detection, extracts text using OCR,
+        saves images for visual elements, and optionally converts charts/tables
+        to structured data using VLM.
+
+        :param pdf_path: Path to the input PDF file
+        :return: None
+        """
         # Extract filename without extension and create output directory
         pdf_filename = os.path.splitext(os.path.basename(pdf_path))[0]
         out_dir = f"outputs/{pdf_filename}"
@@ -169,14 +221,17 @@ class StructuredPDFParser:
                                  page_width: int = 800, spacing: int = 40, save_path: str = None) -> None:
         """
         Display the first N pages of a PDF with bounding boxes and labels overlaid in a modern grid layout.
+        
+        Creates a visualization showing layout detection results with bounding boxes,
+        labels, and confidence scores overlaid on the PDF pages in a grid format.
 
-        Args:
-            pdf_path: Path to the input PDF
-            num_pages: Number of pages to display (default: 3)
-            cols: Number of columns in the grid layout (default: 2)
-            page_width: Width to resize each page to (default: 800px)
-            spacing: Spacing between pages in pixels (default: 40px)
-            save_path: Optional path to save the visualization (if None, displays only)
+        :param pdf_path: Path to the input PDF file
+        :param num_pages: Number of pages to display (default: 3)
+        :param cols: Number of columns in the grid layout (default: 2)
+        :param page_width: Width to resize each page to in pixels (default: 800)
+        :param spacing: Spacing between pages in pixels (default: 40)
+        :param save_path: Optional path to save the visualization (if None, displays only)
+        :return: None
         """
         # Get layout predictions
         pages: List[LayoutPage] = self.layout_engine.predict_pdf(

@@ -8,8 +8,15 @@ from typing import Optional
 def resolve_tesseract_cmd(tesseract_cmd: Optional[str] = None) -> Optional[str]:
     """
     Best-effort discovery of the Tesseract executable.
-    Priority: explicit arg -> TESSERACT_CMD env -> PATH -> common install paths.
-    Returns the resolved path or None if not found.
+    
+    Searches for the Tesseract executable using a priority-based approach:
+    1. Explicitly provided path
+    2. TESSERACT_CMD environment variable
+    3. System PATH
+    4. Common installation paths for the current platform
+
+    :param tesseract_cmd: Optional explicit path to tesseract executable
+    :return: Resolved path to tesseract executable, or None if not found
     """
     if tesseract_cmd and os.path.exists(tesseract_cmd):
         return tesseract_cmd

@@ -9,8 +9,17 @@ from .path_resolver import resolve_tesseract_cmd
 
 class PytesseractOCREngine:
     """
-    Minimal OCR engines using pytesseract.
-    Accepts a cropped PIL image (e.g., a text block from layout) and returns raw text.
+    Minimal OCR engine using pytesseract.
+    
+    Accepts a cropped PIL image (e.g., a text block from layout detection)
+    and returns raw text. Provides a simple interface to Tesseract OCR
+    with configurable parameters for different use cases.
+
+    :param tesseract_cmd: Optional path to tesseract executable
+    :param lang: OCR language code (default: "eng")
+    :param psm: Tesseract page segmentation mode (default: 4)
+    :param oem: Tesseract OCR engine mode (default: 3)
+    :param extra_config: Additional Tesseract configuration string (default: "")
     """
 
     def __init__(
@@ -21,6 +30,18 @@ class PytesseractOCREngine:
         oem: int = 3,
         extra_config: str = "",
     ):
+        """
+        Initialize the PytesseractOCREngine with OCR configuration.
+        
+        Sets up the Tesseract command path and stores configuration parameters
+        for use during text recognition.
+
+        :param tesseract_cmd: Optional path to tesseract executable
+        :param lang: OCR language code (default: "eng")
+        :param psm: Tesseract page segmentation mode (default: 4)
+        :param oem: Tesseract OCR engine mode (default: 3)
+        :param extra_config: Additional Tesseract configuration string (default: "")
+        """
         cmd = resolve_tesseract_cmd(tesseract_cmd)
         if cmd:
             pytesseract.pytesseract.tesseract_cmd = cmd
@@ -34,6 +55,14 @@ class PytesseractOCREngine:
     def recognize(self, image: Image.Image) -> str:
         """
         Run OCR on a cropped PIL image and return extracted text (stripped).
+        
+        Performs text recognition on the provided image using the configured
+        Tesseract parameters and returns the extracted text with whitespace
+        stripped from the beginning and end.
+
+        :param image: PIL Image object to perform OCR on
+        :return: Extracted text string with leading/trailing whitespace removed
+        :raises TypeError: If the input is not a PIL Image object
         """
         if not isinstance(image, Image.Image):
             raise TypeError("PytesseractOCREngine expects a PIL.Image.Image as input.")

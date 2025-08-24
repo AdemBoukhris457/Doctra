@@ -14,10 +14,14 @@ from pathlib import Path
 def validate_vlm_config(use_vlm: bool, vlm_api_key: Optional[str]) -> None:
     """
     Validate VLM configuration and exit with error if invalid.
+    
+    Checks if VLM is enabled but no API key is provided, and exits
+    with an appropriate error message if the configuration is invalid.
 
-    Args:
-        use_vlm: Whether VLM is enabled
-        vlm_api_key: The VLM API key (can be None)
+    :param use_vlm: Whether VLM processing is enabled
+    :param vlm_api_key: The VLM API key (can be None if VLM is disabled)
+    :return: None
+    :raises SystemExit: If VLM is enabled but no API key is provided
     """
     if use_vlm and not vlm_api_key:
         click.echo("❌ Error: VLM API key is required when using --use-vlm", err=True)
@@ -27,7 +31,15 @@ def validate_vlm_config(use_vlm: bool, vlm_api_key: Optional[str]) -> None:
 
 
 def handle_keyboard_interrupt() -> None:
-    """Handle keyboard interrupt (Ctrl+C) gracefully."""
+    """
+    Handle keyboard interrupt (Ctrl+C) gracefully.
+    
+    Displays a user-friendly message and exits with the standard
+    interrupt exit code (130).
+
+    :return: None
+    :raises SystemExit: Always exits with code 130
+    """
     click.echo("\n⚠️  Operation interrupted by user", err=True)
     sys.exit(130)
 
@@ -35,10 +47,14 @@ def handle_keyboard_interrupt() -> None:
 def handle_exception(e: Exception, verbose: bool = False) -> None:
     """
     Handle exceptions with appropriate error messages.
+    
+    Displays the exception message and optionally the full traceback
+    if verbose mode is enabled.
 
-    Args:
-        e: The exception that occurred
-        verbose: Whether to show full traceback
+    :param e: The exception that occurred
+    :param verbose: Whether to show full traceback
+    :return: None
+    :raises SystemExit: Always exits with code 1
     """
     click.echo(f"❌ Error: {e}", err=True)
     if verbose:
@@ -50,9 +66,13 @@ def handle_exception(e: Exception, verbose: bool = False) -> None:
 def validate_pdf_path(pdf_path: Path) -> None:
     """
     Validate that the PDF path exists and is a valid PDF file.
+    
+    Checks if the file exists, is actually a file (not directory),
+    and optionally warns if the file extension is not .pdf.
 
-    Args:
-        pdf_path: Path to the PDF file
+    :param pdf_path: Path to the PDF file to validate
+    :return: None
+    :raises SystemExit: If file doesn't exist or is not a file
     """
     if not pdf_path.exists():
         click.echo(f"❌ Error: PDF file not found: {pdf_path}", err=True)
@@ -69,12 +89,12 @@ def validate_pdf_path(pdf_path: Path) -> None:
 def format_file_size(size_bytes: int) -> str:
     """
     Format file size in human readable format.
+    
+    Converts bytes to the most appropriate unit (B, KB, MB, GB)
+    with one decimal place precision.
 
-    Args:
-        size_bytes: Size in bytes
-
-    Returns:
-        Formatted size string (e.g., "1.5 MB")
+    :param size_bytes: Size in bytes to format
+    :return: Formatted size string (e.g., "1.5 MB", "2.3 GB")
     """
     if size_bytes == 0:
         return "0 B"
@@ -93,12 +113,20 @@ def format_file_size(size_bytes: int) -> str:
 def get_file_info(file_path: Path) -> Dict[str, Any]:
     """
     Get basic file information.
+    
+    Retrieves file metadata including name, size, modification time,
+    and file type information.
 
-    Args:
-        file_path: Path to the file
-
-    Returns:
-        Dictionary with file information
+    :param file_path: Path to the file to get information for
+    :return: Dictionary containing file information with keys:
+             - name: File name
+             - size: Size in bytes
+             - size_formatted: Human-readable size
+             - modified: Modification timestamp
+             - is_file: Whether it's a file
+             - is_dir: Whether it's a directory
+             - extension: File extension (lowercase)
+             Returns empty dict if file doesn't exist
     """
     if not file_path.exists():
         return {}
@@ -124,13 +152,17 @@ def print_processing_summary(
 ) -> None:
     """
     Print a summary of processing results.
+    
+    Displays a formatted summary including input file information,
+    output directory, processing time, number of elements processed,
+    and VLM usage status.
 
-    Args:
-        input_file: Input PDF file path
-        output_dir: Output directory path
-        processing_time: Time taken for processing in seconds
-        elements_processed: Number of elements processed
-        use_vlm: Whether VLM was used
+    :param input_file: Input PDF file path
+    :param output_dir: Output directory path
+    :param processing_time: Time taken for processing in seconds
+    :param elements_processed: Number of elements processed
+    :param use_vlm: Whether VLM was used during processing
+    :return: None
     """
     click.echo("\n" + "=" * 50)
     click.echo("📊 Processing Summary")
@@ -162,9 +194,18 @@ def print_processing_summary(
 def check_dependencies() -> Dict[str, bool]:
     """
     Check if required dependencies are available.
+    
+    Tests import availability for core and optional dependencies
+    used by the Doctra library.
 
-    Returns:
-        Dictionary mapping dependency names to availability status
+    :return: Dictionary mapping dependency names to availability status:
+             - PIL: Pillow for image processing
+             - paddle: PaddlePaddle for layout detection
+             - pytesseract: Tesseract OCR wrapper
+             - tqdm: Progress bar library
+             - click: CLI framework
+             - google.generativeai: Gemini VLM support
+             - openai: OpenAI VLM support
     """
     dependencies = {
         'PIL': False,
@@ -194,15 +235,15 @@ def estimate_processing_time(
 ) -> int:
     """
     Estimate processing time based on document characteristics.
+    
+    Provides a rough estimate of processing time based on the number
+    of pages, charts, tables, and whether VLM processing is enabled.
 
-    Args:
-        num_pages: Number of pages in document
-        num_charts: Number of charts detected
-        num_tables: Number of tables detected
-        use_vlm: Whether VLM processing will be used
-
-    Returns:
-        Estimated processing time in seconds
+    :param num_pages: Number of pages in the document
+    :param num_charts: Number of charts detected in the document
+    :param num_tables: Number of tables detected in the document
+    :param use_vlm: Whether VLM processing will be used
+    :return: Estimated processing time in seconds
     """
     # Base time per page (layout detection + OCR)
     base_time = num_pages * 2
@@ -221,13 +262,14 @@ def estimate_processing_time(
 def create_progress_callback(description: str, total: int):
     """
     Create a progress callback function for use with processing operations.
+    
+    Creates a tqdm progress bar and returns a callback function that
+    can be used to update the progress during long-running operations.
 
-    Args:
-        description: Description for the progress bar
-        total: Total number of items to process
-
-    Returns:
-        Callable progress callback function
+    :param description: Description text for the progress bar
+    :param total: Total number of items to process
+    :return: Callable progress callback function that takes an integer
+             representing the number of completed items
     """
     from tqdm import tqdm
 
@@ -245,13 +287,13 @@ def create_progress_callback(description: str, total: int):
 def safe_create_directory(path: Path, parents: bool = True) -> bool:
     """
     Safely create a directory with error handling.
+    
+    Attempts to create a directory and handles common errors like
+    permission issues gracefully.
 
-    Args:
-        path: Directory path to create
-        parents: Whether to create parent directories
-
-    Returns:
-        True if successful, False otherwise
+    :param path: Directory path to create
+    :param parents: Whether to create parent directories if they don't exist
+    :return: True if directory was created successfully, False otherwise
     """
     try:
         path.mkdir(parents=parents, exist_ok=True)
@@ -267,12 +309,13 @@ def safe_create_directory(path: Path, parents: bool = True) -> bool:
 def get_output_recommendations(element_counts: Dict[str, int]) -> str:
     """
     Generate command recommendations based on detected elements.
+    
+    Analyzes the types and counts of detected elements and suggests
+    appropriate Doctra commands for processing.
 
-    Args:
-        element_counts: Dictionary of element type counts
-
-    Returns:
-        Recommendation string
+    :param element_counts: Dictionary mapping element types to their counts
+                          (e.g., {'chart': 5, 'table': 3, 'text': 100})
+    :return: Formatted string with command recommendations for the user
     """
     charts = element_counts.get('chart', 0)
     tables = element_counts.get('table', 0)

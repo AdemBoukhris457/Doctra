@@ -16,6 +16,16 @@ _HEADER_FONT = Font(color="FFFFFFFF", bold=True)
 _HEADER_ALIGN = Alignment(horizontal="center", vertical="center", wrap_text=True)
 
 def _safe_sheet_name(raw_title: str, taken: Set[str]) -> str:
+    """
+    Create a safe Excel sheet name from a raw title.
+    
+    Ensures the sheet name is valid for Excel by removing invalid characters,
+    handling length limits, and avoiding duplicates.
+
+    :param raw_title: Original title to convert to sheet name
+    :param taken: Set of already used sheet names to avoid conflicts
+    :return: Safe Excel sheet name that doesn't conflict with existing names
+    """
     name = (raw_title or "Untitled").strip()
     name = re.sub(_INVALID_SHEET_CHARS, "_", name)
     name = re.sub(r"\s+", " ", name)
@@ -32,6 +42,16 @@ def _safe_sheet_name(raw_title: str, taken: Set[str]) -> str:
     return candidate
 
 def _style_header(ws, ncols: int) -> None:
+    """
+    Apply styling to the header row of an Excel worksheet.
+    
+    Styles the first row with green background, white bold font, and center alignment.
+    Also freezes the panes below the header row.
+
+    :param ws: OpenPyXL worksheet object to style
+    :param ncols: Number of columns in the worksheet
+    :return: None
+    """
     # Style first row (header) and freeze panes below it
     ws.freeze_panes = "A2"
     for idx in range(1, ncols + 1):
@@ -41,6 +61,16 @@ def _style_header(ws, ncols: int) -> None:
         cell.alignment = _HEADER_ALIGN
 
 def _autosize_columns(ws, df: pd.DataFrame) -> None:
+    """
+    Automatically size columns in an Excel worksheet based on content.
+    
+    Calculates optimal column widths based on header text and sample data
+    from the first 200 rows for performance.
+
+    :param ws: OpenPyXL worksheet object to resize
+    :param df: Pandas DataFrame containing the data
+    :return: None
+    """
     # Basic autosize based on header + sample of values
     for i, col in enumerate(df.columns, start=1):
         header = str(col) if col is not None else ""
@@ -53,10 +83,17 @@ def _autosize_columns(ws, df: pd.DataFrame) -> None:
 
 def write_structured_excel(excel_path: str, items: List[Dict[str, Any]]) -> str | None:
     """
-    Write a list of {'title', 'headers', 'rows'} into an Excel workbook.
-    Each item becomes a sheet; header row is styled green with white text.
+    Write a list of structured data items into an Excel workbook.
+    
+    Each item becomes a separate worksheet with styled headers. The function
+    handles sheet name sanitization, header styling, and column autosizing.
 
-    Returns the path if written, else None.
+    :param excel_path: Path where the Excel file will be saved
+    :param items: List of dictionaries, each containing:
+                 - 'title': Sheet title (optional)
+                 - 'headers': List of column headers (optional)
+                 - 'rows': List of data rows (optional)
+    :return: Path to the written Excel file if successful, None if no items provided
     """
     if not items:
         return None

@@ -22,13 +22,34 @@ class PaddleLayoutEngine:
       - Multi-page PDF inputs
       - Batch prediction on page images
       - Clean, page-indexed output with absolute and normalized coords
+      
+    Provides a high-level interface for document layout detection using
+    PaddleOCR's layout detection models with enhanced output formatting
+    and multi-page PDF support.
     """
 
     def __init__(self, model_name: str = "PP-DocLayout_plus-L"):
+        """
+        Initialize the PaddleLayoutEngine with a specific model.
+        
+        The model is loaded lazily on first use to avoid unnecessary
+        initialization overhead.
+
+        :param model_name: Name of the PaddleOCR layout detection model to use
+                          (default: "PP-DocLayout_plus-L")
+        """
         self.model_name = model_name
         self.model: Optional[LayoutDetection] = None
 
     def _ensure_model(self) -> None:
+        """
+        Ensure the PaddleOCR model is loaded and ready for inference.
+        
+        Loads the model on first call with comprehensive output suppression
+        to minimize console noise during initialization.
+
+        :return: None
+        """
         if self.model is not None:
             return
 
@@ -120,16 +141,17 @@ class PaddleLayoutEngine:
         """
         Run layout detection on every page of a PDF.
 
-        Args:
-            pdf_path: Path to the input PDF.
-            batch_size: Batch size for Paddle inference.
-            layout_nms: Whether to apply layout NMS in Paddle.
-            dpi: Rendering DPI for pdf2image.
-            min_score: Filter out detections below this confidence.
-            keep_temp_files: If True, keep the intermediate JPGs (useful for debugging).
+        Processes each page of the PDF through the layout detection model,
+        returning structured results with both absolute and normalized coordinates
+        for each detected layout element.
 
-        Returns:
-            List[LayoutPage] (1-based page_index order).
+        :param pdf_path: Path to the input PDF file
+        :param batch_size: Batch size for Paddle inference (default: 1)
+        :param layout_nms: Whether to apply layout NMS in Paddle (default: True)
+        :param dpi: Rendering DPI for pdf2image conversion (default: 200)
+        :param min_score: Filter out detections below this confidence threshold (default: 0.0)
+        :param keep_temp_files: If True, keep the intermediate JPGs for debugging (default: False)
+        :return: List of LayoutPage objects in 1-based page_index order
         """
         self._ensure_model()
         pil_pages: List[Tuple[Image.Image, int, int]] = render_pdf_to_images(pdf_path, dpi=dpi)
@@ -175,11 +197,29 @@ class PaddleLayoutEngine:
 
     # Convenience helpers
     def predict_pdf_as_dicts(self, pdf_path: str, **kwargs) -> List[Dict[str, Any]]:
-        """Same as predict_pdf, but returns plain dicts (easy to JSONL)."""
+        """
+        Same as predict_pdf, but returns plain dicts for easy JSON serialization.
+        
+        Convenience method that converts LayoutPage objects to dictionaries,
+        making it easy to serialize results to JSON or other formats.
+
+        :param pdf_path: Path to the input PDF file
+        :param kwargs: Additional arguments passed to predict_pdf
+        :return: List of dictionaries representing the layout pages
+        """
         return [p.to_dict() for p in self.predict_pdf(pdf_path, **kwargs)]
 
     def save_jsonl(self, pages: List[LayoutPage], out_path: str) -> None:
-        """Save detections to a JSONL file (one page per line)."""
+        """
+        Save detections to a JSONL file (one page per line).
+        
+        Writes each page as a separate JSON line, making it easy to process
+        large documents incrementally.
+
+        :param pages: List of LayoutPage objects to save
+        :param out_path: Output file path for the JSONL file
+        :return: None
+        """
         with open(out_path, "w", encoding="utf-8") as f:
             for p in pages:
                 f.write(json.dumps(p.to_dict(), ensure_ascii=False) + "\n")

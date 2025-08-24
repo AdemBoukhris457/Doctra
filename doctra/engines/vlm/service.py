@@ -9,7 +9,10 @@ from .provider import make_model
 
 class VLMStructuredExtractor:
     """
-    Thin service around your prompts + Outlines calls.
+    Thin service around prompts + Outlines calls for structured data extraction.
+    
+    Provides a high-level interface for extracting structured data (charts and tables)
+    from images using Vision Language Models (VLM) with Outlines for type safety.
 
     Usage:
         vlm = VLMStructuredExtractor(provider="gemini", api_key="YOUR_KEY", debug=True)
@@ -26,6 +29,18 @@ class VLMStructuredExtractor:
         openai_model: str = "gpt-4o",
         debug: bool = True,                      # <-- NEW
     ):
+        """
+        Initialize the VLMStructuredExtractor with provider configuration.
+        
+        Sets up the VLM model and debug settings for structured data extraction
+        from images.
+
+        :param provider: VLM provider to use ("gemini" or "openai", default: "gemini")
+        :param api_key: API key for the VLM provider (required for Gemini)
+        :param gemini_model: Gemini model name to use (default: "gemini-1.5-flash-latest")
+        :param openai_model: OpenAI model name to use (default: "gpt-4o")
+        :param debug: Whether to enable debug output for error handling (default: True)
+        """
         self.model = make_model(
             provider,
             api_key=api_key,
@@ -37,6 +52,16 @@ class VLMStructuredExtractor:
     def _call(self, prompt_text: str, image_path: str, schema):
         """
         Common call: open/normalize image, convert to RGB, invoke model with schema.
+        
+        Internal method that handles the common workflow for VLM processing:
+        loading the image, normalizing it, and calling the model with the provided
+        prompt and schema.
+
+        :param prompt_text: Text prompt to send to the VLM
+        :param image_path: Path to the image file to process
+        :param schema: Pydantic schema class for structured output
+        :return: Structured data object matching the provided schema
+        :raises Exception: If image processing or VLM call fails
         """
         try:
             # Normalize path and verify readability
@@ -57,6 +82,16 @@ class VLMStructuredExtractor:
             raise
 
     def extract_chart(self, image_path: str) -> Chart:
+        """
+        Extract structured chart data from an image.
+        
+        Uses VLM to analyze a chart image and extract the data in a structured
+        format with title, headers, and rows.
+
+        :param image_path: Path to the chart image file
+        :return: Chart object containing extracted title, headers, and data rows
+        :raises Exception: If image processing or VLM extraction fails
+        """
         prompt_text = (
             "Convert the given chart into a table format with headers and rows. "
             "If the title is not present in the image, generate a suitable title. "
@@ -65,6 +100,16 @@ class VLMStructuredExtractor:
         return self._call(prompt_text, image_path, Chart)
 
     def extract_table(self, image_path: str) -> Table:
+        """
+        Extract structured table data from an image.
+        
+        Uses VLM to analyze a table image and extract the data in a structured
+        format with title, headers, and rows.
+
+        :param image_path: Path to the table image file
+        :return: Table object containing extracted title, headers, and data rows
+        :raises Exception: If image processing or VLM extraction fails
+        """
         prompt_text = (
             "Extract the data from the given table in image format. "
             "Provide the headers and rows of the table, ensuring accuracy in the extraction. "
