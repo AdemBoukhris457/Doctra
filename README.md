@@ -5,6 +5,13 @@ Turn your documents into actionable data with minimal effort. Whether it's PDFs,
 
 ![Doctra_Logo.png](assets/Doctra_Logo.png)
 
+<div align="center">
+
+[![Stars](https://img.shields.io/github/stars/AdemBoukhris457/Doctra?style=social)](https://github.com/AdemBoukhris457/Doctra)
+[![Forks](https://img.shields.io/github/forks/AdemBoukhris457/Doctra?style=social)](https://github.com/AdemBoukhris457/Doctra/network/members)
+
+</div>
+
 ## 📋 Table of Contents
 
 - [Installation](#installation)
