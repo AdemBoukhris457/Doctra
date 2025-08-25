@@ -1,8 +1,5 @@
 # 🚀 **Doctra - Document Parser Library** 📑🔎
 
-Parse, extract, and analyze documents in seconds.  
-Turn your documents into actionable data with minimal effort. Whether it's PDFs, DOCX, or TXT, this lightweight library has you covered!
-
 ![Doctra_Logo.png](assets/Doctra_Logo.png)
 
 <div align="center">
@@ -66,7 +63,7 @@ parser = StructuredPDFParser()
 # Parser with VLM for structured data extraction
 parser = StructuredPDFParser(
     use_vlm=True,
-    vlm_provider="gemini",  # or "openai"
+    vlm_provider="openai",  # or "gemini"
     vlm_api_key="your_api_key_here"
 )
 
@@ -80,8 +77,8 @@ parser.parse("document.pdf")
 parser = StructuredPDFParser(
     # VLM Settings
     use_vlm=True,
-    vlm_provider="gemini",
-    vlm_model="gemini-1.5-flash-latest",
+    vlm_provider="openai",
+    vlm_model="gpt-4o",
     vlm_api_key="your_api_key",
     
     # Layout Detection Settings
@@ -142,8 +139,8 @@ parser = ChartTablePDFParser(
     
     # VLM Settings
     use_vlm=True,
-    vlm_provider="gemini",
-    vlm_model="gemini-1.5-flash-latest",
+    vlm_provider="openai",
+    vlm_model="gpt-4o",
     vlm_api_key="your_api_key",
     
     # Layout Detection Settings
@@ -259,7 +256,7 @@ parser = ChartTablePDFParser(
     extract_charts=True,
     extract_tables=True,
     use_vlm=True,
-    vlm_provider="gemini",
+    vlm_provider="openai",
     vlm_api_key="your_gemini_api_key"
 )
 
@@ -282,7 +279,7 @@ parser = StructuredPDFParser(
     use_vlm=True,
     vlm_provider="openai",
     vlm_api_key="your_openai_api_key",
-    vlm_openai_model="gpt-4o",
+    vlm__model="gpt-4o",
     layout_model_name="PP-DocLayout_plus-L",
     dpi=300,  # Higher DPI for better quality
     min_score=0.5,  # Higher confidence threshold
