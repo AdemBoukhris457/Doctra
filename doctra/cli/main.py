@@ -68,9 +68,8 @@ def vlm_options(func):
     Adds the following options to a Click command:
     - --use-vlm/--no-vlm: Enable/disable VLM processing
     - --vlm-provider: Choose between 'gemini' or 'openai'
+    - --vlm-model: Model name to use (defaults to provider-specific defaults)
     - --vlm-api-key: API key for VLM provider
-    - --vlm-gemini-model: Gemini model name
-    - --vlm-openai-model: OpenAI model name
 
     :param func: The Click command function to decorate
     :return: Decorated function with VLM options
@@ -79,12 +78,10 @@ def vlm_options(func):
                         help='Use Vision Language Model for table/chart extraction')(func)
     func = click.option('--vlm-provider', type=click.Choice(['gemini', 'openai']), default='gemini',
                         help='VLM provider to use (default: gemini)')(func)
+    func = click.option('--vlm-model', type=str, default=None,
+                        help='Model name to use (defaults to provider-specific defaults)')(func)
     func = click.option('--vlm-api-key', type=str, envvar='VLM_API_KEY',
                         help='API key for VLM provider (or set VLM_API_KEY env var)')(func)
-    func = click.option('--vlm-gemini-model', default='gemini-1.5-flash-latest',
-                        help='Gemini model to use (default: gemini-1.5-flash-latest)')(func)
-    func = click.option('--vlm-openai-model', default='gpt-4o',
-                        help='OpenAI model to use (default: gpt-4o)')(func)
     return func
 
 
@@ -166,8 +163,8 @@ def validate_vlm_config(use_vlm: bool, vlm_api_key: Optional[str]) -> None:
 @click.option('--verbose', '-v', is_flag=True,
               help='Enable verbose output')
 def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
-          vlm_provider: str, vlm_api_key: Optional[str], vlm_gemini_model: str,
-          vlm_openai_model: str, layout_model: str, dpi: int, min_score: float,
+          vlm_provider: str, vlm_model: Optional[str], vlm_api_key: Optional[str],
+          layout_model: str, dpi: int, min_score: float,
           ocr_lang: str, ocr_psm: int, ocr_oem: int, ocr_config: str,
           box_separator: str, verbose: bool):
     """
@@ -193,9 +190,8 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
     :param output_dir: Output directory for results (optional)
     :param use_vlm: Whether to use VLM for enhanced extraction
     :param vlm_provider: VLM provider ('gemini' or 'openai')
+    :param vlm_model: Model name to use (defaults to provider-specific defaults)
     :param vlm_api_key: API key for VLM provider
-    :param vlm_gemini_model: Gemini model name to use
-    :param vlm_openai_model: OpenAI model name to use
     :param layout_model: Layout detection model name
     :param dpi: DPI for PDF rendering
     :param min_score: Minimum confidence score for layout detection
@@ -221,7 +217,7 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
             click.echo(f"🔧 Initializing full parser...")
             if use_vlm:
                 click.echo(f"   VLM Provider: {vlm_provider}")
-                click.echo(f"   VLM Model: {vlm_gemini_model if vlm_provider == 'gemini' else vlm_openai_model}")
+                click.echo(f"   VLM Model: {vlm_model or 'default'}")
             click.echo(f"   Layout Model: {layout_model}")
             click.echo(f"   DPI: {dpi}")
             click.echo(f"   OCR Language: {ocr_lang}")
@@ -233,9 +229,8 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
         parser = StructuredPDFParser(
             use_vlm=use_vlm,
             vlm_provider=vlm_provider,
+            vlm_model=vlm_model,
             vlm_api_key=vlm_api_key,
-            vlm_gemini_model=vlm_gemini_model,
-            vlm_openai_model=vlm_openai_model,
             layout_model_name=layout_model,
             dpi=dpi,
             min_score=min_score,
@@ -315,7 +310,7 @@ def extract(ctx):
 @layout_options
 @click.option('--verbose', '-v', is_flag=True, help='Enable verbose output')
 def charts(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
-           vlm_api_key: Optional[str], vlm_gemini_model: str, vlm_openai_model: str,
+           vlm_model: Optional[str], vlm_api_key: Optional[str],
            layout_model: str, dpi: int, min_score: float, verbose: bool):
     """
     Extract only charts from a PDF document.
@@ -332,9 +327,8 @@ def charts(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
     :param output_dir: Output base directory for results
     :param use_vlm: Whether to use VLM for enhanced chart extraction
     :param vlm_provider: VLM provider ('gemini' or 'openai')
+    :param vlm_model: Model name to use (defaults to provider-specific defaults)
     :param vlm_api_key: API key for VLM provider
-    :param vlm_gemini_model: Gemini model name to use
-    :param vlm_openai_model: OpenAI model name to use
     :param layout_model: Layout detection model name
     :param dpi: DPI for PDF rendering
     :param min_score: Minimum confidence score for layout detection
@@ -363,9 +357,8 @@ def charts(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
             extract_tables=False,
             use_vlm=use_vlm,
             vlm_provider=vlm_provider,
+            vlm_model=vlm_model,
             vlm_api_key=vlm_api_key,
-            vlm_gemini_model=vlm_gemini_model,
-            vlm_openai_model=vlm_openai_model,
             layout_model_name=layout_model,
             dpi=dpi,
             min_score=min_score
@@ -394,7 +387,7 @@ def charts(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
 @layout_options
 @click.option('--verbose', '-v', is_flag=True, help='Enable verbose output')
 def tables(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
-           vlm_api_key: Optional[str], vlm_gemini_model: str, vlm_openai_model: str,
+           vlm_model: Optional[str], vlm_api_key: Optional[str],
            layout_model: str, dpi: int, min_score: float, verbose: bool):
     """
     Extract only tables from a PDF document.
@@ -411,9 +404,8 @@ def tables(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
     :param output_dir: Output base directory for results
     :param use_vlm: Whether to use VLM for enhanced table extraction
     :param vlm_provider: VLM provider ('gemini' or 'openai')
+    :param vlm_model: Model name to use (defaults to provider-specific defaults)
     :param vlm_api_key: API key for VLM provider
-    :param vlm_gemini_model: Gemini model name to use
-    :param vlm_openai_model: OpenAI model name to use
     :param layout_model: Layout detection model name
     :param dpi: DPI for PDF rendering
     :param min_score: Minimum confidence score for layout detection
@@ -442,9 +434,8 @@ def tables(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
             extract_tables=True,
             use_vlm=use_vlm,
             vlm_provider=vlm_provider,
+            vlm_model=vlm_model,
             vlm_api_key=vlm_api_key,
-            vlm_gemini_model=vlm_gemini_model,
-            vlm_openai_model=vlm_openai_model,
             layout_model_name=layout_model,
             dpi=dpi,
             min_score=min_score
@@ -473,7 +464,7 @@ def tables(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
 @layout_options
 @click.option('--verbose', '-v', is_flag=True, help='Enable verbose output')
 def both(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
-         vlm_api_key: Optional[str], vlm_gemini_model: str, vlm_openai_model: str,
+         vlm_model: Optional[str], vlm_api_key: Optional[str],
          layout_model: str, dpi: int, min_score: float, verbose: bool):
     """
     Extract both charts and tables from a PDF document.
@@ -491,9 +482,8 @@ def both(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
     :param output_dir: Output base directory for results
     :param use_vlm: Whether to use VLM for enhanced extraction
     :param vlm_provider: VLM provider ('gemini' or 'openai')
+    :param vlm_model: Model name to use (defaults to provider-specific defaults)
     :param vlm_api_key: API key for VLM provider
-    :param vlm_gemini_model: Gemini model name to use
-    :param vlm_openai_model: OpenAI model name to use
     :param layout_model: Layout detection model name
     :param dpi: DPI for PDF rendering
     :param min_score: Minimum confidence score for layout detection
@@ -522,9 +512,8 @@ def both(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
             extract_tables=True,
             use_vlm=use_vlm,
             vlm_provider=vlm_provider,
+            vlm_model=vlm_model,
             vlm_api_key=vlm_api_key,
-            vlm_gemini_model=vlm_gemini_model,
-            vlm_openai_model=vlm_openai_model,
             layout_model_name=layout_model,
             dpi=dpi,
             min_score=min_score

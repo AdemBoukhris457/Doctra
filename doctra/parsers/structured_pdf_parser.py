@@ -31,9 +31,8 @@ class StructuredPDFParser:
 
     :param use_vlm: Whether to use VLM for structured data extraction (default: False)
     :param vlm_provider: VLM provider to use ("gemini" or "openai", default: "gemini")
+    :param vlm_model: Model name to use (defaults to provider-specific defaults)
     :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
-    :param vlm_gemini_model: Gemini model name to use (default: "gemini-1.5-flash-latest")
-    :param vlm_openai_model: OpenAI model name to use (default: "gpt-4o")
     :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
     :param dpi: DPI for PDF rendering (default: 200)
     :param min_score: Minimum confidence score for layout detection (default: 0.0)
@@ -49,9 +48,8 @@ class StructuredPDFParser:
             *,
             use_vlm: bool = False,
             vlm_provider: str = "gemini",
+            vlm_model: str | None = None,
             vlm_api_key: str | None = None,
-            vlm_gemini_model: str = "gemini-1.5-flash-latest",
-            vlm_openai_model: str = "gpt-4o",
             layout_model_name: str = "PP-DocLayout_plus-L",
             dpi: int = 200,
             min_score: float = 0.0,
@@ -69,9 +67,8 @@ class StructuredPDFParser:
 
         :param use_vlm: Whether to use VLM for structured data extraction
         :param vlm_provider: VLM provider to use ("gemini" or "openai")
+        :param vlm_model: Model name to use (defaults to provider-specific defaults)
         :param vlm_api_key: API key for VLM provider
-        :param vlm_gemini_model: Gemini model name to use
-        :param vlm_openai_model: OpenAI model name to use
         :param layout_model_name: Layout detection model name
         :param dpi: DPI for PDF rendering
         :param min_score: Minimum confidence score for layout detection
@@ -92,10 +89,9 @@ class StructuredPDFParser:
         self.vlm = None
         if self.use_vlm:
             self.vlm = VLMStructuredExtractor(
-                provider=vlm_provider,
+                vlm_provider=vlm_provider,
+                vlm_model=vlm_model,
                 api_key=vlm_api_key,
-                gemini_model=vlm_gemini_model,
-                openai_model=vlm_openai_model,
             )
 
     def parse(self, pdf_path: str) -> None:

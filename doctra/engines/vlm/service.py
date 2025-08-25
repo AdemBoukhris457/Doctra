@@ -15,19 +15,18 @@ class VLMStructuredExtractor:
     from images using Vision Language Models (VLM) with Outlines for type safety.
 
     Usage:
-        vlm = VLMStructuredExtractor(provider="gemini", api_key="YOUR_KEY", debug=True)
+        vlm = VLMStructuredExtractor(vlm_provider="gemini", api_key="YOUR_KEY", debug=True)
         chart = vlm.extract_chart("/abs/path/chart.jpg")
         table = vlm.extract_table("/abs/path/table.jpg")
     """
 
     def __init__(
         self,
-        provider: str = "gemini",
+        vlm_provider: str = "gemini",
+        vlm_model: str | None = None,
         *,
         api_key: str | None = None,
-        gemini_model: str = "gemini-1.5-flash-latest",
-        openai_model: str = "gpt-4o",
-        debug: bool = True,                      # <-- NEW
+        debug: bool = True,
     ):
         """
         Initialize the VLMStructuredExtractor with provider configuration.
@@ -35,17 +34,15 @@ class VLMStructuredExtractor:
         Sets up the VLM model and debug settings for structured data extraction
         from images.
 
-        :param provider: VLM provider to use ("gemini" or "openai", default: "gemini")
-        :param api_key: API key for the VLM provider (required for Gemini)
-        :param gemini_model: Gemini model name to use (default: "gemini-1.5-flash-latest")
-        :param openai_model: OpenAI model name to use (default: "gpt-4o")
+        :param vlm_provider: VLM provider to use ("gemini" or "openai", default: "gemini")
+        :param vlm_model: Model name to use (defaults to provider-specific defaults)
+        :param api_key: API key for the VLM provider (required for both Gemini and OpenAI)
         :param debug: Whether to enable debug output for error handling (default: True)
         """
         self.model = make_model(
-            provider,
+            vlm_provider,
+            vlm_model,
             api_key=api_key,
-            gemini_model=gemini_model,
-            openai_model=openai_model,
         )
         self.debug = debug
 

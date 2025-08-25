@@ -81,9 +81,8 @@ parser = StructuredPDFParser(
     # VLM Settings
     use_vlm=True,
     vlm_provider="gemini",
+    vlm_model="gemini-1.5-flash-latest",
     vlm_api_key="your_api_key",
-    vlm_gemini_model="gemini-1.5-flash-latest",
-    vlm_openai_model="gpt-4o",
     
     # Layout Detection Settings
     layout_model_name="PP-DocLayout_plus-L",
@@ -144,9 +143,8 @@ parser = ChartTablePDFParser(
     # VLM Settings
     use_vlm=True,
     vlm_provider="gemini",
+    vlm_model="gemini-1.5-flash-latest",
     vlm_api_key="your_api_key",
-    vlm_gemini_model="gemini-1.5-flash-latest",
-    vlm_openai_model="gpt-4o",
     
     # Layout Detection Settings
     layout_model_name="PP-DocLayout_plus-L",
