@@ -4,8 +4,8 @@
 
 <div align="center">
 
-[![Stars](https://img.shields.io/github/stars/AdemBoukhris457/Doctra?style=social)](https://github.com/AdemBoukhris457/Doctra)
-[![Forks](https://img.shields.io/github/forks/AdemBoukhris457/Doctra?style=social)](https://github.com/AdemBoukhris457/Doctra/network/members)
+[![GitHub Stars](https://img.shields.io/github/stars/AdemBoukhris457/Doctra?style=social)](https://github.com/AdemBoukhris457/Doctra/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/AdemBoukhris457/Doctra?style=social)](https://github.com/AdemBoukhris457/Doctra/forks)
 
 </div>
 
