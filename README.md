@@ -24,6 +24,7 @@
 ## 🛠️ Installation
 
 ```bash
+git clone https://github.com/AdemBoukhris457/Doctra.git
 pip install -r requirements.txt
 ```
 
