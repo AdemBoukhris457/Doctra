@@ -350,25 +350,11 @@ parser.display_pages_with_boxes("document.pdf")
 
 ### Core Dependencies
 - **PaddleOCR**: Document layout detection
+- **Outlines**: Structured output generation
 - **Tesseract**: OCR text extraction
 - **Pillow**: Image processing
 - **OpenCV**: Computer vision operations
 - **Pandas**: Data manipulation
 - **OpenPyXL**: Excel file generation
-
-### Optional Dependencies
 - **Google Generative AI**: For Gemini VLM integration
 - **OpenAI**: For GPT-4 VLM integration
-
-### System Requirements
-- Python 3.8+
-- Tesseract OCR engine installed on system
-- CUDA support (optional, for GPU acceleration)
-
-## 🤝 Contributing
-
-We welcome contributions! Please feel free to submit issues, feature requests, or pull requests.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
