@@ -23,9 +23,18 @@
 
 ## 🛠️ Installation
 
+### From PyPI (recommended)
+
+```bash
+pip install doctra
+```
+
+### From source
+
 ```bash
 git clone https://github.com/AdemBoukhris457/Doctra.git
-pip install -r requirements.txt
+cd Doctra
+pip install .
 ```
 
 ## ⚡ Quick Start
