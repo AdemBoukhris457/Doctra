@@ -2,12 +2,10 @@
 
 ![Doctra Logo](![Doctra Logo](https://raw.githubusercontent.com/AdemBoukhris457/Doctra/main/assets/Doctra_Logo.png))
 
-<div align="center">
-
 [![stars](https://img.shields.io/github/stars/AdemBoukhris457/Doctra.svg)](https://github.com/AdemBoukhris457/Doctra)
 [![forks](https://img.shields.io/github/forks/AdemBoukhris457/Doctra.svg)](https://github.com/AdemBoukhris457/Doctra)
 [![PyPI version](https://img.shields.io/pypi/v/doctra)](https://pypi.org/project/doctra/)
-</div>
+
 
 ## 📋 Table of Contents
 
