@@ -1,12 +1,12 @@
 # 🚀 **Doctra - Document Parser Library** 📑🔎
 
-![Doctra_Logo.png](assets/Doctra_Logo.png)
+![Doctra Logo](![Doctra Logo](https://raw.githubusercontent.com/AdemBoukhris457/Doctra/main/assets/Doctra_Logo.png))
 
 <div align="center">
 
-[![GitHub Stars](https://img.shields.io/github/stars/AdemBoukhris457/Doctra?style=social)](https://github.com/AdemBoukhris457/Doctra/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/AdemBoukhris457/Doctra?style=social)](https://github.com/AdemBoukhris457/Doctra/forks)
-
+[![stars](https://img.shields.io/github/stars/AdemBoukhris457/Doctra.svg)](https://github.com/AdemBoukhris457/Doctra)
+[![forks](https://img.shields.io/github/forks/AdemBoukhris457/Doctra.svg)](https://github.com/AdemBoukhris457/Doctra)
+[![PyPI version](https://img.shields.io/pypi/v/doctra)](https://pypi.org/project/doctra/)
 </div>
 
 ## 📋 Table of Contents
