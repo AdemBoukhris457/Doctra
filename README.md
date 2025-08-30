@@ -73,7 +73,7 @@ parser = StructuredPDFParser()
 # Parser with VLM for structured data extraction
 parser = StructuredPDFParser(
     use_vlm=True,
-    vlm_provider="openai",  # or "gemini" or "anthropic"
+    vlm_provider="openai",  # or "gemini" or "anthropic" or "openrouter"
     vlm_api_key="your_api_key_here"
 )
 

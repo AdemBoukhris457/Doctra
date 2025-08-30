@@ -20,7 +20,7 @@ def make_model(
     """
     Build a callable Outlines model for VLM processing.
     
-    Creates an Outlines model instance configured for Gemini, OpenAI, or Anthropic
+    Creates an Outlines model instance configured for Gemini, OpenAI, Anthropic, or OpenRouter
     providers. Only one backend is active at a time, with Gemini as the default.
 
     :param vlm_provider: VLM provider to use ("gemini", "openai", or "anthropic", default: "gemini")
@@ -39,6 +39,8 @@ def make_model(
             vlm_model = "gpt-5"
         elif vlm_provider == "anthropic":
             vlm_model = "claude-opus-4-1"
+        elif vlm_provider == "openrouter":
+            vlm_model = "x-ai/grok-4"
 
     if vlm_provider == "gemini":
         if not api_key:
@@ -66,6 +68,19 @@ def make_model(
         return outlines.from_anthropic(
             client,
             vlm_model,
+        )
+
+    if vlm_provider == "openrouter":
+        if not api_key:
+            raise ValueError("OpenRouter provider requires api_key to be passed to make_model(...).")
+        # Create the Anthropic client and model (exactly like your snippet)
+        client = openai.OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=api_key,
+        )
+        return outlines.from_openai(
+            client,
+            vlm_model
         )
 
     raise ValueError(f"Unsupported provider: {vlm_provider}. Use 'gemini', 'openai', or 'anthropic'.")

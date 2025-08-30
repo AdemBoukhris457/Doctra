@@ -37,7 +37,7 @@ class VLMStructuredExtractor:
         Sets up the VLM model and debug settings for structured data extraction
         from images.
 
-        :param vlm_provider: VLM provider to use ("gemini", "openai", or "anthropic", default: "gemini")
+        :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
         :param vlm_model: Model name to use (defaults to provider-specific defaults)
         :param api_key: API key for the VLM provider (required for all providers)
         :param debug: Whether to enable debug output for error handling (default: True)
