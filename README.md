@@ -88,7 +88,7 @@ parser = StructuredPDFParser(
     # VLM Settings
     use_vlm=True,
     vlm_provider="openai",
-    vlm_model="gpt-4o",
+    vlm_model="gpt-5",
     vlm_api_key="your_api_key",
     
     # Layout Detection Settings
@@ -150,7 +150,7 @@ parser = ChartTablePDFParser(
     # VLM Settings
     use_vlm=True,
     vlm_provider="openai",
-    vlm_model="gpt-4o",
+    vlm_model="gpt-5",
     vlm_api_key="your_api_key",
     
     # Layout Detection Settings
@@ -289,7 +289,7 @@ parser = StructuredPDFParser(
     use_vlm=True,
     vlm_provider="openai",
     vlm_api_key="your_openai_api_key",
-    vlm__model="gpt-4o",
+    vlm__model="gpt-5",
     layout_model_name="PP-DocLayout_plus-L",
     dpi=300,  # Higher DPI for better quality
     min_score=0.5,  # Higher confidence threshold
@@ -367,4 +367,4 @@ parser.display_pages_with_boxes("document.pdf")
 - **Pandas**: Data manipulation
 - **OpenPyXL**: Excel file generation
 - **Google Generative AI**: For Gemini VLM integration
-- **OpenAI**: For GPT-4 VLM integration
+- **OpenAI**: For GPT-5 VLM integration

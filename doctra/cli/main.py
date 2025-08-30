@@ -818,8 +818,8 @@ def info():
 
     # VLM providers
     click.echo("\nVLM Providers:")
-    click.echo("  • Gemini (Google) - gemini-1.5-flash-latest, gemini-1.5-pro")
-    click.echo("  • OpenAI - gpt-4o, gpt-4o-mini, gpt-4-vision-preview")
+    click.echo("  • Gemini (Google) - gemini-2.5-pro, gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash")
+    click.echo("  • OpenAI - gpt-5, gpt-5-mini, gpt-4.1, gpt-4.1-mini, gpt-4o")
 
     # Available layout models
     click.echo("\nLayout Detection Models:")
