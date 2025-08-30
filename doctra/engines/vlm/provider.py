@@ -33,9 +33,9 @@ def make_model(
     # Set default models if not provided
     if vlm_model is None:
         if vlm_provider == "gemini":
-            vlm_model = "gemini-1.5-flash-latest"
+            vlm_model = "gemini-2.5-pro"
         elif vlm_provider == "openai":
-            vlm_model = "gpt-4o"
+            vlm_model = "gpt-5"
 
     if vlm_provider == "gemini":
         if not api_key:
