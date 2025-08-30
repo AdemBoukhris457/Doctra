@@ -18,6 +18,9 @@ class VLMStructuredExtractor:
         vlm = VLMStructuredExtractor(vlm_provider="gemini", api_key="YOUR_KEY", debug=True)
         chart = vlm.extract_chart("/abs/path/chart.jpg")
         table = vlm.extract_table("/abs/path/table.jpg")
+        
+        # Or with Anthropic:
+        vlm = VLMStructuredExtractor(vlm_provider="anthropic", api_key="YOUR_KEY", debug=True)
     """
 
     def __init__(
@@ -34,9 +37,9 @@ class VLMStructuredExtractor:
         Sets up the VLM model and debug settings for structured data extraction
         from images.
 
-        :param vlm_provider: VLM provider to use ("gemini" or "openai", default: "gemini")
+        :param vlm_provider: VLM provider to use ("gemini", "openai", or "anthropic", default: "gemini")
         :param vlm_model: Model name to use (defaults to provider-specific defaults)
-        :param api_key: API key for the VLM provider (required for both Gemini and OpenAI)
+        :param api_key: API key for the VLM provider (required for all providers)
         :param debug: Whether to enable debug output for error handling (default: True)
         """
         self.model = make_model(

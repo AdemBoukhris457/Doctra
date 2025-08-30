@@ -50,6 +50,7 @@ setup(
     extras_require={
         "openai": ["openai>=1.0.0"],
         "gemini": ["google-generativeai>=0.3.0"],
+        "anthropic": ["anthropic>=0.40.0"],
         "dev": [
             "pytest>=6.0",
             "pytest-cov>=2.0",

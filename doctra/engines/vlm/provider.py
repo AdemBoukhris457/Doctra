@@ -8,6 +8,7 @@ import outlines
 from pydantic import BaseModel
 from google.genai import Client
 from outlines.inputs import Image
+from anthropic import Anthropic
 # ------------------------------------------------------
 
 def make_model(
@@ -19,12 +20,12 @@ def make_model(
     """
     Build a callable Outlines model for VLM processing.
     
-    Creates an Outlines model instance configured for either Gemini or OpenAI
+    Creates an Outlines model instance configured for Gemini, OpenAI, or Anthropic
     providers. Only one backend is active at a time, with Gemini as the default.
 
-    :param vlm_provider: VLM provider to use ("gemini" or "openai", default: "gemini")
+    :param vlm_provider: VLM provider to use ("gemini", "openai", or "anthropic", default: "gemini")
     :param vlm_model: Model name to use (defaults to provider-specific defaults)
-    :param api_key: API key for the VLM provider (required for both Gemini and OpenAI)
+    :param api_key: API key for the VLM provider (required for all providers)
     :return: Configured Outlines model instance
     :raises ValueError: If provider is unsupported or API key is missing
     """
@@ -36,6 +37,8 @@ def make_model(
             vlm_model = "gemini-2.5-pro"
         elif vlm_provider == "openai":
             vlm_model = "gpt-5"
+        elif vlm_provider == "anthropic":
+            vlm_model = "claude-opus-4-1"
 
     if vlm_provider == "gemini":
         if not api_key:
@@ -55,4 +58,14 @@ def make_model(
             vlm_model,
         )
 
-    raise ValueError(f"Unsupported provider: {vlm_provider}. Use 'gemini' or 'openai'.")
+    if vlm_provider == "anthropic":
+        if not api_key:
+            raise ValueError("Anthropic provider requires api_key to be passed to make_model(...).")
+        # Create the Anthropic client and model (exactly like your snippet)
+        client = Anthropic(api_key=api_key)
+        return outlines.from_anthropic(
+            client,
+            vlm_model,
+        )
+
+    raise ValueError(f"Unsupported provider: {vlm_provider}. Use 'gemini', 'openai', or 'anthropic'.")
