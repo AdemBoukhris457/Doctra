@@ -36,7 +36,7 @@ class ChartTablePDFParser:
     :param extract_charts: Whether to extract charts from the document (default: True)
     :param extract_tables: Whether to extract tables from the document (default: True)
     :param use_vlm: Whether to use VLM for structured data extraction (default: False)
-    :param vlm_provider: VLM provider to use ("gemini" or "openai", default: "gemini")
+    :param vlm_provider: VLM provider to use ("gemini", "openai", or "anthropic", default: "gemini")
     :param vlm_model: Model name to use (defaults to provider-specific defaults)
     :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
     :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
@@ -66,7 +66,7 @@ class ChartTablePDFParser:
         :param extract_charts: Whether to extract charts from the document
         :param extract_tables: Whether to extract tables from the document
         :param use_vlm: Whether to use VLM for structured data extraction
-        :param vlm_provider: VLM provider to use ("gemini" or "openai")
+        :param vlm_provider: VLM provider to use ("gemini", "openai", or "anthropic")
         :param vlm_model: Model name to use (defaults to provider-specific defaults)
         :param vlm_api_key: API key for VLM provider
         :param layout_model_name: Layout detection model name
