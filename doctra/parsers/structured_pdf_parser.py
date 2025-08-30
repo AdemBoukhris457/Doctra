@@ -1,6 +1,7 @@
 from __future__ import annotations
 import os
 import re
+import sys
 from typing import List, Dict, Any
 from contextlib import ExitStack
 from PIL import Image, ImageDraw, ImageFont
@@ -19,6 +20,7 @@ from doctra.exporters.excel_writer import write_structured_excel
 from doctra.utils.structured_utils import to_structured_dict
 from doctra.exporters.markdown_table import render_markdown_table
 from doctra.exporters.markdown_writer import write_markdown
+from doctra.utils.progress import create_beautiful_progress_bar, create_multi_progress_bars, create_notebook_friendly_bar
 
 
 class StructuredPDFParser:
@@ -130,12 +132,25 @@ class StructuredPDFParser:
         figures_desc = "Figures (cropped)"
 
         with ExitStack() as stack:
-            charts_bar = stack.enter_context(
-                tqdm(total=chart_count, desc=charts_desc, leave=True)) if chart_count else None
-            tables_bar = stack.enter_context(
-                tqdm(total=table_count, desc=tables_desc, leave=True)) if table_count else None
-            figures_bar = stack.enter_context(
-                tqdm(total=fig_count, desc=figures_desc, leave=True)) if fig_count else None
+            # Enhanced environment detection
+            is_notebook = "ipykernel" in sys.modules or "jupyter" in sys.modules
+            is_terminal = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
+            
+            # Use appropriate progress bars based on environment
+            if is_notebook:
+                charts_bar = stack.enter_context(
+                    create_notebook_friendly_bar(total=chart_count, desc=charts_desc)) if chart_count else None
+                tables_bar = stack.enter_context(
+                    create_notebook_friendly_bar(total=table_count, desc=tables_desc)) if table_count else None
+                figures_bar = stack.enter_context(
+                    create_notebook_friendly_bar(total=fig_count, desc=figures_desc)) if fig_count else None
+            else:
+                charts_bar = stack.enter_context(
+                    create_beautiful_progress_bar(total=chart_count, desc=charts_desc, leave=True)) if chart_count else None
+                tables_bar = stack.enter_context(
+                    create_beautiful_progress_bar(total=table_count, desc=tables_desc, leave=True)) if table_count else None
+                figures_bar = stack.enter_context(
+                    create_beautiful_progress_bar(total=fig_count, desc=figures_desc, leave=True)) if fig_count else None
 
             for p in pages:
                 page_num = p.page_index
