@@ -14,6 +14,7 @@ from paddleocr import LayoutDetection  # pip install paddleocr>=2.7.0.3
 from doctra.utils.pdf_io import render_pdf_to_images
 from doctra.engines.layout.layout_models import LayoutBox, LayoutPage
 from doctra.utils.quiet import suppress_output
+from doctra.utils.progress import create_loading_bar
 
 
 class PaddleLayoutEngine:
@@ -53,8 +54,8 @@ class PaddleLayoutEngine:
         if self.model is not None:
             return
 
-        # Your own friendly progress line
-        with tqdm(total=1, desc=f'Loading PaddleOCR layout model: "{self.model_name}"', leave=True) as bar:
+        # Beautiful loading progress bar
+        with create_loading_bar(f'Loading PaddleOCR layout model: "{self.model_name}"') as bar:
             # Monkey patch tqdm to disable it completely during model loading
             original_tqdm_init = tqdm.__init__
             original_tqdm_update = tqdm.update

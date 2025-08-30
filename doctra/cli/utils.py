@@ -263,7 +263,7 @@ def create_progress_callback(description: str, total: int):
     """
     Create a progress callback function for use with processing operations.
     
-    Creates a tqdm progress bar and returns a callback function that
+    Creates a beautiful tqdm progress bar and returns a callback function that
     can be used to update the progress during long-running operations.
 
     :param description: Description text for the progress bar
@@ -271,9 +271,18 @@ def create_progress_callback(description: str, total: int):
     :return: Callable progress callback function that takes an integer
              representing the number of completed items
     """
-    from tqdm import tqdm
+    import sys
+    from doctra.utils.progress import create_beautiful_progress_bar, create_notebook_friendly_bar
 
-    pbar = tqdm(total=total, desc=description, leave=True)
+    # Enhanced environment detection
+    is_notebook = "ipykernel" in sys.modules or "jupyter" in sys.modules
+    is_terminal = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
+    
+    # Choose appropriate progress bar based on environment
+    if is_notebook:
+        pbar = create_notebook_friendly_bar(total=total, desc=description)
+    else:
+        pbar = create_beautiful_progress_bar(total=total, desc=description, leave=True)
 
     def callback(completed: int):
         pbar.n = completed

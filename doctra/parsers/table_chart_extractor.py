@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import sys
 from typing import List, Dict, Any
 from contextlib import ExitStack
 from pathlib import Path
@@ -9,6 +10,7 @@ from PIL import Image
 from tqdm import tqdm
 
 from doctra.utils.pdf_io import render_pdf_to_images
+from doctra.utils.progress import create_beautiful_progress_bar, create_multi_progress_bars, create_notebook_friendly_bar
 from doctra.engines.layout.paddle_layout import PaddleLayoutEngine
 from doctra.engines.layout.layout_models import LayoutPage
 
@@ -149,10 +151,21 @@ class ChartTablePDFParser:
         table_counter = 1
 
         with ExitStack() as stack:
-            charts_bar = stack.enter_context(
-                tqdm(total=chart_count, desc=charts_desc, leave=True)) if chart_count else None
-            tables_bar = stack.enter_context(
-                tqdm(total=table_count, desc=tables_desc, leave=True)) if table_count else None
+            # Enhanced environment detection
+            is_notebook = "ipykernel" in sys.modules or "jupyter" in sys.modules
+            is_terminal = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
+            
+            # Use appropriate progress bars based on environment
+            if is_notebook:
+                charts_bar = stack.enter_context(
+                    create_notebook_friendly_bar(total=chart_count, desc=charts_desc)) if chart_count else None
+                tables_bar = stack.enter_context(
+                    create_notebook_friendly_bar(total=table_count, desc=tables_desc)) if table_count else None
+            else:
+                charts_bar = stack.enter_context(
+                    create_beautiful_progress_bar(total=chart_count, desc=charts_desc, leave=True)) if chart_count else None
+                tables_bar = stack.enter_context(
+                    create_beautiful_progress_bar(total=table_count, desc=tables_desc, leave=True)) if table_count else None
 
             for p in pages:
                 page_num = p.page_index
