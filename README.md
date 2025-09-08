@@ -368,3 +368,40 @@ parser.display_pages_with_boxes("document.pdf")
 - **OpenPyXL**: Excel file generation
 - **Google Generative AI**: For Gemini VLM integration
 - **OpenAI**: For GPT-5 VLM integration
+
+## 🖥️ Web Interface (Gradio)
+
+You can try Doctra in a simple web UI powered by Gradio.
+
+### Run locally
+
+```bash
+pip install -U gradio
+python gradio_app.py
+```
+
+Then open the printed URL (default `http://127.0.0.1:7860`).
+
+Notes:
+- If using VLM, set the API key field in the UI or export `VLM_API_KEY`.
+- Outputs are saved under `outputs/<pdf_stem>/` and previewed in the UI.
+
+### Deploy on Hugging Face Spaces
+
+1) Create a new Space (type: Gradio, SDK: Python).
+
+2) Add these files to the Space repo:
+   - Your package code (or install from PyPI).
+   - `gradio_app.py` (entry point).
+   - `requirements.txt` with at least:
+
+```text
+doctra
+gradio
+```
+
+3) Set a secret named `VLM_API_KEY` if you want VLM features.
+
+4) In Space settings, set `python gradio_app.py` as the run command (or rely on auto-detect).
+
+The Space will build and expose the same interface for uploads and processing.
