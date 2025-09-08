@@ -4,17 +4,15 @@ import os
 import sys
 import json
 import tempfile
-import logging
 from dataclasses import dataclass, asdict
 from typing import Dict, List, Any, Tuple, Optional
-from tqdm import tqdm
 
 from PIL import Image
 from paddleocr import LayoutDetection  # pip install paddleocr>=2.7.0.3
 from doctra.utils.pdf_io import render_pdf_to_images
 from doctra.engines.layout.layout_models import LayoutBox, LayoutPage
-from doctra.utils.quiet import suppress_output
 from doctra.utils.progress import create_loading_bar
+import warnings
 
 
 class PaddleLayoutEngine:
@@ -40,7 +38,7 @@ class PaddleLayoutEngine:
                           (default: "PP-DocLayout_plus-L")
         """
         self.model_name = model_name
-        self.model: Optional[LayoutDetection] = None
+        self.model: Optional["LayoutDetection"] = None
 
     def _ensure_model(self) -> None:
         """
@@ -54,80 +52,16 @@ class PaddleLayoutEngine:
         if self.model is not None:
             return
 
-        # Beautiful loading progress bar
+        # Beautiful loading progress bar (no logging suppression)
         with create_loading_bar(f'Loading PaddleOCR layout model: "{self.model_name}"') as bar:
-            # Monkey patch tqdm to disable it completely during model loading
-            original_tqdm_init = tqdm.__init__
-            original_tqdm_update = tqdm.update
-            original_tqdm_close = tqdm.close
-
-            def silent_init(self, *args, **kwargs):
-                # Make all tqdm instances silent
-                kwargs['disable'] = True
-                original_tqdm_init(self, *args, **kwargs)
-
-            def silent_update(self, *args, **kwargs):
-                pass  # Do nothing
-
-            def silent_close(self, *args, **kwargs):
-                pass  # Do nothing
-
-            # More comprehensive output suppression
-            # Save original logging levels
-            original_levels = {}
-            loggers_to_silence = ['ppocr', 'paddle', 'PIL', 'urllib3', 'requests']
-            for logger_name in loggers_to_silence:
-                logger = logging.getLogger(logger_name)
-                original_levels[logger_name] = logger.level
-                logger.setLevel(logging.CRITICAL)
-
-            # Also try to silence the root logger temporarily
-            root_logger = logging.getLogger()
-            original_root_level = root_logger.level
-            root_logger.setLevel(logging.CRITICAL)
-
-            # Set environment variables that might help silence PaddlePaddle
-            old_env = {}
-            env_vars_to_set = {
-                'FLAGS_print_model_stats': '0',
-                'FLAGS_enable_parallel_graph': '0',
-                'GLOG_v': '4',  # Only show fatal errors
-                'GLOG_logtostderr': '0',
-                'GLOG_alsologtostderr': '0'
-            }
-
-            for key, value in env_vars_to_set.items():
-                old_env[key] = os.environ.get(key)
-                os.environ[key] = value
-
-            try:
-                # Monkey patch tqdm
-                tqdm.__init__ = silent_init
-                tqdm.update = silent_update
-                tqdm.close = silent_close
-
-                # Silence Paddle's download/init noise with enhanced suppression
-                with suppress_output():
-                    self.model = LayoutDetection(model_name=self.model_name)
-
-            finally:
-                # Restore tqdm methods
-                tqdm.__init__ = original_tqdm_init
-                tqdm.update = original_tqdm_update
-                tqdm.close = original_tqdm_close
-
-                # Restore logging levels
-                for logger_name, level in original_levels.items():
-                    logging.getLogger(logger_name).setLevel(level)
-                root_logger.setLevel(original_root_level)
-
-                # Restore environment variables
-                for key, old_value in old_env.items():
-                    if old_value is None:
-                        os.environ.pop(key, None)
-                    else:
-                        os.environ[key] = old_value
-
+            # Suppress specific paddle extension warning: "No ccache found"
+            with warnings.catch_warnings():
+                warnings.filterwarnings(
+                    "ignore",
+                    message=r"No ccache found.*",
+                    category=UserWarning,
+                )
+                self.model = LayoutDetection(model_name=self.model_name)
             bar.update(1)
 
     def predict_pdf(
