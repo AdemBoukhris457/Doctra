@@ -173,6 +173,7 @@ class StructuredPDFParser:
                                 # Try structured → Markdown table; fallback to image if it fails
                                 wrote_table = False
                                 try:
+                                    print(f"[PARSER DEBUG] Processing chart on page {page_num}: {abs_img_path}")
                                     chart = self.vlm.extract_chart(abs_img_path)
                                     item = to_structured_dict(chart)
                                     if item:
@@ -182,10 +183,15 @@ class StructuredPDFParser:
                                                                   title=item.get("title"))
                                         )
                                         wrote_table = True
-                                except Exception:
+                                        print(f"[PARSER DEBUG] Successfully converted chart to table on page {page_num}")
+                                    else:
+                                        print(f"[PARSER DEBUG] Chart processing returned empty item on page {page_num}")
+                                except Exception as e:
+                                    print(f"[PARSER DEBUG] Chart VLM processing failed on page {page_num}: {e}")
                                     pass
                                 if not wrote_table:
                                     md_lines.append(f"![Chart — page {page_num}]({rel})\n")
+                                    print(f"[PARSER DEBUG] Using fallback image for chart on page {page_num}")
                             else:
                                 md_lines.append(f"![Chart — page {page_num}]({rel})\n")
                             if charts_bar: charts_bar.update(1)
@@ -195,6 +201,7 @@ class StructuredPDFParser:
                                 # Try structured → Markdown table; fallback to image if it fails
                                 wrote_table = False
                                 try:
+                                    print(f"[PARSER DEBUG] Processing table on page {page_num}: {abs_img_path}")
                                     table = self.vlm.extract_table(abs_img_path)
                                     item = to_structured_dict(table)
                                     if item:
@@ -204,10 +211,15 @@ class StructuredPDFParser:
                                                                   title=item.get("title"))
                                         )
                                         wrote_table = True
-                                except Exception:
+                                        print(f"[PARSER DEBUG] Successfully converted table on page {page_num}")
+                                    else:
+                                        print(f"[PARSER DEBUG] Table processing returned empty item on page {page_num}")
+                                except Exception as e:
+                                    print(f"[PARSER DEBUG] Table VLM processing failed on page {page_num}: {e}")
                                     pass
                                 if not wrote_table:
                                     md_lines.append(f"![Table — page {page_num}]({rel})\n")
+                                    print(f"[PARSER DEBUG] Using fallback image for table on page {page_num}")
                             else:
                                 md_lines.append(f"![Table — page {page_num}]({rel})\n")
                             if tables_bar: tables_bar.update(1)
