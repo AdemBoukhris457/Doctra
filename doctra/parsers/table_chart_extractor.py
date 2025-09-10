@@ -23,6 +23,7 @@ from doctra.exporters.excel_writer import write_structured_excel
 from doctra.utils.structured_utils import to_structured_dict
 from doctra.exporters.markdown_table import render_markdown_table
 from doctra.exporters.markdown_writer import write_markdown
+import json
 
 
 class ChartTablePDFParser:
@@ -142,6 +143,7 @@ class ChartTablePDFParser:
         if self.use_vlm:
             md_lines: List[str] = ["# Extracted Charts and Tables\n"]
             structured_items: List[Dict[str, Any]] = []
+            vlm_items: List[Dict[str, Any]] = []
 
         # Progress bar descriptions
         charts_desc = "Charts (VLM → table)" if self.use_vlm else "Charts (cropped)"
@@ -197,6 +199,14 @@ class ChartTablePDFParser:
                                 structured_item = to_structured_dict(extracted_chart)
                                 if structured_item:
                                     structured_items.append(structured_item)
+                                    vlm_items.append({
+                                        "kind": "chart",
+                                        "page": page_num,
+                                        "image_rel_path": rel_path,
+                                        "title": structured_item.get("title"),
+                                        "headers": structured_item.get("headers"),
+                                        "rows": structured_item.get("rows"),
+                                    })
                                     md_lines.append(
                                         render_markdown_table(
                                             structured_item.get("headers"),
@@ -235,6 +245,14 @@ class ChartTablePDFParser:
                                 structured_item = to_structured_dict(extracted_table)
                                 if structured_item:
                                     structured_items.append(structured_item)
+                                    vlm_items.append({
+                                        "kind": "table",
+                                        "page": page_num,
+                                        "image_rel_path": rel_path,
+                                        "title": structured_item.get("title"),
+                                        "headers": structured_item.get("headers"),
+                                        "rows": structured_item.get("rows"),
+                                    })
                                     md_lines.append(
                                         render_markdown_table(
                                             structured_item.get("headers"),
@@ -266,8 +284,26 @@ class ChartTablePDFParser:
 
             # Write Excel file if we have structured data
             if structured_items:
-                excel_path = os.path.join(out_dir, "charts.xlsx")
+                # Determine Excel filename based on extraction target
+                if self.extract_charts and self.extract_tables:
+                    excel_filename = "parsed_tables_charts.xlsx"
+                elif self.extract_charts:
+                    excel_filename = "parsed_charts.xlsx"
+                elif self.extract_tables:
+                    excel_filename = "parsed_tables.xlsx"
+                else:
+                    excel_filename = "parsed_data.xlsx"  # fallback
+                
+                print(f"DEBUG: extract_charts={self.extract_charts}, extract_tables={self.extract_tables}")
+                print(f"DEBUG: Creating Excel file: {excel_filename}")
+                
+                excel_path = os.path.join(out_dir, excel_filename)
                 write_structured_excel(excel_path, structured_items)
+
+            # Write VLM items mapping for UI linkage
+            if 'vlm_items' in locals() and vlm_items:
+                with open(os.path.join(out_dir, "vlm_items.json"), 'w', encoding='utf-8') as jf:
+                    json.dump(vlm_items, jf, ensure_ascii=False, indent=2)
 
         # Print results
         extraction_types = []

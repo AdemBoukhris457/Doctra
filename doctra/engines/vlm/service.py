@@ -64,18 +64,33 @@ class VLMStructuredExtractor:
         :raises Exception: If image processing or VLM call fails
         """
         try:
+            if self.debug:
+                print(f"[VLM DEBUG] Processing image: {image_path}")
+                print(f"[VLM DEBUG] Image exists: {os.path.exists(image_path)}")
+                if os.path.exists(image_path):
+                    print(f"[VLM DEBUG] Image size: {os.path.getsize(image_path)} bytes")
+            
             # Normalize path and verify readability
             # (get_image_from_local already absolutizes & raises if missing)
             img = get_image_from_local(image_path)
             if img.mode != "RGB":
                 img = img.convert("RGB")
 
+            if self.debug:
+                print(f"[VLM DEBUG] Image loaded successfully, size: {img.size}, mode: {img.mode}")
+
             prompt = [prompt_text, Image(img)]
-            return self.model(prompt, schema)
+            result = self.model(prompt, schema)
+            
+            if self.debug:
+                print(f"[VLM DEBUG] VLM processing completed successfully for: {image_path}")
+            
+            return result
         except Exception as e:
             if self.debug:
                 import traceback
                 print(f"[VLM ERROR] while processing: {image_path}")
+                print(f"[VLM ERROR] Image path exists: {os.path.exists(image_path) if image_path else 'N/A'}")
                 traceback.print_exc()
                 print(f"[VLM ERROR] type={type(e).__name__} msg={e}")
             # Re-raise so caller can handle/log too
