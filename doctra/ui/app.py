@@ -11,62 +11,69 @@ from doctra.parsers.structured_pdf_parser import StructuredPDFParser
 from doctra.parsers.table_chart_extractor import ChartTablePDFParser
 
 
-def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None, zip_filename: Optional[str] = None) -> Tuple[List[tuple[str, str]], List[str], str]:
+def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None, zip_filename: Optional[str] = None, is_structured_parsing: bool = False) -> Tuple[List[tuple[str, str]], List[str], str]:
     gallery_items: List[tuple[str, str]] = []
     file_paths: List[str] = []
 
     if out_dir.exists():
-        # Always add main output files (HTML, Markdown, etc.) regardless of allowed_kinds
-        main_files = [
-            "result.html",
-            "result.md", 
-            "tables.html",
-            "tables.xlsx"
-        ]
-        
-        for main_file in main_files:
-            file_path = out_dir / main_file
-            if file_path.exists():
-                file_paths.append(str(file_path))
-        
-        # Add image files based on allowed_kinds or all images if not specified
-        if allowed_kinds:
-            for kind in allowed_kinds:
-                # ChartTablePDFParser saves directly to charts/ and tables/ directories
-                p = out_dir / kind
-                if p.exists():
-                    for img in sorted(p.glob("*.png")):  # ChartTablePDFParser saves as .png
-                        file_paths.append(str(img))
-                
-                # Also check images/ subdirectories (for StructuredPDFParser)
-                images_dir = out_dir / "images" / kind
-                if images_dir.exists():
-                    for img in sorted(images_dir.glob("*.jpg")):  # StructuredPDFParser saves as .jpg
-                        file_paths.append(str(img))
+        if is_structured_parsing:
+            # For structured parsing, show ALL files in the directory
+            for file_path in sorted(out_dir.rglob("*")):
+                if file_path.is_file():
+                    file_paths.append(str(file_path))
         else:
-            # Fallback: look in both direct directories and images/ subdirectories
-            for p in (out_dir / "charts").glob("*.png"):
-                file_paths.append(str(p))
-            for p in (out_dir / "tables").glob("*.png"):
-                file_paths.append(str(p))
-            for p in (out_dir / "images").rglob("*.jpg"):
-                file_paths.append(str(p))
-
-        # Add Excel files based on extraction target (for structured parsing)
-        if allowed_kinds:
-            if "charts" in allowed_kinds and "tables" in allowed_kinds:
-                excel_files = ["parsed_tables_charts.xlsx"]
-            elif "charts" in allowed_kinds:
-                excel_files = ["parsed_charts.xlsx"]
-            elif "tables" in allowed_kinds:
-                excel_files = ["parsed_tables.xlsx"]
-            else:
-                excel_files = []
+            # For full parsing, use the original logic
+            # Always add main output files (HTML, Markdown, etc.) regardless of allowed_kinds
+            main_files = [
+                "result.html",
+                "result.md", 
+                "tables.html",
+                "tables.xlsx"
+            ]
             
-            for excel_file in excel_files:
-                excel_path = out_dir / excel_file
-                if excel_path.exists():
-                    file_paths.append(str(excel_path))
+            for main_file in main_files:
+                file_path = out_dir / main_file
+                if file_path.exists():
+                    file_paths.append(str(file_path))
+            
+            # Add image files based on allowed_kinds or all images if not specified
+            if allowed_kinds:
+                for kind in allowed_kinds:
+                    # ChartTablePDFParser saves directly to charts/ and tables/ directories
+                    p = out_dir / kind
+                    if p.exists():
+                        for img in sorted(p.glob("*.png")):  # ChartTablePDFParser saves as .png
+                            file_paths.append(str(img))
+                    
+                    # Also check images/ subdirectories (for StructuredPDFParser)
+                    images_dir = out_dir / "images" / kind
+                    if images_dir.exists():
+                        for img in sorted(images_dir.glob("*.jpg")):  # StructuredPDFParser saves as .jpg
+                            file_paths.append(str(img))
+            else:
+                # Fallback: look in both direct directories and images/ subdirectories
+                for p in (out_dir / "charts").glob("*.png"):
+                    file_paths.append(str(p))
+                for p in (out_dir / "tables").glob("*.png"):
+                    file_paths.append(str(p))
+                for p in (out_dir / "images").rglob("*.jpg"):
+                    file_paths.append(str(p))
+
+            # Add Excel files based on extraction target (for structured parsing)
+            if allowed_kinds:
+                if "charts" in allowed_kinds and "tables" in allowed_kinds:
+                    excel_files = ["parsed_tables_charts.xlsx"]
+                elif "charts" in allowed_kinds:
+                    excel_files = ["parsed_charts.xlsx"]
+                elif "tables" in allowed_kinds:
+                    excel_files = ["parsed_tables.xlsx"]
+                else:
+                    excel_files = []
+                
+                for excel_file in excel_files:
+                    excel_path = out_dir / excel_file
+                    if excel_path.exists():
+                        file_paths.append(str(excel_path))
 
     kinds = allowed_kinds if allowed_kinds else ["tables", "charts", "figures"]
     for sub in kinds:
@@ -264,7 +271,7 @@ def run_full_parse(
         except Exception:
             md_preview = None
 
-    gallery_items, file_paths, zip_path = _gather_outputs(out_dir, zip_filename=original_filename)
+    gallery_items, file_paths, zip_path = _gather_outputs(out_dir, zip_filename=original_filename, is_structured_parsing=False)
     return (f"Completed. Results in: {out_dir}", md_preview, gallery_items, file_paths, zip_path)
 
 
@@ -334,7 +341,7 @@ def run_extract(
     elif target == "both":
         allowed_kinds = ["tables", "charts"]
 
-    gallery_items, file_paths, zip_path = _gather_outputs(out_dir, allowed_kinds, zip_filename=original_filename)
+    gallery_items, file_paths, zip_path = _gather_outputs(out_dir, allowed_kinds, zip_filename=original_filename, is_structured_parsing=True)
 
     # Build tables HTML preview from Excel data (when VLM enabled)
     tables_html = ""
