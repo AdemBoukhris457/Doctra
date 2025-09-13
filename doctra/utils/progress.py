@@ -354,10 +354,11 @@ def create_notebook_friendly_bar(
     **kwargs
 ) -> tqdm:
     """
-    Create a notebook-friendly progress bar with minimal formatting.
+    Create a notebook-friendly progress bar with consistent sizing and static display.
     
     This function creates progress bars specifically optimized for Jupyter notebooks
-    to avoid display issues and ANSI code problems.
+    to avoid display issues and ANSI code problems while maintaining consistency
+    with the main progress bar styling.
     
     :param total: Total number of items to process
     :param desc: Description text for the progress bar
@@ -384,24 +385,52 @@ def create_notebook_friendly_bar(
         if prefix:
             desc = f"{prefix} {desc}"
     
-    # Simple format for notebooks
-    bar_format = "{desc}: {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt}"
+    # Use same format as main progress bar for consistency
+    bar_format = "{desc}: {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"
+    
+    # Color schemes based on operation type (same as main progress bar)
+    color_schemes = {
+        "loading": {"colour": "cyan", "ncols": 100},
+        "charts": {"colour": "green", "ncols": 100},
+        "tables": {"colour": "blue", "ncols": 100},
+        "figures": {"colour": "magenta", "ncols": 100},
+        "ocr": {"colour": "yellow", "ncols": 100},
+        "vlm": {"colour": "red", "ncols": 100},
+        "processing": {"colour": "white", "ncols": 100},
+    }
+    
+    # Determine color scheme based on description
+    if "loading" in desc_lower or "model" in desc_lower:
+        color_scheme = color_schemes["loading"]
+    elif "chart" in desc_lower:
+        color_scheme = color_schemes["charts"]
+    elif "table" in desc_lower:
+        color_scheme = color_schemes["tables"]
+    elif "figure" in desc_lower:
+        color_scheme = color_schemes["figures"]
+    elif "ocr" in desc_lower:
+        color_scheme = color_schemes["ocr"]
+    elif "vlm" in desc_lower:
+        color_scheme = color_schemes["vlm"]
+    else:
+        color_scheme = color_schemes["processing"]
     
     tqdm_config = {
         "total": total,
         "desc": desc,
         "leave": True,
         "bar_format": bar_format,
-        "ncols": _PROGRESS_CONFIG.ncols_env or 80,
+        "ncols": _PROGRESS_CONFIG.ncols_env or color_scheme["ncols"],  # Use same width as main progress bar
         "ascii": kwargs.get("ascii", False),
-        "dynamic_ncols": False,  # Fixed width for notebooks
-        "smoothing": 0.1,  # Faster updates
-        "mininterval": 0.05,
-        "maxinterval": 0.5,
+        "dynamic_ncols": True,  # Enable responsive width like main progress bar
+        "smoothing": 0.3,  # Use same smoothing as main progress bar
+        "mininterval": 0.1,  # Use same intervals as main progress bar
+        "maxinterval": 1.0,
         **kwargs
     }
     
-    return tqdm_auto(**tqdm_config)
+    # Use regular tqdm instead of tqdm_auto to avoid interactive widgets
+    return tqdm(**tqdm_config)
 
 
 def progress_for(iterable: Iterable[Any], desc: str, total: Optional[int] = None, leave: bool = True, **kwargs) -> Iterator[Any]:
