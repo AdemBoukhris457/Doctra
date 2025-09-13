@@ -401,7 +401,21 @@ def create_notebook_friendly_bar(
         **kwargs
     }
     
-    return tqdm_auto(**tqdm_config)
+    # Use same approach as main progress bar for consistency
+    is_notebook, is_tty, is_windows = _detect_environment()
+    if is_notebook:
+        tqdm_config.pop("colour", None)
+        try:
+            return tqdm_auto(**tqdm_config)
+        except Exception:
+            tqdm_config["ascii"] = True
+            return tqdm_auto(**tqdm_config)
+    else:
+        try:
+            return tqdm(**tqdm_config)
+        except Exception:
+            tqdm_config["ascii"] = True
+            return tqdm(**tqdm_config)
 
 
 def progress_for(iterable: Iterable[Any], desc: str, total: Optional[int] = None, leave: bool = True, **kwargs) -> Iterator[Any]:
