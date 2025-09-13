@@ -264,7 +264,7 @@ def run_full_parse(
             md_preview = None
 
     gallery_items, file_paths, zip_path = _gather_outputs(out_dir, zip_filename=original_filename, is_structured_parsing=False)
-    return (f"Completed. Results in: {out_dir}", md_preview, gallery_items, file_paths, zip_path)
+    return (f"✅ Parsing completed successfully!\n📁 Output directory: {out_dir}", md_preview, gallery_items, file_paths, zip_path)
 
 
 def run_extract(
@@ -386,7 +386,7 @@ def run_extract(
             print(f"Error building tables HTML: <Unicode encoding error>")
         tables_html = ""
 
-    return (f"Completed. Results in: {out_dir}", tables_html, gallery_items, file_paths, zip_path)
+    return (f"✅ Parsing completed successfully!\n📁 Output directory: {out_dir}", tables_html, gallery_items, file_paths, zip_path)
 
 
 THEME = gr.themes.Soft(primary_hue="indigo", neutral_hue="slate")
@@ -885,8 +885,8 @@ def build_demo() -> gr.Blocks:
                 if not status_text:
                     return ""
                 try:
-                    if "Results in:" in status_text:
-                        return status_text.split("Results in:", 1)[1].strip()
+                    if "Output directory:" in status_text:
+                        return status_text.split("Output directory:", 1)[1].strip()
                 except Exception:
                     pass
                 return ""

@@ -229,14 +229,9 @@ class StructuredPDFParser:
             html_structured_path = os.path.join(out_dir, "tables.html")
             write_structured_html(html_structured_path, structured_items)
 
-        # Print completion message with all generated files
-        files_info = f"- Markdown: {md_path}\n- HTML:     {html_path}"
-        if excel_path:
-            files_info += f"\n- Excel:    {excel_path}"
-        if html_structured_path:
-            files_info += f"\n- HTML Tables: {html_structured_path}"
-        
-        print(f"Parsing completed successfully.\n{files_info}")
+        # Print completion message with output directory
+        print(f"✅ Parsing completed successfully!")
+        print(f"📁 Output directory: {out_dir}")
 
     def display_pages_with_boxes(self, pdf_path: str, num_pages: int = 3, cols: int = 2,
                                  page_width: int = 800, spacing: int = 40, save_path: str = None) -> None:

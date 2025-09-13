@@ -315,3 +315,7 @@ class ChartTablePDFParser:
             extraction_types.append("charts")
         if self.extract_tables:
             extraction_types.append("tables")
+        
+        # Print completion message with output directory
+        print(f"✅ Parsing completed successfully!")
+        print(f"📁 Output directory: {out_dir}")
