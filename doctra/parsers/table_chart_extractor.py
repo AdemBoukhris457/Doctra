@@ -23,6 +23,7 @@ from doctra.exporters.excel_writer import write_structured_excel
 from doctra.utils.structured_utils import to_structured_dict
 from doctra.exporters.markdown_table import render_markdown_table
 from doctra.exporters.markdown_writer import write_markdown
+from doctra.exporters.html_writer import write_structured_html
 import json
 
 
@@ -106,9 +107,9 @@ class ChartTablePDFParser:
         :param output_base_dir: Base directory for output files (default: "outputs")
         :return: None
         """
-        # Create output directory structure: outputs/structured_doc/<filename>/
+        # Create output directory structure: outputs/<filename>/structured_parsing/
         pdf_name = Path(pdf_path).stem
-        out_dir = os.path.join(output_base_dir, pdf_name)
+        out_dir = os.path.join(output_base_dir, pdf_name, "structured_parsing")
         os.makedirs(out_dir, exist_ok=True)
 
         # Create subdirectories based on what we're extracting
@@ -294,11 +295,14 @@ class ChartTablePDFParser:
                 else:
                     excel_filename = "parsed_data.xlsx"  # fallback
                 
-                print(f"DEBUG: extract_charts={self.extract_charts}, extract_tables={self.extract_tables}")
-                print(f"DEBUG: Creating Excel file: {excel_filename}")
                 
                 excel_path = os.path.join(out_dir, excel_filename)
                 write_structured_excel(excel_path, structured_items)
+                
+                # Also create HTML version
+                html_filename = excel_filename.replace('.xlsx', '.html')
+                html_path = os.path.join(out_dir, html_filename)
+                write_structured_html(html_path, structured_items)
 
             # Write VLM items mapping for UI linkage
             if 'vlm_items' in locals() and vlm_items:
@@ -311,22 +315,7 @@ class ChartTablePDFParser:
             extraction_types.append("charts")
         if self.extract_tables:
             extraction_types.append("tables")
-
-        print(f"{' and '.join(extraction_types).title()} extraction completed successfully.")
-        print(f"- Output directory: {out_dir}")
-
-        if charts_dir and self.extract_charts:
-            print(f"- Charts directory: {charts_dir}")
-            print(f"- Charts extracted: {chart_counter - 1}")
-
-        if tables_dir and self.extract_tables:
-            print(f"- Tables directory: {tables_dir}")
-            print(f"- Tables extracted: {table_counter - 1}")
-
-        if md_path:
-            print(f"- Markdown file: {md_path}")
-        if excel_path:
-            print(f"- Excel file: {excel_path}")
-
-        if not self.use_vlm:
-            print("- Note: VLM disabled - only cropped images saved")
+        
+        # Print completion message with output directory
+        print(f"✅ Parsing completed successfully!")
+        print(f"📁 Output directory: {out_dir}")

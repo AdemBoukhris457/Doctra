@@ -259,6 +259,7 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
         click.echo(f"📄 Processing: {pdf_path.name}")
         parser.parse(str(pdf_path.absolute()))
         click.echo("✅ Full document processing completed successfully!")
+        click.echo(f"📁 Output directory: {output_dir.absolute() if output_dir else 'outputs/'}")
 
     except KeyboardInterrupt:
         click.echo("\n⚠️  Processing interrupted by user", err=True)
@@ -444,6 +445,7 @@ def tables(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
         click.echo(f"📄 Processing: {pdf_path.name}")
         parser.parse(str(pdf_path), str(output_dir))
         click.echo("✅ Table extraction completed successfully!")
+        click.echo(f"📁 Output directory: {output_dir.absolute()}")
 
     except KeyboardInterrupt:
         click.echo("\n⚠️  Extraction interrupted by user", err=True)
@@ -522,6 +524,7 @@ def both(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
         click.echo(f"📄 Processing: {pdf_path.name}")
         parser.parse(str(pdf_path), str(output_dir))
         click.echo("✅ Chart and table extraction completed successfully!")
+        click.echo(f"📁 Output directory: {output_dir.absolute()}")
 
     except KeyboardInterrupt:
         click.echo("\n⚠️  Extraction interrupted by user", err=True)

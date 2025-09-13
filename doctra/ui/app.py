@@ -11,54 +11,94 @@ from doctra.parsers.structured_pdf_parser import StructuredPDFParser
 from doctra.parsers.table_chart_extractor import ChartTablePDFParser
 
 
-def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None) -> Tuple[List[tuple[str, str]], List[str], str]:
+def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None, zip_filename: Optional[str] = None, is_structured_parsing: bool = False) -> Tuple[List[tuple[str, str]], List[str], str]:
     gallery_items: List[tuple[str, str]] = []
     file_paths: List[str] = []
 
-    # Limit downloads to image files under allowed kinds if provided
     if out_dir.exists():
-        if allowed_kinds:
-            for kind in allowed_kinds:
-                # ChartTablePDFParser saves directly to charts/ and tables/ directories
-                p = out_dir / kind
-                if p.exists():
-                    for img in sorted(p.glob("*.png")):  # ChartTablePDFParser saves as .png
-                        file_paths.append(str(img))
+        if is_structured_parsing:
+            # For structured parsing, show ALL files in the directory
+            for file_path in sorted(out_dir.rglob("*")):
+                if file_path.is_file():
+                    file_paths.append(str(file_path))
         else:
-            # Fallback: look in both direct directories and images/ subdirectories
-            for p in (out_dir / "charts").glob("*.png"):
-                file_paths.append(str(p))
-            for p in (out_dir / "tables").glob("*.png"):
-                file_paths.append(str(p))
-            for p in (out_dir / "images").rglob("*.jpg"):
-                file_paths.append(str(p))
-
-        # Add Excel files based on extraction target
-        if allowed_kinds:
-            if "charts" in allowed_kinds and "tables" in allowed_kinds:
-                excel_files = ["parsed_tables_charts.xlsx"]
-            elif "charts" in allowed_kinds:
-                excel_files = ["parsed_charts.xlsx"]
-            elif "tables" in allowed_kinds:
-                excel_files = ["parsed_tables.xlsx"]
-            else:
-                excel_files = []
+            # For full parsing, use the original logic
+            # Always add main output files (HTML, Markdown, etc.) regardless of allowed_kinds
+            main_files = [
+                "result.html",
+                "result.md", 
+                "tables.html",
+                "tables.xlsx"
+            ]
             
-            for excel_file in excel_files:
-                excel_path = out_dir / excel_file
-                if excel_path.exists():
-                    file_paths.append(str(excel_path))
+            for main_file in main_files:
+                file_path = out_dir / main_file
+                if file_path.exists():
+                    file_paths.append(str(file_path))
+            
+            # Add image files based on allowed_kinds or all images if not specified
+            if allowed_kinds:
+                for kind in allowed_kinds:
+                    # ChartTablePDFParser saves directly to charts/ and tables/ directories
+                    p = out_dir / kind
+                    if p.exists():
+                        for img in sorted(p.glob("*.png")):  # ChartTablePDFParser saves as .png
+                            file_paths.append(str(img))
+                    
+                    # Also check images/ subdirectories (for StructuredPDFParser)
+                    images_dir = out_dir / "images" / kind
+                    if images_dir.exists():
+                        for img in sorted(images_dir.glob("*.jpg")):  # StructuredPDFParser saves as .jpg
+                            file_paths.append(str(img))
+            else:
+                # Fallback: look in both direct directories and images/ subdirectories
+                for p in (out_dir / "charts").glob("*.png"):
+                    file_paths.append(str(p))
+                for p in (out_dir / "tables").glob("*.png"):
+                    file_paths.append(str(p))
+                for p in (out_dir / "images").rglob("*.jpg"):
+                    file_paths.append(str(p))
+
+            # Add Excel files based on extraction target (for structured parsing)
+            if allowed_kinds:
+                if "charts" in allowed_kinds and "tables" in allowed_kinds:
+                    excel_files = ["parsed_tables_charts.xlsx"]
+                elif "charts" in allowed_kinds:
+                    excel_files = ["parsed_charts.xlsx"]
+                elif "tables" in allowed_kinds:
+                    excel_files = ["parsed_tables.xlsx"]
+                else:
+                    excel_files = []
+                
+                for excel_file in excel_files:
+                    excel_path = out_dir / excel_file
+                    if excel_path.exists():
+                        file_paths.append(str(excel_path))
 
     kinds = allowed_kinds if allowed_kinds else ["tables", "charts", "figures"]
     for sub in kinds:
-        # ChartTablePDFParser saves directly to charts/ and tables/ directories
+        # Look in both direct directories and images/ subdirectories
+        # First try direct directories (for ChartTablePDFParser)
         p = out_dir / sub
         if p.exists():
             for img in sorted(p.glob("*.png")):  # ChartTablePDFParser saves as .png
                 gallery_items.append((str(img), f"{sub}: {img.name}"))
+        
+        # Also try images/ subdirectories (for StructuredPDFParser)
+        images_dir = out_dir / "images" / sub
+        if images_dir.exists():
+            for img in sorted(images_dir.glob("*.jpg")):  # StructuredPDFParser saves as .jpg
+                gallery_items.append((str(img), f"{sub}: {img.name}"))
 
     tmp_zip_dir = Path(tempfile.mkdtemp(prefix="doctra_zip_"))
-    zip_base = tmp_zip_dir / "doctra_outputs"
+    
+    # Use custom filename if provided, otherwise use default
+    if zip_filename:
+        # Clean the filename to be safe for file systems
+        safe_filename = re.sub(r'[<>:"/\\|?*]', '_', zip_filename)
+        zip_base = tmp_zip_dir / safe_filename
+    else:
+        zip_base = tmp_zip_dir / "doctra_outputs"
     
     # Create a filtered copy of the output directory excluding temp files
     filtered_dir = tmp_zip_dir / "filtered_outputs"
@@ -193,20 +233,26 @@ def run_full_parse(
     )
 
     try:
-        print(f"DEBUG: Starting VLM processing with provider: {vlm_provider}, use_vlm: {use_vlm}")
         parser.parse(str(input_pdf))
-        print("DEBUG: VLM processing completed successfully")
     except Exception as e:
-        print(f"ERROR: VLM processing failed: {e}")
         import traceback
         traceback.print_exc()
-        return (f"❌ VLM processing failed: {str(e)}", None, [], [], "")
+        # Safely encode error message for return value
+        try:
+            error_msg = str(e).encode('utf-8', errors='replace').decode('utf-8')
+            return (f"❌ VLM processing failed: {error_msg}", None, [], [], "")
+        except Exception:
+            return (f"❌ VLM processing failed: <Unicode encoding error>", None, [], [], "")
 
     outputs_root = Path("outputs")
-    out_dir = outputs_root / original_filename
+    out_dir = outputs_root / original_filename / "full_parse"
     if not out_dir.exists():
+        # fallback: search latest created dir under outputs
         candidates = sorted(outputs_root.glob("*/"), key=lambda p: p.stat().st_mtime, reverse=True)
-        out_dir = candidates[0] if candidates else outputs_root
+        if candidates:
+            out_dir = candidates[0] / "full_parse"
+        else:
+            out_dir = outputs_root
 
     md_file = next(out_dir.glob("*.md"), None)
     md_preview = None
@@ -217,8 +263,8 @@ def run_full_parse(
         except Exception:
             md_preview = None
 
-    gallery_items, file_paths, zip_path = _gather_outputs(out_dir)
-    return (f"Completed. Results in: {out_dir}", md_preview, gallery_items, file_paths, zip_path)
+    gallery_items, file_paths, zip_path = _gather_outputs(out_dir, zip_filename=original_filename, is_structured_parsing=False)
+    return (f"✅ Parsing completed successfully!\n📁 Output directory: {out_dir}", md_preview, gallery_items, file_paths, zip_path)
 
 
 def run_extract(
@@ -268,11 +314,14 @@ def run_extract(
     parser.parse(str(input_pdf), str(output_base))
 
     outputs_root = output_base
-    out_dir = outputs_root / original_filename
+    out_dir = outputs_root / original_filename / "structured_parsing"
     if not out_dir.exists():
         if outputs_root.exists():
             candidates = sorted(outputs_root.glob("*/"), key=lambda p: p.stat().st_mtime, reverse=True)
-            out_dir = candidates[0] if candidates else outputs_root
+            if candidates:
+                out_dir = candidates[0] / "structured_parsing"
+            else:
+                out_dir = outputs_root
         else:
             outputs_root.mkdir(parents=True, exist_ok=True)
             out_dir = outputs_root
@@ -284,7 +333,7 @@ def run_extract(
     elif target == "both":
         allowed_kinds = ["tables", "charts"]
 
-    gallery_items, file_paths, zip_path = _gather_outputs(out_dir, allowed_kinds)
+    gallery_items, file_paths, zip_path = _gather_outputs(out_dir, allowed_kinds, zip_filename=original_filename, is_structured_parsing=True)
 
     # Build tables HTML preview from Excel data (when VLM enabled)
     tables_html = ""
@@ -329,10 +378,15 @@ def run_extract(
                     
                     tables_html = "\n".join(html_blocks)
     except Exception as e:
-        print(f"Error building tables HTML: {e}")
+        # Safely encode error message to handle Unicode characters
+        try:
+            error_msg = str(e).encode('utf-8', errors='replace').decode('utf-8')
+            print(f"Error building tables HTML: {error_msg}")
+        except Exception:
+            print(f"Error building tables HTML: <Unicode encoding error>")
         tables_html = ""
 
-    return (f"Completed. Results in: {out_dir}", tables_html, gallery_items, file_paths, zip_path)
+    return (f"✅ Parsing completed successfully!\n📁 Output directory: {out_dir}", tables_html, gallery_items, file_paths, zip_path)
 
 
 THEME = gr.themes.Soft(primary_hue="indigo", neutral_hue="slate")
@@ -470,7 +524,6 @@ def build_demo() -> gr.Blocks:
                 lines = md_content.split('\n')
                 i = 0
                 
-                print(f"DEBUG: Parsing {len(lines)} lines of markdown")
                 
                 # First, let's find all page headers
                 page_headers = []
@@ -478,9 +531,7 @@ def build_demo() -> gr.Blocks:
                     if line.strip().startswith('## Page '):
                         page_num = line.strip().replace('## Page ', '').strip()
                         page_headers.append((i, page_num, line))
-                        print(f"DEBUG: Found page header at line {i}: {page_num}")
                 
-                print(f"DEBUG: Found {len(page_headers)} page headers")
                 
                 # Now parse content for each page
                 for i, (line_idx, page_num, header_line) in enumerate(page_headers):
@@ -499,19 +550,15 @@ def build_demo() -> gr.Blocks:
                         'content': page_content
                     }
                     pages.append(page)
-                    print(f"DEBUG: Added page {page_num} with {len(page_content)} lines (lines {start_line}-{end_line-1})")
                 
-                print(f"DEBUG: Total pages parsed: {len(pages)}")
                 return pages
 
             def update_page_selector(pages_data):
                 """Update the page selector dropdown with available pages."""
                 if not pages_data:
-                    print("DEBUG: No pages data for selector")
                     return gr.Dropdown(choices=[], value=None, visible=False)
                 
                 page_choices = [f"Page {page['page_num']}" for page in pages_data]
-                print(f"DEBUG: Page selector choices: {page_choices}")
                 return gr.Dropdown(choices=page_choices, value=page_choices[0], visible=True)
 
             def display_selected_page(selected_page, pages_data, pdf_path, page_images):
@@ -519,18 +566,13 @@ def build_demo() -> gr.Blocks:
                 if not selected_page or not pages_data:
                     return "", None
                 
-                print(f"DEBUG: Displaying page {selected_page}")
-                print(f"DEBUG: Available pages: {[p['page_num'] for p in pages_data]}")
                 
                 # Find the selected page
                 page_num = selected_page.replace("Page ", "")
                 page = next((p for p in pages_data if p['page_num'] == page_num), None)
                 
                 if not page:
-                    print(f"DEBUG: Page {page_num} not found")
                     return "Page not found", None
-                
-                print(f"DEBUG: Found page {page_num} with {len(page['content'])} lines")
                 
                 # Build HTML with inline base64 images, render markdown tables, and preserve paragraphs/line breaks
                 import html as _html, base64, re as _re
@@ -538,7 +580,7 @@ def build_demo() -> gr.Blocks:
                 try:
                     stem = Path(pdf_path).stem if pdf_path else ""
                     if stem:
-                        base_dir = Path("outputs") / stem
+                        base_dir = Path("outputs") / stem / "full_parse"
                 except Exception:
                     base_dir = None
                 processed_content = []
@@ -627,7 +669,6 @@ def build_demo() -> gr.Blocks:
                 
                 # Join the processed content lines
                 content = "\n".join(processed_content)
-                print(f"DEBUG: Content length: {len(content)}")
 
                 # Ensure page images are prepared
                 try:
@@ -643,7 +684,7 @@ def build_demo() -> gr.Blocks:
                         page_images = saved_paths
                         page_images_state.value = saved_paths  # cache
                 except Exception as e:
-                    print(f"WARN: Failed to render page images: {e}")
+                    pass
 
                 # Select image for the current page number (1-based)
                 page_img = None
@@ -668,7 +709,6 @@ def build_demo() -> gr.Blocks:
                         filtered_images.append((stored_img_path, stored_caption))
                         break
                 
-                print(f"DEBUG: Filtered gallery to show: {filtered_images}")
                 return filtered_images
 
             def trigger_image_filter(filter_input):
@@ -680,7 +720,6 @@ def build_demo() -> gr.Blocks:
                 parts = filter_input.split("|", 1)
                 if len(parts) == 2:
                     img_path, caption = parts
-                    print(f"DEBUG: Triggering filter for {caption}")
                     return img_path, caption
                 return "", ""
 
@@ -696,7 +735,6 @@ def build_demo() -> gr.Blocks:
                         filtered_images.append((stored_img_path, stored_caption))
                         break
                 
-                print(f"DEBUG: Filtered gallery to show: {filtered_images}")
                 return filtered_images
 
             def run_full_parse_with_pages(*args):
@@ -710,7 +748,6 @@ def build_demo() -> gr.Blocks:
                 all_images = []
                 if md_content:
                     pages_data = parse_markdown_by_pages(md_content)
-                    print(f"DEBUG: Parsed {len(pages_data)} pages from markdown")
                     
                     # Collect all images from all pages
                     for page in pages_data:
@@ -723,15 +760,11 @@ def build_demo() -> gr.Blocks:
                                     img_path = match.group(2)
                                     all_images.append((img_path, caption))
                     
-                    print(f"DEBUG: Found {len(all_images)} images across all pages")
                     
                     # Show only Page 1 content initially
                     if pages_data:
                         first_page = pages_data[0]
                         first_page_content = "\n".join(first_page['content'])
-                        print(f"DEBUG: Showing Page 1 content initially ({len(first_page_content)} chars)")
-                else:
-                    print("DEBUG: No markdown content to parse")
                 
                 # Prepare first page image immediately and cache page images
                 input_pdf_path = args[0]
@@ -749,7 +782,7 @@ def build_demo() -> gr.Blocks:
                         if saved_paths:
                             first_page_image = saved_paths[0]
                 except Exception as e:
-                    print(f"WARN: Failed to render initial page images: {e}")
+                    pass
 
                 # Build initial HTML with inline images and proper blocks for first page
                 if pages_data:
@@ -758,7 +791,7 @@ def build_demo() -> gr.Blocks:
                     try:
                         stem = Path(input_pdf_path).stem if input_pdf_path else ""
                         if stem:
-                            base_dir = Path("outputs") / stem
+                            base_dir = Path("outputs") / stem / "full_parse"
                     except Exception:
                         base_dir = None
                     html_lines: List[str] = []
@@ -852,8 +885,8 @@ def build_demo() -> gr.Blocks:
                 if not status_text:
                     return ""
                 try:
-                    if "Results in:" in status_text:
-                        return status_text.split("Results in:", 1)[1].strip()
+                    if "Output directory:" in status_text:
+                        return status_text.split("Output directory:", 1)[1].strip()
                 except Exception:
                     pass
                 return ""
