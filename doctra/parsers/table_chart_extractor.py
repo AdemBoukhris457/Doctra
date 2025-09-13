@@ -295,8 +295,6 @@ class ChartTablePDFParser:
                 else:
                     excel_filename = "parsed_data.xlsx"  # fallback
                 
-                print(f"DEBUG: extract_charts={self.extract_charts}, extract_tables={self.extract_tables}")
-                print(f"DEBUG: Creating Excel file: {excel_filename}")
                 
                 excel_path = os.path.join(out_dir, excel_filename)
                 write_structured_excel(excel_path, structured_items)
@@ -317,22 +315,3 @@ class ChartTablePDFParser:
             extraction_types.append("charts")
         if self.extract_tables:
             extraction_types.append("tables")
-
-        print(f"{' and '.join(extraction_types).title()} extraction completed successfully.")
-        print(f"- Output directory: {out_dir}")
-
-        if charts_dir and self.extract_charts:
-            print(f"- Charts directory: {charts_dir}")
-            print(f"- Charts extracted: {chart_counter - 1}")
-
-        if tables_dir and self.extract_tables:
-            print(f"- Tables directory: {tables_dir}")
-            print(f"- Tables extracted: {table_counter - 1}")
-
-        if md_path:
-            print(f"- Markdown file: {md_path}")
-        if excel_path:
-            print(f"- Excel file: {excel_path}")
-
-        if not self.use_vlm:
-            print("- Note: VLM disabled - only cropped images saved")

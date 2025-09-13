@@ -233,16 +233,8 @@ def run_full_parse(
     )
 
     try:
-        print(f"DEBUG: Starting VLM processing with provider: {vlm_provider}, use_vlm: {use_vlm}")
         parser.parse(str(input_pdf))
-        print("DEBUG: VLM processing completed successfully")
     except Exception as e:
-        # Safely encode error message to handle Unicode characters
-        try:
-            error_msg = str(e).encode('utf-8', errors='replace').decode('utf-8')
-            print(f"ERROR: VLM processing failed: {error_msg}")
-        except Exception:
-            print(f"ERROR: VLM processing failed: <Unicode encoding error>")
         import traceback
         traceback.print_exc()
         # Safely encode error message for return value
@@ -532,7 +524,6 @@ def build_demo() -> gr.Blocks:
                 lines = md_content.split('\n')
                 i = 0
                 
-                print(f"DEBUG: Parsing {len(lines)} lines of markdown")
                 
                 # First, let's find all page headers
                 page_headers = []
@@ -540,9 +531,7 @@ def build_demo() -> gr.Blocks:
                     if line.strip().startswith('## Page '):
                         page_num = line.strip().replace('## Page ', '').strip()
                         page_headers.append((i, page_num, line))
-                        print(f"DEBUG: Found page header at line {i}: {page_num}")
                 
-                print(f"DEBUG: Found {len(page_headers)} page headers")
                 
                 # Now parse content for each page
                 for i, (line_idx, page_num, header_line) in enumerate(page_headers):
@@ -561,19 +550,15 @@ def build_demo() -> gr.Blocks:
                         'content': page_content
                     }
                     pages.append(page)
-                    print(f"DEBUG: Added page {page_num} with {len(page_content)} lines (lines {start_line}-{end_line-1})")
                 
-                print(f"DEBUG: Total pages parsed: {len(pages)}")
                 return pages
 
             def update_page_selector(pages_data):
                 """Update the page selector dropdown with available pages."""
                 if not pages_data:
-                    print("DEBUG: No pages data for selector")
                     return gr.Dropdown(choices=[], value=None, visible=False)
                 
                 page_choices = [f"Page {page['page_num']}" for page in pages_data]
-                print(f"DEBUG: Page selector choices: {page_choices}")
                 return gr.Dropdown(choices=page_choices, value=page_choices[0], visible=True)
 
             def display_selected_page(selected_page, pages_data, pdf_path, page_images):
@@ -581,18 +566,13 @@ def build_demo() -> gr.Blocks:
                 if not selected_page or not pages_data:
                     return "", None
                 
-                print(f"DEBUG: Displaying page {selected_page}")
-                print(f"DEBUG: Available pages: {[p['page_num'] for p in pages_data]}")
                 
                 # Find the selected page
                 page_num = selected_page.replace("Page ", "")
                 page = next((p for p in pages_data if p['page_num'] == page_num), None)
                 
                 if not page:
-                    print(f"DEBUG: Page {page_num} not found")
                     return "Page not found", None
-                
-                print(f"DEBUG: Found page {page_num} with {len(page['content'])} lines")
                 
                 # Build HTML with inline base64 images, render markdown tables, and preserve paragraphs/line breaks
                 import html as _html, base64, re as _re
@@ -689,7 +669,6 @@ def build_demo() -> gr.Blocks:
                 
                 # Join the processed content lines
                 content = "\n".join(processed_content)
-                print(f"DEBUG: Content length: {len(content)}")
 
                 # Ensure page images are prepared
                 try:
@@ -705,7 +684,7 @@ def build_demo() -> gr.Blocks:
                         page_images = saved_paths
                         page_images_state.value = saved_paths  # cache
                 except Exception as e:
-                    print(f"WARN: Failed to render page images: {e}")
+                    pass
 
                 # Select image for the current page number (1-based)
                 page_img = None
@@ -730,7 +709,6 @@ def build_demo() -> gr.Blocks:
                         filtered_images.append((stored_img_path, stored_caption))
                         break
                 
-                print(f"DEBUG: Filtered gallery to show: {filtered_images}")
                 return filtered_images
 
             def trigger_image_filter(filter_input):
@@ -742,7 +720,6 @@ def build_demo() -> gr.Blocks:
                 parts = filter_input.split("|", 1)
                 if len(parts) == 2:
                     img_path, caption = parts
-                    print(f"DEBUG: Triggering filter for {caption}")
                     return img_path, caption
                 return "", ""
 
@@ -758,7 +735,6 @@ def build_demo() -> gr.Blocks:
                         filtered_images.append((stored_img_path, stored_caption))
                         break
                 
-                print(f"DEBUG: Filtered gallery to show: {filtered_images}")
                 return filtered_images
 
             def run_full_parse_with_pages(*args):
@@ -772,7 +748,6 @@ def build_demo() -> gr.Blocks:
                 all_images = []
                 if md_content:
                     pages_data = parse_markdown_by_pages(md_content)
-                    print(f"DEBUG: Parsed {len(pages_data)} pages from markdown")
                     
                     # Collect all images from all pages
                     for page in pages_data:
@@ -785,15 +760,11 @@ def build_demo() -> gr.Blocks:
                                     img_path = match.group(2)
                                     all_images.append((img_path, caption))
                     
-                    print(f"DEBUG: Found {len(all_images)} images across all pages")
                     
                     # Show only Page 1 content initially
                     if pages_data:
                         first_page = pages_data[0]
                         first_page_content = "\n".join(first_page['content'])
-                        print(f"DEBUG: Showing Page 1 content initially ({len(first_page_content)} chars)")
-                else:
-                    print("DEBUG: No markdown content to parse")
                 
                 # Prepare first page image immediately and cache page images
                 input_pdf_path = args[0]
@@ -811,7 +782,7 @@ def build_demo() -> gr.Blocks:
                         if saved_paths:
                             first_page_image = saved_paths[0]
                 except Exception as e:
-                    print(f"WARN: Failed to render initial page images: {e}")
+                    pass
 
                 # Build initial HTML with inline images and proper blocks for first page
                 if pages_data:

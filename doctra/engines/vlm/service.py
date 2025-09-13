@@ -15,12 +15,12 @@ class VLMStructuredExtractor:
     from images using Vision Language Models (VLM) with Outlines for type safety.
 
     Usage:
-        vlm = VLMStructuredExtractor(vlm_provider="gemini", api_key="YOUR_KEY", debug=True)
+        vlm = VLMStructuredExtractor(vlm_provider="gemini", api_key="YOUR_KEY")
         chart = vlm.extract_chart("/abs/path/chart.jpg")
         table = vlm.extract_table("/abs/path/table.jpg")
         
         # Or with Anthropic:
-        vlm = VLMStructuredExtractor(vlm_provider="anthropic", api_key="YOUR_KEY", debug=True)
+        vlm = VLMStructuredExtractor(vlm_provider="anthropic", api_key="YOUR_KEY")
     """
 
     def __init__(
@@ -29,25 +29,21 @@ class VLMStructuredExtractor:
         vlm_model: str | None = None,
         *,
         api_key: str | None = None,
-        debug: bool = True,
     ):
         """
         Initialize the VLMStructuredExtractor with provider configuration.
         
-        Sets up the VLM model and debug settings for structured data extraction
-        from images.
+        Sets up the VLM model for structured data extraction from images.
 
         :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
         :param vlm_model: Model name to use (defaults to provider-specific defaults)
         :param api_key: API key for the VLM provider (required for all providers)
-        :param debug: Whether to enable debug output for error handling (default: True)
         """
         self.model = make_model(
             vlm_provider,
             vlm_model,
             api_key=api_key,
         )
-        self.debug = debug
 
     def _call(self, prompt_text: str, image_path: str, schema):
         """
@@ -64,40 +60,17 @@ class VLMStructuredExtractor:
         :raises Exception: If image processing or VLM call fails
         """
         try:
-            if self.debug:
-                print(f"[VLM DEBUG] Processing image: {image_path}")
-                print(f"[VLM DEBUG] Image exists: {os.path.exists(image_path)}")
-                if os.path.exists(image_path):
-                    print(f"[VLM DEBUG] Image size: {os.path.getsize(image_path)} bytes")
-            
             # Normalize path and verify readability
             # (get_image_from_local already absolutizes & raises if missing)
             img = get_image_from_local(image_path)
             if img.mode != "RGB":
                 img = img.convert("RGB")
 
-            if self.debug:
-                print(f"[VLM DEBUG] Image loaded successfully, size: {img.size}, mode: {img.mode}")
-
             prompt = [prompt_text, Image(img)]
             result = self.model(prompt, schema)
             
-            if self.debug:
-                print(f"[VLM DEBUG] VLM processing completed successfully for: {image_path}")
-            
             return result
         except Exception as e:
-            if self.debug:
-                import traceback
-                print(f"[VLM ERROR] while processing: {image_path}")
-                print(f"[VLM ERROR] Image path exists: {os.path.exists(image_path) if image_path else 'N/A'}")
-                traceback.print_exc()
-                # Safely encode error message to handle Unicode characters
-                try:
-                    error_msg = str(e).encode('utf-8', errors='replace').decode('utf-8')
-                    print(f"[VLM ERROR] type={type(e).__name__} msg={error_msg}")
-                except Exception:
-                    print(f"[VLM ERROR] type={type(e).__name__} msg=<Unicode encoding error>")
             # Re-raise so caller can handle/log too
             raise
 
