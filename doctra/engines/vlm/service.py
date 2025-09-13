@@ -92,7 +92,12 @@ class VLMStructuredExtractor:
                 print(f"[VLM ERROR] while processing: {image_path}")
                 print(f"[VLM ERROR] Image path exists: {os.path.exists(image_path) if image_path else 'N/A'}")
                 traceback.print_exc()
-                print(f"[VLM ERROR] type={type(e).__name__} msg={e}")
+                # Safely encode error message to handle Unicode characters
+                try:
+                    error_msg = str(e).encode('utf-8', errors='replace').decode('utf-8')
+                    print(f"[VLM ERROR] type={type(e).__name__} msg={error_msg}")
+                except Exception:
+                    print(f"[VLM ERROR] type={type(e).__name__} msg=<Unicode encoding error>")
             # Re-raise so caller can handle/log too
             raise
 

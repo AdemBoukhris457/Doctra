@@ -20,6 +20,7 @@ from doctra.exporters.excel_writer import write_structured_excel
 from doctra.utils.structured_utils import to_structured_dict
 from doctra.exporters.markdown_table import render_markdown_table
 from doctra.exporters.markdown_writer import write_markdown
+from doctra.exporters.html_writer import write_html, write_structured_html
 from doctra.utils.progress import create_beautiful_progress_bar, create_multi_progress_bars, create_notebook_friendly_bar
 
 
@@ -109,7 +110,7 @@ class StructuredPDFParser:
         """
         # Extract filename without extension and create output directory
         pdf_filename = os.path.splitext(os.path.basename(pdf_path))[0]
-        out_dir = f"outputs/{pdf_filename}"
+        out_dir = f"outputs/{pdf_filename}/full_parse"
 
         os.makedirs(out_dir, exist_ok=True)
         ensure_output_dirs(out_dir, IMAGE_SUBDIRS)
@@ -230,15 +231,24 @@ class StructuredPDFParser:
                             md_lines.append(self.box_separator if self.box_separator else "")
 
         md_path = write_markdown(md_lines, out_dir)
+        html_path = write_html(md_lines, out_dir)
+        
         excel_path = None
+        html_structured_path = None
         if self.use_vlm and structured_items:
             excel_path = os.path.join(out_dir, "tables.xlsx")
             write_structured_excel(excel_path, structured_items)
+            html_structured_path = os.path.join(out_dir, "tables.html")
+            write_structured_html(html_structured_path, structured_items)
 
+        # Print completion message with all generated files
+        files_info = f"- Markdown: {md_path}\n- HTML:     {html_path}"
         if excel_path:
-            print(f"Parsing completed successfully.\n- Markdown: {md_path}\n- Excel:    {excel_path}")
-        else:
-            print(f"Parsing completed successfully.\n- Markdown: {md_path}")
+            files_info += f"\n- Excel:    {excel_path}"
+        if html_structured_path:
+            files_info += f"\n- HTML Tables: {html_structured_path}"
+        
+        print(f"Parsing completed successfully.\n{files_info}")
 
     def display_pages_with_boxes(self, pdf_path: str, num_pages: int = 3, cols: int = 2,
                                  page_width: int = 800, spacing: int = 40, save_path: str = None) -> None:

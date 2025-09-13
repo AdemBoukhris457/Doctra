@@ -11,18 +11,37 @@ from doctra.parsers.structured_pdf_parser import StructuredPDFParser
 from doctra.parsers.table_chart_extractor import ChartTablePDFParser
 
 
-def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None) -> Tuple[List[tuple[str, str]], List[str], str]:
+def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None, zip_filename: Optional[str] = None) -> Tuple[List[tuple[str, str]], List[str], str]:
     gallery_items: List[tuple[str, str]] = []
     file_paths: List[str] = []
 
-    # Limit downloads to image files under allowed kinds if provided
     if out_dir.exists():
+        # Always add main output files (HTML, Markdown, etc.) regardless of allowed_kinds
+        main_files = [
+            "result.html",
+            "result.md", 
+            "tables.html",
+            "tables.xlsx"
+        ]
+        
+        for main_file in main_files:
+            file_path = out_dir / main_file
+            if file_path.exists():
+                file_paths.append(str(file_path))
+        
+        # Add image files based on allowed_kinds or all images if not specified
         if allowed_kinds:
             for kind in allowed_kinds:
                 # ChartTablePDFParser saves directly to charts/ and tables/ directories
                 p = out_dir / kind
                 if p.exists():
                     for img in sorted(p.glob("*.png")):  # ChartTablePDFParser saves as .png
+                        file_paths.append(str(img))
+                
+                # Also check images/ subdirectories (for StructuredPDFParser)
+                images_dir = out_dir / "images" / kind
+                if images_dir.exists():
+                    for img in sorted(images_dir.glob("*.jpg")):  # StructuredPDFParser saves as .jpg
                         file_paths.append(str(img))
         else:
             # Fallback: look in both direct directories and images/ subdirectories
@@ -33,7 +52,7 @@ def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None) ->
             for p in (out_dir / "images").rglob("*.jpg"):
                 file_paths.append(str(p))
 
-        # Add Excel files based on extraction target
+        # Add Excel files based on extraction target (for structured parsing)
         if allowed_kinds:
             if "charts" in allowed_kinds and "tables" in allowed_kinds:
                 excel_files = ["parsed_tables_charts.xlsx"]
@@ -51,14 +70,28 @@ def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None) ->
 
     kinds = allowed_kinds if allowed_kinds else ["tables", "charts", "figures"]
     for sub in kinds:
-        # ChartTablePDFParser saves directly to charts/ and tables/ directories
+        # Look in both direct directories and images/ subdirectories
+        # First try direct directories (for ChartTablePDFParser)
         p = out_dir / sub
         if p.exists():
             for img in sorted(p.glob("*.png")):  # ChartTablePDFParser saves as .png
                 gallery_items.append((str(img), f"{sub}: {img.name}"))
+        
+        # Also try images/ subdirectories (for StructuredPDFParser)
+        images_dir = out_dir / "images" / sub
+        if images_dir.exists():
+            for img in sorted(images_dir.glob("*.jpg")):  # StructuredPDFParser saves as .jpg
+                gallery_items.append((str(img), f"{sub}: {img.name}"))
 
     tmp_zip_dir = Path(tempfile.mkdtemp(prefix="doctra_zip_"))
-    zip_base = tmp_zip_dir / "doctra_outputs"
+    
+    # Use custom filename if provided, otherwise use default
+    if zip_filename:
+        # Clean the filename to be safe for file systems
+        safe_filename = re.sub(r'[<>:"/\\|?*]', '_', zip_filename)
+        zip_base = tmp_zip_dir / safe_filename
+    else:
+        zip_base = tmp_zip_dir / "doctra_outputs"
     
     # Create a filtered copy of the output directory excluding temp files
     filtered_dir = tmp_zip_dir / "filtered_outputs"
@@ -197,16 +230,30 @@ def run_full_parse(
         parser.parse(str(input_pdf))
         print("DEBUG: VLM processing completed successfully")
     except Exception as e:
-        print(f"ERROR: VLM processing failed: {e}")
+        # Safely encode error message to handle Unicode characters
+        try:
+            error_msg = str(e).encode('utf-8', errors='replace').decode('utf-8')
+            print(f"ERROR: VLM processing failed: {error_msg}")
+        except Exception:
+            print(f"ERROR: VLM processing failed: <Unicode encoding error>")
         import traceback
         traceback.print_exc()
-        return (f"❌ VLM processing failed: {str(e)}", None, [], [], "")
+        # Safely encode error message for return value
+        try:
+            error_msg = str(e).encode('utf-8', errors='replace').decode('utf-8')
+            return (f"❌ VLM processing failed: {error_msg}", None, [], [], "")
+        except Exception:
+            return (f"❌ VLM processing failed: <Unicode encoding error>", None, [], [], "")
 
     outputs_root = Path("outputs")
-    out_dir = outputs_root / original_filename
+    out_dir = outputs_root / original_filename / "full_parse"
     if not out_dir.exists():
+        # fallback: search latest created dir under outputs
         candidates = sorted(outputs_root.glob("*/"), key=lambda p: p.stat().st_mtime, reverse=True)
-        out_dir = candidates[0] if candidates else outputs_root
+        if candidates:
+            out_dir = candidates[0] / "full_parse"
+        else:
+            out_dir = outputs_root
 
     md_file = next(out_dir.glob("*.md"), None)
     md_preview = None
@@ -217,7 +264,7 @@ def run_full_parse(
         except Exception:
             md_preview = None
 
-    gallery_items, file_paths, zip_path = _gather_outputs(out_dir)
+    gallery_items, file_paths, zip_path = _gather_outputs(out_dir, zip_filename=original_filename)
     return (f"Completed. Results in: {out_dir}", md_preview, gallery_items, file_paths, zip_path)
 
 
@@ -268,11 +315,14 @@ def run_extract(
     parser.parse(str(input_pdf), str(output_base))
 
     outputs_root = output_base
-    out_dir = outputs_root / original_filename
+    out_dir = outputs_root / original_filename / "structured_parsing"
     if not out_dir.exists():
         if outputs_root.exists():
             candidates = sorted(outputs_root.glob("*/"), key=lambda p: p.stat().st_mtime, reverse=True)
-            out_dir = candidates[0] if candidates else outputs_root
+            if candidates:
+                out_dir = candidates[0] / "structured_parsing"
+            else:
+                out_dir = outputs_root
         else:
             outputs_root.mkdir(parents=True, exist_ok=True)
             out_dir = outputs_root
@@ -284,7 +334,7 @@ def run_extract(
     elif target == "both":
         allowed_kinds = ["tables", "charts"]
 
-    gallery_items, file_paths, zip_path = _gather_outputs(out_dir, allowed_kinds)
+    gallery_items, file_paths, zip_path = _gather_outputs(out_dir, allowed_kinds, zip_filename=original_filename)
 
     # Build tables HTML preview from Excel data (when VLM enabled)
     tables_html = ""
@@ -329,7 +379,12 @@ def run_extract(
                     
                     tables_html = "\n".join(html_blocks)
     except Exception as e:
-        print(f"Error building tables HTML: {e}")
+        # Safely encode error message to handle Unicode characters
+        try:
+            error_msg = str(e).encode('utf-8', errors='replace').decode('utf-8')
+            print(f"Error building tables HTML: {error_msg}")
+        except Exception:
+            print(f"Error building tables HTML: <Unicode encoding error>")
         tables_html = ""
 
     return (f"Completed. Results in: {out_dir}", tables_html, gallery_items, file_paths, zip_path)
@@ -538,7 +593,7 @@ def build_demo() -> gr.Blocks:
                 try:
                     stem = Path(pdf_path).stem if pdf_path else ""
                     if stem:
-                        base_dir = Path("outputs") / stem
+                        base_dir = Path("outputs") / stem / "full_parse"
                 except Exception:
                     base_dir = None
                 processed_content = []
@@ -758,7 +813,7 @@ def build_demo() -> gr.Blocks:
                     try:
                         stem = Path(input_pdf_path).stem if input_pdf_path else ""
                         if stem:
-                            base_dir = Path("outputs") / stem
+                            base_dir = Path("outputs") / stem / "full_parse"
                     except Exception:
                         base_dir = None
                     html_lines: List[str] = []
