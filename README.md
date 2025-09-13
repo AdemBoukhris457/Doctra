@@ -37,6 +37,31 @@ cd Doctra
 pip install .
 ```
 
+### System Dependencies
+
+Doctra requires **Poppler** for PDF processing. Install it based on your operating system:
+
+#### Ubuntu/Debian
+```bash
+sudo apt install poppler-utils
+```
+
+#### macOS
+```bash
+brew install poppler
+```
+
+#### Windows
+Download and install from [Poppler for Windows](http://blog.alivate.com.au/poppler-windows/) or use conda:
+```bash
+conda install -c conda-forge poppler
+```
+
+#### Google Colab
+```bash
+!sudo apt install poppler-utils
+```
+
 ## ⚡ Quick Start
 
 ```python

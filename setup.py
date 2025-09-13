@@ -43,6 +43,9 @@ setup(
         "pandas>=1.3.0",
         "openpyxl>=3.0.0",
         "tesseract>=0.1.3",
+        "pytesseract>=0.3.10",
+        "pdf2image>=1.16.0",
+        "anthropic>=0.40.0",
         "outlines>=0.0.34",
         "tqdm>=4.62.0",
         "matplotlib>=3.5.0",
@@ -50,7 +53,6 @@ setup(
     extras_require={
         "openai": ["openai>=1.0.0"],
         "gemini": ["google-generativeai>=0.3.0"],
-        "anthropic": ["anthropic>=0.40.0"],
         "dev": [
             "pytest>=6.0",
             "pytest-cov>=2.0",
