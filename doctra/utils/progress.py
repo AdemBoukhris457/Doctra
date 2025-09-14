@@ -40,7 +40,6 @@ def _detect_environment() -> Tuple[bool, bool, bool]:
     Returns (is_notebook, is_tty, is_windows).
     """
     is_notebook = "ipykernel" in sys.modules or "jupyter" in sys.modules
-    # Colab/Kaggle specifics
     if "google.colab" in sys.modules:
         is_notebook = True
     if "kaggle_secrets" in sys.modules or "kaggle_web_client" in sys.modules:
@@ -59,7 +58,6 @@ def _select_emoji(key: str) -> str:
       - ascii: ASCII text tokens
       - none: empty prefix
     """
-    # Maps
     default_map = {
         "loading": "🔄",
         "charts": "📊",
@@ -70,14 +68,13 @@ def _select_emoji(key: str) -> str:
         "processing": "⚙️",
     }
     safe_map = {
-        # Use BMP or geometric shapes likely to render everywhere
         "loading": "⏳",
         "charts": "▦",
         "tables": "▤",
         "figures": "▧",
         "ocr": "🔎",
         "vlm": "★",
-        "processing": "⚙",  # no variation selector
+        "processing": "⚙",
     }
     ascii_map = {
         "loading": "[loading]",
@@ -89,13 +86,11 @@ def _select_emoji(key: str) -> str:
         "processing": "[processing]",
     }
 
-    # Determine effective mode
     mode = _PROGRESS_CONFIG.emoji_mode
     is_notebook, _, is_windows = _detect_environment()
     if not _PROGRESS_CONFIG.use_emoji:
         mode = "none"
     elif mode == "default":
-        # Heuristics: prefer safe in Colab/Kaggle notebooks and Windows terminals
         if is_windows or "google.colab" in sys.modules or "kaggle_secrets" in sys.modules:
             mode = "safe"
 
@@ -105,7 +100,6 @@ def _select_emoji(key: str) -> str:
         return ascii_map.get(key, "")
     if mode == "safe":
         return safe_map.get(key, safe_map["processing"])
-    # default
     return default_map.get(key, default_map["processing"])
 
 
@@ -119,17 +113,13 @@ def _supports_unicode_output() -> bool:
     except Exception:
         pass
 
-    # Heuristics for common notebook environments that support emoji
     env = os.environ
     if any(k in env for k in ("COLAB_GPU", "GCE_METADATA_HOST", "KAGGLE_KERNEL_RUN_TYPE", "JPY_PARENT_PID")):
         return True
 
-    # On modern Windows terminals with UTF-8 code page, assume yes
     if sys.platform.startswith("win"):
-        # If user opted-in to force ASCII, respect it
         if _PROGRESS_CONFIG.force_ascii:
             return False
-        # Try to detect WT/Terminal/VSCode which usually handle Unicode
         if any(k in env for k in ("WT_SESSION", "TERM_PROGRAM", "VSCODE_PID")):
             return True
 
@@ -161,19 +151,15 @@ def create_beautiful_progress_bar(
     :return: Configured tqdm progress bar instance
     """
     
-    # Enhanced styling parameters - notebook-friendly format
     is_notebook, is_tty, is_windows = _detect_environment()
     if is_notebook:
-        # Simpler format for notebooks to avoid display issues
         bar_format = "{desc}: {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"
     else:
-        # Full format for terminal
         bar_format = (
             "{l_bar}{bar:30}| {n_fmt}/{total_fmt} "
             "[{elapsed}<{remaining}, {rate_fmt}{postfix}]"
         )
     
-    # Color schemes based on operation type
     color_schemes = {
         "loading": {"colour": "cyan", "ncols": 100},
         "charts": {"colour": "green", "ncols": 100},
@@ -184,7 +170,6 @@ def create_beautiful_progress_bar(
         "processing": {"colour": "white", "ncols": 100},
     }
     
-    # Determine color scheme based on description
     desc_lower = desc.lower()
     if "loading" in desc_lower or "model" in desc_lower:
         color_scheme = color_schemes["loading"]
@@ -201,45 +186,37 @@ def create_beautiful_progress_bar(
     else:
         color_scheme = color_schemes["processing"]
     
-    # Emoji categories
     emoji_categories = {"loading", "charts", "tables", "figures", "ocr", "vlm", "processing"}
     
-    # Add appropriate emoji to description (can be disabled)
     if _PROGRESS_CONFIG.use_emoji:
         prefix_key = next((k for k in emoji_categories if k in desc_lower), "processing")
         prefix = _select_emoji(prefix_key)
         if prefix:
             desc = f"{prefix} {desc}"
     
-    # Enhanced tqdm configuration
     tqdm_config = {
         "total": total,
         "desc": desc,
         "leave": leave,
         "bar_format": bar_format,
         "ncols": _PROGRESS_CONFIG.ncols_env or color_scheme["ncols"],
-        # Prefer Unicode unless user forces ASCII or environment lacks Unicode support
         "ascii": _PROGRESS_CONFIG.force_ascii or not _supports_unicode_output(),
-        "dynamic_ncols": True,  # Responsive width
-        "smoothing": 0.3,  # Smooth progress updates
-        "mininterval": 0.1,  # Minimum update interval
-        "maxinterval": 1.0,  # Maximum update interval
+        "dynamic_ncols": True,
+        "smoothing": 0.3,
+        "mininterval": 0.1,
+        "maxinterval": 1.0,
         "position": position,
         **kwargs
     }
     
-    # Enhanced environment detection
     is_notebook, is_terminal, is_windows = _detect_environment()
     
-    # Add color only for terminal environments (not notebooks)
     if not is_notebook and is_terminal:
         tqdm_config["colour"] = color_scheme["colour"]
     
-    # Respect global disable
     if _PROGRESS_CONFIG.disable:
         tqdm_config["disable"] = True
 
-    # Try creating the progress bar with Unicode, fallback to ASCII on failure (e.g., Windows code page)
     if is_notebook:
         tqdm_config.pop("colour", None)
         try:
@@ -297,7 +274,6 @@ def update_progress_with_info(
     :param info: Optional dictionary of information to display
     """
     if info:
-        # Format info as postfix
         postfix_parts = []
         for key, value in info.items():
             if isinstance(value, float):
@@ -364,8 +340,6 @@ def create_notebook_friendly_bar(
     :param kwargs: Additional tqdm parameters
     :return: Configured notebook-friendly progress bar
     """
-    # Simply use the main progress bar function for consistency
-    # This ensures identical behavior and styling
     return create_beautiful_progress_bar(
         total=total,
         desc=desc,

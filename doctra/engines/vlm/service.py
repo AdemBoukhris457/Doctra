@@ -19,7 +19,6 @@ class VLMStructuredExtractor:
         chart = vlm.extract_chart("/abs/path/chart.jpg")
         table = vlm.extract_table("/abs/path/table.jpg")
         
-        # Or with Anthropic:
         vlm = VLMStructuredExtractor(vlm_provider="anthropic", api_key="YOUR_KEY")
     """
 
@@ -32,8 +31,6 @@ class VLMStructuredExtractor:
     ):
         """
         Initialize the VLMStructuredExtractor with provider configuration.
-        
-        Sets up the VLM model for structured data extraction from images.
 
         :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
         :param vlm_model: Model name to use (defaults to provider-specific defaults)
@@ -60,8 +57,6 @@ class VLMStructuredExtractor:
         :raises Exception: If image processing or VLM call fails
         """
         try:
-            # Normalize path and verify readability
-            # (get_image_from_local already absolutizes & raises if missing)
             img = get_image_from_local(image_path)
             if img.mode != "RGB":
                 img = img.convert("RGB")
@@ -71,15 +66,11 @@ class VLMStructuredExtractor:
             
             return result
         except Exception as e:
-            # Re-raise so caller can handle/log too
             raise
 
     def extract_chart(self, image_path: str) -> Chart:
         """
         Extract structured chart data from an image.
-        
-        Uses VLM to analyze a chart image and extract the data in a structured
-        format with title, headers, and rows.
 
         :param image_path: Path to the chart image file
         :return: Chart object containing extracted title, headers, and data rows
@@ -96,9 +87,6 @@ class VLMStructuredExtractor:
     def extract_table(self, image_path: str) -> Table:
         """
         Extract structured table data from an image.
-        
-        Uses VLM to analyze a table image and extract the data in a structured
-        format with title, headers, and rows.
 
         :param image_path: Path to the table image file
         :return: Table object containing extracted title, headers, and data rows
