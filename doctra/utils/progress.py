@@ -354,68 +354,24 @@ def create_notebook_friendly_bar(
     **kwargs
 ) -> tqdm:
     """
-    Create a notebook-friendly progress bar with minimal formatting.
+    Create a notebook-friendly progress bar with consistent sizing.
     
-    This function creates progress bars specifically optimized for Jupyter notebooks
-    to avoid display issues and ANSI code problems.
+    This function creates progress bars that match the main progress bar
+    styling and behavior in notebook environments.
     
     :param total: Total number of items to process
     :param desc: Description text for the progress bar
     :param kwargs: Additional tqdm parameters
     :return: Configured notebook-friendly progress bar
     """
-    # Force notebook mode
-    if _PROGRESS_CONFIG.disable:
-        kwargs["disable"] = True
-    else:
-        kwargs["disable"] = False
-    # Prefer Unicode in notebooks if supported
-    if "ascii" not in kwargs:
-        kwargs["ascii"] = _PROGRESS_CONFIG.force_ascii or not _supports_unicode_output()
-    
-    # Emoji categories
-    emoji_categories = {"loading", "charts", "tables", "figures", "ocr", "vlm", "processing"}
-    
-    # Add appropriate emoji to description
-    desc_lower = desc.lower()
-    if _PROGRESS_CONFIG.use_emoji:
-        prefix_key = next((k for k in emoji_categories if k in desc_lower), "processing")
-        prefix = _select_emoji(prefix_key)
-        if prefix:
-            desc = f"{prefix} {desc}"
-    
-    # Simple format for notebooks - use same format as main progress bar
-    bar_format = "{desc}: {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"
-    
-    tqdm_config = {
-        "total": total,
-        "desc": desc,
-        "leave": True,
-        "bar_format": bar_format,
-        "ncols": _PROGRESS_CONFIG.ncols_env or 100,  # Use full width like main progress bar
-        "ascii": kwargs.get("ascii", False),
-        "dynamic_ncols": False,  # Fixed width for notebooks to avoid display issues
-        "smoothing": 0.1,  # Faster updates
-        "mininterval": 0.05,
-        "maxinterval": 0.5,
+    # Simply use the main progress bar function for consistency
+    # This ensures identical behavior and styling
+    return create_beautiful_progress_bar(
+        total=total,
+        desc=desc,
+        leave=True,
         **kwargs
-    }
-    
-    # Use same approach as main progress bar for consistency
-    is_notebook, is_tty, is_windows = _detect_environment()
-    if is_notebook:
-        tqdm_config.pop("colour", None)
-        try:
-            return tqdm_auto(**tqdm_config)
-        except Exception:
-            tqdm_config["ascii"] = True
-            return tqdm_auto(**tqdm_config)
-    else:
-        try:
-            return tqdm(**tqdm_config)
-        except Exception:
-            tqdm_config["ascii"] = True
-            return tqdm(**tqdm_config)
+    )
 
 
 def progress_for(iterable: Iterable[Any], desc: str, total: Optional[int] = None, leave: bool = True, **kwargs) -> Iterator[Any]:
