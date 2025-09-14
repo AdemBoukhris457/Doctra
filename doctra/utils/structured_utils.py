@@ -4,8 +4,8 @@ import json
 
 try:
     from pydantic import BaseModel  # type: ignore
-except Exception:  # pydantic not strictly required for normalization
-    class BaseModel:  # fallback stub
+except Exception:
+    class BaseModel:
         pass
 
 def to_structured_dict(obj: Any) -> Optional[Dict[str, Any]]:
@@ -19,29 +19,25 @@ def to_structured_dict(obj: Any) -> Optional[Dict[str, Any]]:
     if obj is None:
         return None
 
-    # JSON string from VLM
     if isinstance(obj, str):
         try:
             obj = json.loads(obj)
         except Exception:
             return None
 
-    # Pydantic model
     if isinstance(obj, BaseModel):
         try:
-            return obj.model_dump()  # pydantic v2
+            return obj.model_dump()
         except Exception:
             try:
-                return obj.dict()    # pydantic v1
+                return obj.dict()
             except Exception:
                 return None
 
-    # Plain dict
     if isinstance(obj, dict):
         title = obj.get("title") or "Untitled"
         headers = obj.get("headers") or []
         rows = obj.get("rows") or []
-        # Basic shape checks
         if not isinstance(headers, list) or not isinstance(rows, list):
             return None
         return {"title": title, "headers": headers, "rows": rows}

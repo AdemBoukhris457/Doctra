@@ -17,13 +17,10 @@ def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None, zi
 
     if out_dir.exists():
         if is_structured_parsing:
-            # For structured parsing, show ALL files in the directory
             for file_path in sorted(out_dir.rglob("*")):
                 if file_path.is_file():
                     file_paths.append(str(file_path))
         else:
-            # For full parsing, use the original logic
-            # Always add main output files (HTML, Markdown, etc.) regardless of allowed_kinds
             main_files = [
                 "result.html",
                 "result.md", 
@@ -36,22 +33,18 @@ def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None, zi
                 if file_path.exists():
                     file_paths.append(str(file_path))
             
-            # Add image files based on allowed_kinds or all images if not specified
             if allowed_kinds:
                 for kind in allowed_kinds:
-                    # ChartTablePDFParser saves directly to charts/ and tables/ directories
                     p = out_dir / kind
                     if p.exists():
-                        for img in sorted(p.glob("*.png")):  # ChartTablePDFParser saves as .png
+                        for img in sorted(p.glob("*.png")):
                             file_paths.append(str(img))
                     
-                    # Also check images/ subdirectories (for StructuredPDFParser)
                     images_dir = out_dir / "images" / kind
                     if images_dir.exists():
-                        for img in sorted(images_dir.glob("*.jpg")):  # StructuredPDFParser saves as .jpg
+                        for img in sorted(images_dir.glob("*.jpg")):
                             file_paths.append(str(img))
             else:
-                # Fallback: look in both direct directories and images/ subdirectories
                 for p in (out_dir / "charts").glob("*.png"):
                     file_paths.append(str(p))
                 for p in (out_dir / "tables").glob("*.png"):
@@ -59,7 +52,6 @@ def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None, zi
                 for p in (out_dir / "images").rglob("*.jpg"):
                     file_paths.append(str(p))
 
-            # Add Excel files based on extraction target (for structured parsing)
             if allowed_kinds:
                 if "charts" in allowed_kinds and "tables" in allowed_kinds:
                     excel_files = ["parsed_tables_charts.xlsx"]
@@ -77,30 +69,24 @@ def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None, zi
 
     kinds = allowed_kinds if allowed_kinds else ["tables", "charts", "figures"]
     for sub in kinds:
-        # Look in both direct directories and images/ subdirectories
-        # First try direct directories (for ChartTablePDFParser)
         p = out_dir / sub
         if p.exists():
-            for img in sorted(p.glob("*.png")):  # ChartTablePDFParser saves as .png
+            for img in sorted(p.glob("*.png")):
                 gallery_items.append((str(img), f"{sub}: {img.name}"))
         
-        # Also try images/ subdirectories (for StructuredPDFParser)
         images_dir = out_dir / "images" / sub
         if images_dir.exists():
-            for img in sorted(images_dir.glob("*.jpg")):  # StructuredPDFParser saves as .jpg
+            for img in sorted(images_dir.glob("*.jpg")):
                 gallery_items.append((str(img), f"{sub}: {img.name}"))
 
     tmp_zip_dir = Path(tempfile.mkdtemp(prefix="doctra_zip_"))
     
-    # Use custom filename if provided, otherwise use default
     if zip_filename:
-        # Clean the filename to be safe for file systems
         safe_filename = re.sub(r'[<>:"/\\|?*]', '_', zip_filename)
         zip_base = tmp_zip_dir / safe_filename
     else:
         zip_base = tmp_zip_dir / "doctra_outputs"
     
-    # Create a filtered copy of the output directory excluding temp files
     filtered_dir = tmp_zip_dir / "filtered_outputs"
     shutil.copytree(out_dir, filtered_dir, ignore=shutil.ignore_patterns('~$*', '*.tmp', '*.temp'))
     
@@ -125,13 +111,10 @@ def _parse_markdown_by_pages(md_content: str) -> List[Dict[str, Any]]:
     while i < len(lines):
         line = lines[i].strip()
         
-        # Check for page header
         if line.startswith('## Page '):
-            # Save previous page if exists
             if current_page:
                 pages.append(current_page)
             
-            # Start new page
             page_num = line.replace('## Page ', '').strip()
             current_page = {
                 'page_num': page_num,
@@ -145,15 +128,12 @@ def _parse_markdown_by_pages(md_content: str) -> List[Dict[str, Any]]:
             i += 1
             continue
         
-        # Check for images (tables, charts, figures)
         if line.startswith('![') and '](images/' in line:
-            # Extract image info
             match = re.match(r'!\[([^\]]+)\]\(([^)]+)\)', line)
             if match:
                 caption = match.group(1)
                 img_path = match.group(2)
                 
-                # Categorize by type
                 if 'Table' in caption:
                     current_page['tables'].append({'caption': caption, 'path': img_path})
                 elif 'Chart' in caption:
@@ -163,18 +143,15 @@ def _parse_markdown_by_pages(md_content: str) -> List[Dict[str, Any]]:
                 
                 current_page['images'].append({'caption': caption, 'path': img_path})
                 
-                # Add to full content with proper markdown formatting
                 current_page['full_content'].append(f"![{caption}]({img_path})")
         
-        # Regular content
         elif current_page:
-            if line:  # Only add non-empty lines
+            if line:
                 current_page['content'].append(line)
             current_page['full_content'].append(line)
         
         i += 1
     
-    # Add the last page
     if current_page:
         pages.append(current_page)
     
@@ -198,12 +175,9 @@ def run_full_parse(
     if not pdf_file:
         return ("No file provided.", None, [], [], "")
 
-    # Extract filename from the uploaded file path
-    # Gradio provides the original filename in the file path
     original_filename = Path(pdf_file).stem
     
     tmp_dir = Path(tempfile.mkdtemp(prefix="doctra_"))
-    # Use original filename for temp file so parser creates correct output directory
     input_pdf = tmp_dir / f"{original_filename}.pdf"
     shutil.copy2(pdf_file, input_pdf)
 
@@ -295,7 +269,6 @@ def run_extract(
     original_filename = Path(pdf_file).stem
     
     tmp_dir = Path(tempfile.mkdtemp(prefix="doctra_"))
-    # Use original filename for temp file so parser creates correct output directory
     input_pdf = tmp_dir / f"{original_filename}.pdf"
     shutil.copy2(pdf_file, input_pdf)
 
