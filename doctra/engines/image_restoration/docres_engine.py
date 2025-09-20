@@ -30,6 +30,9 @@ try:
 except ImportError:
     HF_HUB_AVAILABLE = False
 
+# Progress bar imports
+from doctra.utils.progress import create_beautiful_progress_bar, create_notebook_friendly_bar
+
 # Add DocRes to path and change to DocRes directory for relative imports
 current_dir = Path(__file__).parent
 docres_dir = current_dir.parent.parent / "third_party" / "docres"
@@ -74,25 +77,37 @@ def load_docres_weights_from_hf():
             "Install with: pip install huggingface_hub"
         )
     
-    print("🔄 Downloading DocRes models from Hugging Face Hub...")
-    
     try:
-        # Download DocRes main model
-        print("   📥 Downloading DocRes main model...")
-        _ = hf_hub_download("DaVinciCode/doctra-docres-main", filename="config.json")
-        docres_path = hf_hub_download("DaVinciCode/doctra-docres-main", filename="docres.pkl")
+        # Detect environment for progress bar
+        is_notebook = "ipykernel" in sys.modules or "jupyter" in sys.modules
         
-        # Download MBD model
-        print("   📥 Downloading MBD model...")
-        _ = hf_hub_download("DaVinciCode/doctra-docres-mbd", filename="config.json")
-        mbd_path = hf_hub_download("DaVinciCode/doctra-docres-mbd", filename="mbd.pkl")
+        # Create progress bar for model downloads
+        if is_notebook:
+            progress_bar = create_notebook_friendly_bar(
+                total=2, 
+                desc="🔄 Downloading DocRes models from Hugging Face Hub"
+            )
+        else:
+            progress_bar = create_beautiful_progress_bar(
+                total=2, 
+                desc="🔄 Downloading DocRes models from Hugging Face Hub",
+                leave=True
+            )
         
-        # Verify file sizes
+        with progress_bar:
+            # Download DocRes main model
+            _ = hf_hub_download("DaVinciCode/doctra-docres-main", filename="config.json")
+            docres_path = hf_hub_download("DaVinciCode/doctra-docres-main", filename="docres.pkl")
+            progress_bar.update(1)
+            
+            # Download MBD model
+            _ = hf_hub_download("DaVinciCode/doctra-docres-mbd", filename="config.json")
+            mbd_path = hf_hub_download("DaVinciCode/doctra-docres-mbd", filename="mbd.pkl")
+            progress_bar.update(1)
+        
+        # Verify file sizes (silently)
         docres_size = Path(docres_path).stat().st_size
         mbd_size = Path(mbd_path).stat().st_size
-        
-        print(f"   ✅ DocRes model: {docres_size:,} bytes")
-        print(f"   ✅ MBD model: {mbd_size:,} bytes")
         
         return mbd_path, docres_path
         
@@ -149,7 +164,6 @@ class DocResEngine:
         self, 
         device: Optional[str] = None,
         use_half_precision: bool = True,
-        use_huggingface: bool = True,
         model_path: Optional[str] = None,
         mbd_path: Optional[str] = None
     ):
@@ -159,9 +173,8 @@ class DocResEngine:
         Args:
             device: Device to run on ('cuda', 'cpu', or None for auto-detect)
             use_half_precision: Whether to use half precision for inference
-            use_huggingface: Whether to download models from Hugging Face Hub (default: True)
-            model_path: Path to DocRes model checkpoint (used if use_huggingface=False)
-            mbd_path: Path to MBD model checkpoint (used if use_huggingface=False)
+            model_path: Path to DocRes model checkpoint (optional, defaults to Hugging Face Hub)
+            mbd_path: Path to MBD model checkpoint (optional, defaults to Hugging Face Hub)
         """
         if not DOCRES_AVAILABLE:
             raise ImportError(
@@ -184,12 +197,11 @@ class DocResEngine:
                 self.device = requested_device
         
         self.use_half_precision = use_half_precision
-        self.use_huggingface = use_huggingface
         
-        # Get model paths (from Hugging Face or local files)
+        # Get model paths (always from Hugging Face Hub)
         try:
             self.mbd_path, self.model_path = get_model_paths(
-                use_huggingface=use_huggingface,
+                use_huggingface=True,
                 model_path=model_path,
                 mbd_path=mbd_path
             )
@@ -198,30 +210,18 @@ class DocResEngine:
         
         # Verify model files exist
         if not os.path.exists(self.model_path):
-            if use_huggingface:
-                raise FileNotFoundError(
-                    f"DocRes model not found at {self.model_path}. "
-                    f"This may indicate a Hugging Face download failure. "
-                    f"Please check your internet connection and try again."
-                )
-            else:
-                raise FileNotFoundError(
-                    f"DocRes model not found at {self.model_path}. "
-                    f"Local models have been removed. Use use_huggingface=True to download from Hugging Face Hub."
-                )
+            raise FileNotFoundError(
+                f"DocRes model not found at {self.model_path}. "
+                f"This may indicate a Hugging Face download failure. "
+                f"Please check your internet connection and try again."
+            )
         
         if not os.path.exists(self.mbd_path):
-            if use_huggingface:
-                raise FileNotFoundError(
-                    f"MBD model not found at {self.mbd_path}. "
-                    f"This may indicate a Hugging Face download failure. "
-                    f"Please check your internet connection and try again."
-                )
-            else:
-                raise FileNotFoundError(
-                    f"MBD model not found at {self.mbd_path}. "
-                    f"Local models have been removed. Use use_huggingface=True to download from Hugging Face Hub."
-                )
+            raise FileNotFoundError(
+                f"MBD model not found at {self.mbd_path}. "
+                f"This may indicate a Hugging Face download failure. "
+                f"Please check your internet connection and try again."
+            )
         
         # Initialize model
         self._model = None
@@ -500,27 +500,46 @@ class DocResEngine:
                 print("❌ No pages found in PDF")
                 return None
             
-            print(f"📄 Found {len(pil_pages)} pages, processing with DocRes...")
-            
             # Process each page with DocRes
             enhanced_pages = []
-            for i, page_img in enumerate(pil_pages):
-                try:
-                    # Convert PIL to numpy array
-                    img_array = np.array(page_img)
-                    
-                    # Apply DocRes restoration
-                    restored_img, _ = self.restore_image(img_array, task)
-                    
-                    # Convert back to PIL Image
-                    enhanced_page = Image.fromarray(restored_img)
-                    enhanced_pages.append(enhanced_page)
-                    
-                    print(f"  ✅ Page {i+1}/{len(pil_pages)} processed")
-                    
-                except Exception as e:
-                    print(f"  ⚠️ Page {i+1} processing failed: {e}, using original")
-                    enhanced_pages.append(page_img)
+            
+            # Detect environment for progress bar
+            is_notebook = "ipykernel" in sys.modules or "jupyter" in sys.modules
+            
+            # Create progress bar for page processing
+            if is_notebook:
+                progress_bar = create_notebook_friendly_bar(
+                    total=len(pil_pages), 
+                    desc="🔄 Processing pages"
+                )
+            else:
+                progress_bar = create_beautiful_progress_bar(
+                    total=len(pil_pages), 
+                    desc="🔄 Processing pages",
+                    leave=True
+                )
+            
+            with progress_bar:
+                for i, page_img in enumerate(pil_pages):
+                    try:
+                        # Convert PIL to numpy array
+                        img_array = np.array(page_img)
+                        
+                        # Apply DocRes restoration
+                        restored_img, _ = self.restore_image(img_array, task)
+                        
+                        # Convert back to PIL Image
+                        enhanced_page = Image.fromarray(restored_img)
+                        enhanced_pages.append(enhanced_page)
+                        
+                        progress_bar.set_description(f"✅ Page {i+1}/{len(pil_pages)} processed")
+                        progress_bar.update(1)
+                        
+                    except Exception as e:
+                        print(f"  ⚠️ Page {i+1} processing failed: {e}, using original")
+                        enhanced_pages.append(page_img)
+                        progress_bar.set_description(f"⚠️ Page {i+1} failed, using original")
+                        progress_bar.update(1)
             
             # Create enhanced PDF
             if enhanced_pages:

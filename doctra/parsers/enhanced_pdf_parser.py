@@ -56,7 +56,6 @@ class EnhancedPDFParser(StructuredPDFParser):
         restoration_task: str = "appearance",
         restoration_device: Optional[str] = None,
         restoration_dpi: int = 200,
-        use_huggingface: bool = True,
         use_vlm: bool = False,
         vlm_provider: str = "gemini",
         vlm_model: str | None = None,
@@ -94,7 +93,6 @@ class EnhancedPDFParser(StructuredPDFParser):
         self.restoration_task = restoration_task
         self.restoration_device = restoration_device
         self.restoration_dpi = restoration_dpi
-        self.use_huggingface = use_huggingface
         
         # Initialize DocRes engine if needed
         self.docres_engine = None
@@ -102,14 +100,9 @@ class EnhancedPDFParser(StructuredPDFParser):
             try:
                 self.docres_engine = DocResEngine(
                     device=restoration_device,
-                    use_half_precision=True,
-                    use_huggingface=use_huggingface
+                    use_half_precision=True
                 )
                 print(f"✅ DocRes engine initialized with task: {restoration_task}")
-                if use_huggingface:
-                    print("   📥 Using models from Hugging Face Hub")
-                else:
-                    print("   📁 Using local model files")
             except Exception as e:
                 print(f"⚠️ DocRes initialization failed: {e}")
                 print("   Continuing without image restoration...")
@@ -170,19 +163,17 @@ class EnhancedPDFParser(StructuredPDFParser):
             print("❌ No pages found in PDF")
             return []
         
-        print(f"📄 Found {len(original_pages)} pages, applying {self.restoration_task} restoration...")
-        
         # Create progress bar
         is_notebook = "ipykernel" in sys.modules or "jupyter" in sys.modules
         if is_notebook:
             progress_bar = create_notebook_friendly_bar(
                 total=len(original_pages), 
-                desc=f"DocRes {self.restoration_task}"
+                desc=f"🔄 DocRes {self.restoration_task}"
             )
         else:
             progress_bar = create_beautiful_progress_bar(
                 total=len(original_pages), 
-                desc=f"DocRes {self.restoration_task}",
+                desc=f"🔄 DocRes {self.restoration_task}",
                 leave=True
             )
         
@@ -212,11 +203,13 @@ class EnhancedPDFParser(StructuredPDFParser):
                         enhanced_path = os.path.join(enhanced_dir, f"page_{i+1:03d}_enhanced.jpg")
                         enhanced_page.save(enhanced_path, "JPEG", quality=95)
                         
+                        progress_bar.set_description(f"✅ Page {i+1}/{len(original_pages)} enhanced")
                         progress_bar.update(1)
                         
                     except Exception as e:
                         print(f"  ⚠️ Page {i+1} restoration failed: {e}, using original")
                         enhanced_pages.append(page_img)
+                        progress_bar.set_description(f"⚠️ Page {i+1} failed, using original")
                         progress_bar.update(1)
         
         finally:

@@ -289,8 +289,6 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
               help='Device for DocRes processing (default: auto-detect)')
 @click.option('--restoration-dpi', type=int, default=200,
               help='DPI for restoration processing (default: 200)')
-@click.option('--use-huggingface/--no-huggingface', default=True,
-              help='Use Hugging Face Hub for model loading (default: True)')
 @vlm_options
 @layout_options
 @ocr_options
@@ -299,7 +297,7 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
 @click.option('--verbose', '-v', is_flag=True,
               help='Enable verbose output')
 def enhance(pdf_path: Path, output_dir: Optional[Path], restoration_task: str,
-           restoration_device: Optional[str], restoration_dpi: int, use_huggingface: bool,
+           restoration_device: Optional[str], restoration_dpi: int,
            use_vlm: bool, vlm_provider: str, vlm_model: Optional[str], vlm_api_key: Optional[str],
            layout_model: str, dpi: int, min_score: float,
            ocr_lang: str, ocr_psm: int, ocr_oem: int, ocr_config: str,
@@ -327,14 +325,13 @@ def enhance(pdf_path: Path, output_dir: Optional[Path], restoration_task: str,
       doctra enhance document.pdf --restoration-task end2end --restoration-device cuda
       doctra enhance document.pdf --use-vlm --vlm-api-key your_key
       doctra enhance document.pdf -o ./enhanced_results --restoration-dpi 300
-      doctra enhance document.pdf --no-huggingface  # Use local models instead
+      doctra enhance document.pdf --restoration-task deshadowing  # Use different restoration task
 
     :param pdf_path: Path to the input PDF file
     :param output_dir: Output directory for results (optional)
     :param restoration_task: DocRes restoration task to perform
     :param restoration_device: Device for DocRes processing
     :param restoration_dpi: DPI for restoration processing
-    :param use_huggingface: Whether to use Hugging Face Hub for model loading
     :param use_vlm: Whether to use VLM for enhanced extraction
     :param vlm_provider: VLM provider ('gemini' or 'openai')
     :param vlm_model: Model name to use (defaults to provider-specific defaults)
@@ -381,7 +378,6 @@ def enhance(pdf_path: Path, output_dir: Optional[Path], restoration_task: str,
             restoration_task=restoration_task,
             restoration_device=restoration_device,
             restoration_dpi=restoration_dpi,
-            use_huggingface=use_huggingface,
             use_vlm=use_vlm,
             vlm_provider=vlm_provider,
             vlm_model=vlm_model,
@@ -1008,7 +1004,7 @@ def info():
     click.echo("\nDocRes Image Restoration:")
     try:
         from doctra.engines.image_restoration import DocResEngine
-        docres = DocResEngine(use_huggingface=True)
+        docres = DocResEngine()
         click.echo(f"  ✅ DocRes available - {len(docres.get_supported_tasks())} restoration tasks")
         click.echo("  Tasks: dewarping, deshadowing, appearance, deblurring, binarization, end2end")
         click.echo("  📥 Models: Downloaded from Hugging Face Hub")
