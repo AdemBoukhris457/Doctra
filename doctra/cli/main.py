@@ -15,12 +15,14 @@ from typing import Optional
 # Import parsers
 try:
     from doctra.parsers.structured_pdf_parser_enhancer import StructuredPDFParser
+    from doctra.parsers.enhanced_pdf_parser import EnhancedPDFParser
     from doctra.parsers.chart_table_pdf_parser import ChartTablePDFParser
 except ImportError:
     # Fallback for development/testing
     project_root = Path(__file__).parent.parent.parent
     sys.path.insert(0, str(project_root))
     from doctra.parsers.structured_pdf_parser import StructuredPDFParser
+    from doctra.parsers.enhanced_pdf_parser import EnhancedPDFParser
     from doctra.parsers.table_chart_extractor import ChartTablePDFParser
 
 
@@ -37,6 +39,7 @@ def cli(ctx):
     \b
     Commands:
       parse      Full document parsing with text, tables, charts, and figures
+      enhance    Enhanced parsing with DocRes image restoration
       extract    Extract only charts and/or tables from documents
       visualize  Visualize layout detection results
       analyze    Quick document analysis without processing
@@ -45,6 +48,7 @@ def cli(ctx):
     \b
     Examples:
       doctra parse document.pdf                    # Full document parsing
+      doctra enhance document.pdf                  # Enhanced parsing with image restoration
       doctra extract charts document.pdf          # Extract only charts
       doctra extract both document.pdf --use-vlm  # Extract charts & tables with VLM
       doctra visualize document.pdf               # Visualize layout detection
@@ -266,6 +270,153 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
         sys.exit(130)
     except Exception as e:
         click.echo(f"❌ Error during parsing: {e}", err=True)
+        if verbose:
+            import traceback
+            click.echo(traceback.format_exc(), err=True)
+        sys.exit(1)
+    finally:
+        # Restore original working directory
+        os.chdir(original_cwd)
+
+
+@cli.command()
+@click.argument('pdf_path', type=click.Path(exists=True, path_type=Path))
+@click.option('--output-dir', '-o', type=click.Path(path_type=Path),
+              help='Output directory (default: outputs/{pdf_filename}_enhanced)')
+@click.option('--restoration-task', type=click.Choice(['dewarping', 'deshadowing', 'appearance', 'deblurring', 'binarization', 'end2end']), 
+              default='appearance', help='DocRes restoration task (default: appearance)')
+@click.option('--restoration-device', type=click.Choice(['cuda', 'cpu']), 
+              help='Device for DocRes processing (default: auto-detect)')
+@click.option('--restoration-dpi', type=int, default=200,
+              help='DPI for restoration processing (default: 200)')
+@vlm_options
+@layout_options
+@ocr_options
+@click.option('--box-separator', default='\n',
+              help='Separator between text boxes in output (default: newline)')
+@click.option('--verbose', '-v', is_flag=True,
+              help='Enable verbose output')
+def enhance(pdf_path: Path, output_dir: Optional[Path], restoration_task: str,
+           restoration_device: Optional[str], restoration_dpi: int,
+           use_vlm: bool, vlm_provider: str, vlm_model: Optional[str], vlm_api_key: Optional[str],
+           layout_model: str, dpi: int, min_score: float,
+           ocr_lang: str, ocr_psm: int, ocr_oem: int, ocr_config: str,
+           box_separator: str, verbose: bool):
+    """
+    Enhanced PDF parsing with DocRes image restoration.
+
+    Performs document processing with image restoration to improve quality
+    before layout detection and content extraction. Particularly useful for
+    scanned documents, low-quality PDFs, or documents with shadows/distortion.
+
+    \b
+    Restoration Tasks:
+      appearance    - General appearance enhancement (default)
+      dewarping     - Correct document perspective distortion
+      deshadowing   - Remove shadows from documents
+      deblurring    - Reduce blur in document images
+      binarization  - Convert to clean black/white text
+      end2end       - Complete pipeline: dewarping → deshadowing → appearance
+
+    \b
+    Examples:
+      doctra enhance document.pdf
+      doctra enhance document.pdf --restoration-task dewarping
+      doctra enhance document.pdf --restoration-task end2end --restoration-device cuda
+      doctra enhance document.pdf --use-vlm --vlm-api-key your_key
+      doctra enhance document.pdf -o ./enhanced_results --restoration-dpi 300
+      doctra enhance document.pdf --restoration-task deshadowing  # Use different restoration task
+
+    :param pdf_path: Path to the input PDF file
+    :param output_dir: Output directory for results (optional)
+    :param restoration_task: DocRes restoration task to perform
+    :param restoration_device: Device for DocRes processing
+    :param restoration_dpi: DPI for restoration processing
+    :param use_vlm: Whether to use VLM for enhanced extraction
+    :param vlm_provider: VLM provider ('gemini' or 'openai')
+    :param vlm_model: Model name to use (defaults to provider-specific defaults)
+    :param vlm_api_key: API key for VLM provider
+    :param layout_model: Layout detection model name
+    :param dpi: DPI for PDF rendering
+    :param min_score: Minimum confidence score for layout detection
+    :param ocr_lang: OCR language code
+    :param ocr_psm: Tesseract page segmentation mode
+    :param ocr_oem: Tesseract OCR engine mode
+    :param ocr_config: Additional Tesseract configuration
+    :param box_separator: Separator between text boxes in output
+    :param verbose: Whether to enable verbose output
+    :return: None
+    """
+    validate_vlm_config(use_vlm, vlm_api_key)
+
+    if verbose:
+        click.echo(f"🔍 Starting enhanced PDF parsing with DocRes...")
+        click.echo(f"   Input: {pdf_path}")
+        click.echo(f"   Restoration task: {restoration_task}")
+        click.echo(f"   Restoration device: {restoration_device or 'auto-detect'}")
+        click.echo(f"   Restoration DPI: {restoration_dpi}")
+        if output_dir:
+            click.echo(f"   Output: {output_dir}")
+
+    # Create enhanced parser instance
+    try:
+        if verbose:
+            click.echo(f"🔧 Initializing enhanced parser with DocRes...")
+            if use_vlm:
+                click.echo(f"   VLM Provider: {vlm_provider}")
+                click.echo(f"   VLM Model: {vlm_model or 'default'}")
+            click.echo(f"   Layout Model: {layout_model}")
+            click.echo(f"   DPI: {dpi}")
+            click.echo(f"   OCR Language: {ocr_lang}")
+        else:
+            click.echo(f"🔧 Initializing enhanced parser with DocRes...")
+            if use_vlm:
+                click.echo(f"   Using VLM: {vlm_provider}")
+
+        parser = EnhancedPDFParser(
+            use_image_restoration=True,
+            restoration_task=restoration_task,
+            restoration_device=restoration_device,
+            restoration_dpi=restoration_dpi,
+            use_vlm=use_vlm,
+            vlm_provider=vlm_provider,
+            vlm_model=vlm_model,
+            vlm_api_key=vlm_api_key,
+            layout_model_name=layout_model,
+            dpi=dpi,
+            min_score=min_score,
+            ocr_lang=ocr_lang,
+            ocr_psm=ocr_psm,
+            ocr_oem=ocr_oem,
+            ocr_extra_config=ocr_config,
+            box_separator=box_separator
+        )
+    except Exception as e:
+        click.echo(f"❌ Error initializing enhanced parser: {e}", err=True)
+        if verbose:
+            import traceback
+            click.echo(traceback.format_exc(), err=True)
+        sys.exit(1)
+
+    # Change to output directory if specified
+    original_cwd = os.getcwd()
+    if output_dir:
+        output_dir.mkdir(parents=True, exist_ok=True)
+        os.chdir(output_dir)
+        click.echo(f"📁 Output directory: {output_dir.absolute()}")
+
+    try:
+        # Parse the document with enhancement
+        click.echo(f"📄 Processing with enhancement: {pdf_path.name}")
+        parser.parse(str(pdf_path.absolute()), str(output_dir) if output_dir else None)
+        click.echo("✅ Enhanced document processing completed successfully!")
+        click.echo(f"📁 Output directory: {output_dir.absolute() if output_dir else 'outputs/'}")
+
+    except KeyboardInterrupt:
+        click.echo("\n⚠️  Processing interrupted by user", err=True)
+        sys.exit(130)
+    except Exception as e:
+        click.echo(f"❌ Error during enhanced parsing: {e}", err=True)
         if verbose:
             import traceback
             click.echo(traceback.format_exc(), err=True)
@@ -782,6 +933,9 @@ def info():
         ('pytesseract', 'pytesseract', 'OCR engine'),
         ('tqdm', 'tqdm', 'Progress bars'),
         ('click', 'click', 'CLI framework'),
+        ('skimage', 'scikit-image', 'DocRes image restoration'),
+        ('torch', 'torch', 'DocRes neural networks'),
+        ('huggingface_hub', 'huggingface_hub', 'Hugging Face model downloads'),
     ]
 
     click.echo("\nCore Dependencies:")
@@ -811,6 +965,7 @@ def info():
     # Available commands
     click.echo("\nAvailable Commands:")
     click.echo("  📄 parse      - Full document processing (text, tables, charts, figures)")
+    click.echo("  ✨ enhance    - Enhanced parsing with DocRes image restoration")
     click.echo("  📊 extract    - Chart/table extraction only")
     click.echo("    ├─ charts   - Extract only charts")
     click.echo("    ├─ tables   - Extract only tables")
@@ -845,9 +1000,22 @@ def info():
     else:
         click.echo("  VLM_API_KEY: (not set)")
 
+    # DocRes information
+    click.echo("\nDocRes Image Restoration:")
+    try:
+        from doctra.engines.image_restoration import DocResEngine
+        docres = DocResEngine()
+        click.echo(f"  ✅ DocRes available - {len(docres.get_supported_tasks())} restoration tasks")
+        click.echo("  Tasks: dewarping, deshadowing, appearance, deblurring, binarization, end2end")
+        click.echo("  📥 Models: Downloaded from Hugging Face Hub")
+    except Exception as e:
+        click.echo(f"  ⚠️  DocRes not available - {str(e)[:50]}...")
+        click.echo("  Install with: pip install scikit-image torch huggingface_hub")
+
     # Usage examples
     click.echo("\n💡 Quick Start Examples:")
     click.echo("  doctra parse document.pdf                    # Full document parsing")
+    click.echo("  doctra enhance document.pdf                  # Enhanced parsing with DocRes")
     click.echo("  doctra extract both document.pdf --use-vlm  # Charts & tables with VLM")
     click.echo("  doctra extract charts document.pdf          # Only charts")
     click.echo("  doctra extract tables document.pdf          # Only tables")
