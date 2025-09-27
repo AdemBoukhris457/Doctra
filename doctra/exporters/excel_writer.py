@@ -85,6 +85,37 @@ def _autosize_columns(ws, df: pd.DataFrame) -> None:
         ws.column_dimensions[get_column_letter(i)].width = min(max(10, max_len + 2), 60)
 
 
+def _style_summary_sheet(ws, df: pd.DataFrame) -> None:
+    """
+    Apply special styling to the summary sheet with text wrapping for descriptions.
+    
+    :param ws: OpenPyXL worksheet object to style
+    :param df: Pandas DataFrame containing the summary data
+    :return: None
+    """
+    # Style header row
+    _style_header(ws, ncols=df.shape[1])
+    
+    # Apply text wrapping to all data cells
+    wrap_alignment = Alignment(wrap_text=True, vertical="top")
+    
+    # Apply wrapping to all data rows (skip header row)
+    for row_idx in range(2, len(df) + 2):  # Start from row 2 (after header)
+        for col_idx in range(1, df.shape[1] + 1):
+            cell = ws.cell(row=row_idx, column=col_idx)
+            cell.alignment = wrap_alignment
+    
+    # Set specific column widths for summary sheet
+    # Table Title column - narrower
+    ws.column_dimensions['A'].width = 30
+    # Description column - wider to accommodate wrapped text
+    ws.column_dimensions['B'].width = 60
+    
+    # Set row heights to accommodate wrapped text
+    for row_idx in range(2, len(df) + 2):
+        ws.row_dimensions[row_idx].height = 60  # Allow for multiple lines
+
+
 def _normalize_data(headers: List[str], rows: List[List]) -> tuple[List[str], List[List]]:
     """
     Normalize headers and rows to ensure consistent dimensions.
@@ -173,10 +204,9 @@ def write_structured_excel(excel_path: str, items: List[Dict[str, Any]]) -> str 
             summary_df = pd.DataFrame(summary_data)
             summary_df.to_excel(writer, sheet_name="Table Summary", index=False)
             
-            # Style the summary sheet
+            # Style the summary sheet with text wrapping
             summary_ws = writer.sheets["Table Summary"]
-            _style_header(summary_ws, ncols=summary_df.shape[1])
-            _autosize_columns(summary_ws, summary_df)
+            _style_summary_sheet(summary_ws, summary_df)
             taken.add("Table Summary")
 
         # Process individual table sheets
