@@ -1,17 +1,19 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class Chart(BaseModel):
     """
     Structured representation of a chart extracted from an image.
     
-    Contains the title, headers, and data rows extracted from a chart
-    using VLM (Vision Language Model) processing.
+    Includes a title, a short description, column headers, and data rows
+    identified using VLM (Vision Language Model) processing.
 
-    :param title: Title or caption of the chart
+    :param title: Title or caption of the chart (max 31 characters)
+    :param description: Short description of the chart (max 300 characters)
     :param headers: Column headers for the chart data
     :param rows: Data rows containing the chart values
     """
-    title: str
+    title: str = Field(max_length=31)
+    description: str = Field(max_length=300)
     headers: list[str]
     rows: list[list[str]]
 
@@ -19,13 +21,15 @@ class Table(BaseModel):
     """
     Structured representation of a table extracted from an image.
     
-    Contains the title, headers, and data rows extracted from a table
-    using VLM (Vision Language Model) processing.
+    Includes a title, a short description, column headers, and data rows
+    identified using VLM (Vision Language Model) processing.
 
-    :param title: Title or caption of the table
+    :param title: Title or caption of the table (max 31 characters)
+    :param description: Short description of the table (max 300 characters)
     :param headers: Column headers for the table data
     :param rows: Data rows containing the table values
     """
-    title: str
+    title: str = Field(max_length=31)
+    description: str = Field(max_length=300)
     headers: list[str]
     rows: list[list[str]]
