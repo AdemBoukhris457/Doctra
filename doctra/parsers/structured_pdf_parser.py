@@ -163,6 +163,9 @@ class StructuredPDFParser:
                                     chart = self.vlm.extract_chart(abs_img_path)
                                     item = to_structured_dict(chart)
                                     if item:
+                                        # Add page and type information to structured item
+                                        item["page"] = page_num
+                                        item["type"] = "Chart"
                                         structured_items.append(item)
                                         md_lines.append(
                                             render_markdown_table(item.get("headers"), item.get("rows"),
@@ -184,6 +187,9 @@ class StructuredPDFParser:
                                     table = self.vlm.extract_table(abs_img_path)
                                     item = to_structured_dict(table)
                                     if item:
+                                        # Add page and type information to structured item
+                                        item["page"] = page_num
+                                        item["type"] = "Table"
                                         structured_items.append(item)
                                         md_lines.append(
                                             render_markdown_table(item.get("headers"), item.get("rows"),

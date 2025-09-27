@@ -5,6 +5,7 @@ from typing import Dict, Any, List, Set
 import pandas as pd  # pip install pandas openpyxl
 from openpyxl.styles import PatternFill, Font, Alignment
 from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.hyperlink import Hyperlink
 
 _INVALID_SHEET_CHARS = r'[:\\/*?\[\]]'  # Excel-invalid characters
 _MAX_SHEET_LEN = 31
@@ -85,12 +86,14 @@ def _autosize_columns(ws, df: pd.DataFrame) -> None:
         ws.column_dimensions[get_column_letter(i)].width = min(max(10, max_len + 2), 60)
 
 
-def _style_summary_sheet(ws, df: pd.DataFrame) -> None:
+def _style_summary_sheet(ws, df: pd.DataFrame, sheet_mapping: dict = None) -> None:
     """
     Apply special styling to the summary sheet with text wrapping for descriptions.
+    Add hyperlinks to table titles that link to their corresponding sheets.
     
     :param ws: OpenPyXL worksheet object to style
     :param df: Pandas DataFrame containing the summary data
+    :param sheet_mapping: Dictionary mapping table titles to their sheet names
     :return: None
     """
     # Style header row
@@ -104,12 +107,34 @@ def _style_summary_sheet(ws, df: pd.DataFrame) -> None:
         for col_idx in range(1, df.shape[1] + 1):
             cell = ws.cell(row=row_idx, column=col_idx)
             cell.alignment = wrap_alignment
+            
+            # Add hyperlink to table title column (column A)
+            if col_idx == 1 and sheet_mapping:  # Table Title column
+                table_title = cell.value
+                if table_title and table_title in sheet_mapping:
+                    sheet_name = sheet_mapping[table_title]
+                    
+                    # Create hyperlink to the sheet using proper Excel format
+                    # Escape sheet name if it contains spaces or special characters
+                    if ' ' in sheet_name or any(char in sheet_name for char in ['[', ']', '*', '?', ':', '\\', '/']):
+                        hyperlink_ref = f"#'{sheet_name}'!A1"
+                    else:
+                        hyperlink_ref = f"#{sheet_name}!A1"
+                    
+                    # Use Hyperlink class with proper parameters
+                    cell.hyperlink = Hyperlink(ref=hyperlink_ref, target=hyperlink_ref)
+                    # Style the hyperlink
+                    cell.font = Font(color="0000FF", underline="single")
     
     # Set specific column widths for summary sheet
     # Table Title column - narrower
     ws.column_dimensions['A'].width = 30
     # Description column - wider to accommodate wrapped text
     ws.column_dimensions['B'].width = 60
+    # Page column - narrow for page numbers
+    ws.column_dimensions['C'].width = 10
+    # Type column - narrow for Table/Chart
+    ws.column_dimensions['D'].width = 12
     
     # Set row heights to accommodate wrapped text
     for row_idx in range(2, len(df) + 2):
@@ -192,24 +217,29 @@ def write_structured_excel(excel_path: str, items: List[Dict[str, Any]]) -> str 
     with pd.ExcelWriter(excel_path, engine="openpyxl", mode="w") as writer:
         # Create summary sheet first
         summary_data = []
+        sheet_mapping = {}  # Map table titles to their sheet names
+        
         for item in valid_items:
             title = item.get("title") or "Untitled"
             description = item.get("description") or "No description available"
+            page_number = item.get("page", "Unknown")
+            item_type = item.get("type", "Table")  # Default to "Table" if not specified
+            
+            
             summary_data.append({
                 "Table Title": title,
-                "Description": description
+                "Description": description,
+                "Page": page_number,
+                "Type": item_type
             })
         
+        # Create summary sheet first (but without hyperlinks initially)
         if summary_data:
             summary_df = pd.DataFrame(summary_data)
             summary_df.to_excel(writer, sheet_name="Table Summary", index=False)
-            
-            # Style the summary sheet with text wrapping
-            summary_ws = writer.sheets["Table Summary"]
-            _style_summary_sheet(summary_ws, summary_df)
             taken.add("Table Summary")
 
-        # Process individual table sheets
+        # Process individual table sheets to build sheet mapping
         for item in valid_items:
             try:
                 title = item.get("title") or "Untitled"
@@ -217,6 +247,9 @@ def write_structured_excel(excel_path: str, items: List[Dict[str, Any]]) -> str 
                 rows = item.get("rows") or []
 
                 sheet_name = _safe_sheet_name(title, taken)
+                
+                # Add to sheet mapping for hyperlinks
+                sheet_mapping[title] = sheet_name
 
                 # Normalize data to handle mismatched dimensions
                 normalized_headers, normalized_rows = _normalize_data(headers, rows)
@@ -244,5 +277,10 @@ def write_structured_excel(excel_path: str, items: List[Dict[str, Any]]) -> str 
             except Exception as e:
                 print(f"Error processing item '{item.get('title', 'Unknown')}': {e}")
                 continue
+
+        # Now add hyperlinks to the summary sheet (after all sheets are created)
+        if summary_data and sheet_mapping:
+            summary_ws = writer.sheets["Table Summary"]
+            _style_summary_sheet(summary_ws, summary_df, sheet_mapping)
 
     return excel_path

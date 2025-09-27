@@ -14,7 +14,7 @@ def to_structured_dict(obj: Any) -> Optional[Dict[str, Any]]:
       - JSON string
       - dict
       - Pydantic BaseModel (v1 .dict() or v2 .model_dump())
-    Returns a normalized dict with keys: title, headers, rows — or None.
+    Returns a normalized dict with keys: title, description, headers, rows, page, type — or None.
     """
     if obj is None:
         return None
@@ -39,8 +39,10 @@ def to_structured_dict(obj: Any) -> Optional[Dict[str, Any]]:
         description = obj.get("description") or ""
         headers = obj.get("headers") or []
         rows = obj.get("rows") or []
+        page = obj.get("page", "Unknown")
+        item_type = obj.get("type", "Table")
         if not isinstance(headers, list) or not isinstance(rows, list):
             return None
-        return {"title": title, "description": description, "headers": headers, "rows": rows}
+        return {"title": title, "description": description, "headers": headers, "rows": rows, "page": page, "type": item_type}
 
     return None
