@@ -157,7 +157,6 @@ def run_extract(
     return (
         f"✅ Parsing completed successfully!\n📁 Output directory: {out_dir}", 
         tables_html, 
-        gallery_items, 
         file_paths, 
         zip_path
     )
@@ -268,6 +267,60 @@ def show_selected_item(rel_path: str, out_dir_path: str) -> Tuple[str, Optional[
         return "", None
 
 
+def update_content_visibility(use_vlm: bool) -> Tuple[gr.Column, gr.Column]:
+    """
+    Update content visibility based on VLM usage.
+    
+    Args:
+        use_vlm: Whether VLM is being used
+        
+    Returns:
+        Tuple of (vlm_content, non_vlm_content)
+    """
+    if use_vlm:
+        # Show VLM content (data + selected image)
+        return gr.Column(visible=True), gr.Column(visible=False)
+    else:
+        # Show non-VLM content (scrollable gallery)
+        return gr.Column(visible=False), gr.Column(visible=True)
+
+
+def populate_scrollable_gallery(file_paths: List[str], target: str) -> List[tuple[str, str]]:
+    """
+    Populate the scrollable gallery with image files from the extraction results, filtered by target.
+    
+    Args:
+        file_paths: List of file paths from extraction
+        target: Extraction target ("tables", "charts", or "both")
+        
+    Returns:
+        List of (image_path, caption) tuples for image files
+    """
+    gallery_items = []
+    for file_path in file_paths:
+        if file_path.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
+            # Filter based on target
+            filename = Path(file_path).name.lower()
+            should_include = False
+            
+            if target == "both":
+                # Include all images
+                should_include = True
+            elif target == "tables":
+                # Include only table images
+                if "table" in filename or "tables" in filename:
+                    should_include = True
+            elif target == "charts":
+                # Include only chart images
+                if "chart" in filename or "charts" in filename:
+                    should_include = True
+            
+            if should_include:
+                gallery_items.append((file_path, Path(file_path).name))
+    
+    return gallery_items
+
+
 def create_tables_charts_tab() -> Tuple[gr.Tab, dict]:
     """
     Create the Tables & Charts extraction tab with all its components and functionality.
@@ -298,13 +351,25 @@ def create_tables_charts_tab() -> Tuple[gr.Tab, dict]:
         # Item selector for VLM outputs
         item_selector_e = gr.Dropdown(label="Select Item", visible=False, interactive=True)
         
-        # Content display
+        # Content display - different layout based on VLM usage
         with gr.Row():
-            tables_preview_e = gr.HTML(label="Extracted Data", elem_classes=["page-content"])
-            image_e = gr.Image(label="Selected Image", interactive=False)
+            # VLM mode: show data and selected image side by side
+            with gr.Column(visible=True) as vlm_content:
+                tables_preview_e = gr.HTML(label="Extracted Data", elem_classes=["page-content"])
+                image_e = gr.Image(label="Selected Image", interactive=False)
+            
+            # Non-VLM mode: show scrollable gallery of extracted images
+            with gr.Column(visible=False) as non_vlm_content:
+                scrollable_gallery_e = gr.Gallery(
+                    label="Extracted Images", 
+                    columns=2, 
+                    height=600, 
+                    preview=True,
+                    show_label=True,
+                    elem_classes=["scrollable-gallery"]
+                )
         
-        # Gallery and downloads
-        gallery_e = gr.Gallery(label="All Extracted Images", columns=4, height=200, preview=True)
+        # Downloads
         files_out_e = gr.Files(label="Download individual output files")
         zip_out_e = gr.File(label="Download all outputs (ZIP)")
 
@@ -324,7 +389,7 @@ def create_tables_charts_tab() -> Tuple[gr.Tab, dict]:
                 g,
             ),
             inputs=[pdf_e, target, use_vlm_e, vlm_provider_e, vlm_api_key_e, layout_model_e, dpi_e, min_score_e],
-            outputs=[status_e, tables_preview_e, gallery_e, files_out_e, zip_out_e],
+            outputs=[status_e, tables_preview_e, files_out_e, zip_out_e],
         ).then(
             fn=capture_out_dir,
             inputs=[status_e],
@@ -337,6 +402,14 @@ def create_tables_charts_tab() -> Tuple[gr.Tab, dict]:
             fn=show_selected_item,
             inputs=[item_selector_e, out_dir_state],
             outputs=[tables_preview_e, image_e]
+        ).then(
+            fn=update_content_visibility,
+            inputs=[use_vlm_e],
+            outputs=[vlm_content, non_vlm_content]
+        ).then(
+            fn=populate_scrollable_gallery,
+            inputs=[files_out_e, target],
+            outputs=[scrollable_gallery_e]
         )
         
         # Handle dropdown selection changes
@@ -361,10 +434,12 @@ def create_tables_charts_tab() -> Tuple[gr.Tab, dict]:
         'item_selector_e': item_selector_e,
         'tables_preview_e': tables_preview_e,
         'image_e': image_e,
-        'gallery_e': gallery_e,
         'files_out_e': files_out_e,
         'zip_out_e': zip_out_e,
-        'out_dir_state': out_dir_state
+        'out_dir_state': out_dir_state,
+        'vlm_content': vlm_content,
+        'non_vlm_content': non_vlm_content,
+        'scrollable_gallery_e': scrollable_gallery_e
     }
 
     return tab, state_vars
