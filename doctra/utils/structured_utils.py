@@ -36,10 +36,11 @@ def to_structured_dict(obj: Any) -> Optional[Dict[str, Any]]:
 
     if isinstance(obj, dict):
         title = obj.get("title") or "Untitled"
+        description = obj.get("description") or ""
         headers = obj.get("headers") or []
         rows = obj.get("rows") or []
         if not isinstance(headers, list) or not isinstance(rows, list):
             return None
-        return {"title": title, "headers": headers, "rows": rows}
+        return {"title": title, "description": description, "headers": headers, "rows": rows}
 
     return None

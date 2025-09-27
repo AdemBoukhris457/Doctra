@@ -159,6 +159,27 @@ def write_structured_excel(excel_path: str, items: List[Dict[str, Any]]) -> str 
     taken: Set[str] = set()
 
     with pd.ExcelWriter(excel_path, engine="openpyxl", mode="w") as writer:
+        # Create summary sheet first
+        summary_data = []
+        for item in valid_items:
+            title = item.get("title") or "Untitled"
+            description = item.get("description") or "No description available"
+            summary_data.append({
+                "Table Title": title,
+                "Description": description
+            })
+        
+        if summary_data:
+            summary_df = pd.DataFrame(summary_data)
+            summary_df.to_excel(writer, sheet_name="Table Summary", index=False)
+            
+            # Style the summary sheet
+            summary_ws = writer.sheets["Table Summary"]
+            _style_header(summary_ws, ncols=summary_df.shape[1])
+            _autosize_columns(summary_ws, summary_df)
+            taken.add("Table Summary")
+
+        # Process individual table sheets
         for item in valid_items:
             try:
                 title = item.get("title") or "Untitled"
