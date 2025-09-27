@@ -2,6 +2,11 @@ import os
 import shutil
 import tempfile
 import re
+import traceback
+import pandas as pd
+import html as _html
+import base64
+import json
 from pathlib import Path
 from typing import Optional, Tuple, List, Dict, Any
 
@@ -9,6 +14,7 @@ import gradio as gr
 
 from doctra.parsers.structured_pdf_parser import StructuredPDFParser
 from doctra.parsers.table_chart_extractor import ChartTablePDFParser
+from doctra.utils.pdf_io import render_pdf_to_images
 
 
 def _gather_outputs(out_dir: Path, allowed_kinds: Optional[List[str]] = None, zip_filename: Optional[str] = None, is_structured_parsing: bool = False) -> Tuple[List[tuple[str, str]], List[str], str]:
@@ -100,7 +106,6 @@ def _parse_markdown_by_pages(md_content: str) -> List[Dict[str, Any]]:
     Parse markdown content and organize it by pages.
     Returns a list of page dictionaries with content, tables, charts, and figures.
     """
-    import re
     
     pages = []
     current_page = None
@@ -209,7 +214,6 @@ def run_full_parse(
     try:
         parser.parse(str(input_pdf))
     except Exception as e:
-        import traceback
         traceback.print_exc()
         # Safely encode error message for return value
         try:
@@ -325,8 +329,6 @@ def run_extract(
             if excel_filename:
                 excel_path = out_dir / excel_filename
                 if excel_path.exists():
-                    import pandas as pd
-                    import html as _html
                     
                     # Read Excel file and create HTML tables
                     xl_file = pd.ExcelFile(excel_path)
@@ -489,7 +491,6 @@ def build_demo() -> gr.Blocks:
 
             def parse_markdown_by_pages(md_content: str):
                 """Parse markdown content and organize it by pages."""
-                import re
                 
                 pages = []
                 current_page = None
@@ -548,7 +549,6 @@ def build_demo() -> gr.Blocks:
                     return "Page not found", None
                 
                 # Build HTML with inline base64 images, render markdown tables, and preserve paragraphs/line breaks
-                import html as _html, base64, re as _re
                 base_dir = None
                 try:
                     stem = Path(pdf_path).stem if pdf_path else ""
@@ -589,7 +589,7 @@ def build_demo() -> gr.Blocks:
                     stripped = line.strip()
                     if stripped.startswith('![') and ('](images/' in stripped or '](images\\' in stripped):
                         flush_paragraph()
-                        match = _re.match(r'!\[([^\]]+)\]\(([^)]+)\)', stripped)
+                        match = re.match(r'!\[([^\]]+)\]\(([^)]+)\)', stripped)
                         if match and base_dir is not None:
                             caption = match.group(1)
                             rel_path = match.group(2).replace('\\\\', '/').replace('\\', '/').lstrip('/')
@@ -646,7 +646,6 @@ def build_demo() -> gr.Blocks:
                 # Ensure page images are prepared
                 try:
                     if pdf_path and not page_images:
-                        from doctra.utils.pdf_io import render_pdf_to_images
                         tmp_img_dir = Path(tempfile.mkdtemp(prefix="doctra_pages_"))
                         pil_pages = render_pdf_to_images(pdf_path)
                         saved_paths: List[str] = []
@@ -726,7 +725,6 @@ def build_demo() -> gr.Blocks:
                     for page in pages_data:
                         for line in page['content']:
                             if line.strip().startswith('![') and ('](images/' in line or '](images\\' in line):
-                                import re
                                 match = re.match(r'!\[([^\]]+)\]\(([^)]+)\)', line.strip())
                                 if match:
                                     caption = match.group(1)
@@ -745,7 +743,6 @@ def build_demo() -> gr.Blocks:
                 saved_paths: List[str] = []
                 try:
                     if input_pdf_path:
-                        from doctra.utils.pdf_io import render_pdf_to_images
                         tmp_img_dir = Path(tempfile.mkdtemp(prefix="doctra_pages_"))
                         pil_pages = render_pdf_to_images(input_pdf_path)
                         for idx, (im, _, _) in enumerate(pil_pages, start=1):
@@ -759,7 +756,6 @@ def build_demo() -> gr.Blocks:
 
                 # Build initial HTML with inline images and proper blocks for first page
                 if pages_data:
-                    import html as _html, base64, re as _re
                     base_dir = None
                     try:
                         stem = Path(input_pdf_path).stem if input_pdf_path else ""
@@ -771,7 +767,7 @@ def build_demo() -> gr.Blocks:
                     for raw_line in pages_data[0]['content']:
                         line = raw_line.strip()
                         if line.startswith('![') and ('](images/' in line or '](images\\' in line):
-                            match = _re.match(r'!\[([^\]]+)\]\(([^)]+)\)', line)
+                            match = re.match(r'!\[([^\]]+)\]\(([^)]+)\)', line)
                             if match and base_dir is not None:
                                 caption = match.group(1)
                                 rel_path = match.group(2).replace('\\\\', '/').replace('\\', '/').lstrip('/')
@@ -874,7 +870,6 @@ def build_demo() -> gr.Blocks:
                     if not mapping.exists():
                         return gr.Dropdown(choices=[], value=None, visible=False)
                     
-                    import json
                     data = json.loads(mapping.read_text(encoding="utf-8"))
                     choices = []
                     
@@ -902,7 +897,6 @@ def build_demo() -> gr.Blocks:
                     if not mapping.exists():
                         return "", None
                     
-                    import json, html as _html
                     data = json.loads(mapping.read_text(encoding="utf-8"))
                     
                     for entry in data:

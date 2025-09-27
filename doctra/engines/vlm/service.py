@@ -73,7 +73,7 @@ class VLMStructuredExtractor:
         Extract structured chart data from an image.
 
         :param image_path: Path to the chart image file
-        :return: Chart object containing extracted title, headers, and data rows
+        :return: Chart object containing extracted title, description, headers, and data rows
         :raises Exception: If image processing or VLM extraction fails
         """
         prompt_text = (
@@ -81,6 +81,7 @@ class VLMStructuredExtractor:
             "If the title is not present in the image, generate a suitable title. "
             "Ensure that the table represents the data from the chart accurately."
             "The number of columns in the headers must match the number of columns in each row."
+            "Also provide a short description (max 300 characters) of the chart."
         )
         return self._call(prompt_text, image_path, Chart)
 
@@ -89,7 +90,7 @@ class VLMStructuredExtractor:
         Extract structured table data from an image.
 
         :param image_path: Path to the table image file
-        :return: Table object containing extracted title, headers, and data rows
+        :return: Table object containing extracted title, description, headers, and data rows
         :raises Exception: If image processing or VLM extraction fails
         """
         prompt_text = (
@@ -97,5 +98,6 @@ class VLMStructuredExtractor:
             "Provide the headers and rows of the table, ensuring accuracy in the extraction. "
             "If the title is not present in the image, generate a suitable title."
             "The number of columns in the headers must match the number of columns in each row."
+            "Also provide a short description (max 300 characters) of the table."
         )
         return self._call(prompt_text, image_path, Table)

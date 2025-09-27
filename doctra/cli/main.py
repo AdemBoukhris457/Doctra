@@ -9,6 +9,7 @@ detection results, and analyze document structure from the command line.
 import click
 import os
 import sys
+import traceback
 from pathlib import Path
 from typing import Optional
 
@@ -24,6 +25,10 @@ except ImportError:
     from doctra.parsers.structured_pdf_parser import StructuredPDFParser
     from doctra.parsers.enhanced_pdf_parser import EnhancedPDFParser
     from doctra.parsers.table_chart_extractor import ChartTablePDFParser
+
+# Import additional modules
+from doctra.engines.layout.paddle_layout import PaddleLayoutEngine
+from doctra.engines.image_restoration import DocResEngine
 
 
 @click.group(invoke_without_command=True)
@@ -247,7 +252,6 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
     except Exception as e:
         click.echo(f"❌ Error initializing parser: {e}", err=True)
         if verbose:
-            import traceback
             click.echo(traceback.format_exc(), err=True)
         sys.exit(1)
 
@@ -271,7 +275,6 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
     except Exception as e:
         click.echo(f"❌ Error during parsing: {e}", err=True)
         if verbose:
-            import traceback
             click.echo(traceback.format_exc(), err=True)
         sys.exit(1)
     finally:
@@ -394,7 +397,6 @@ def enhance(pdf_path: Path, output_dir: Optional[Path], restoration_task: str,
     except Exception as e:
         click.echo(f"❌ Error initializing enhanced parser: {e}", err=True)
         if verbose:
-            import traceback
             click.echo(traceback.format_exc(), err=True)
         sys.exit(1)
 
@@ -418,7 +420,6 @@ def enhance(pdf_path: Path, output_dir: Optional[Path], restoration_task: str,
     except Exception as e:
         click.echo(f"❌ Error during enhanced parsing: {e}", err=True)
         if verbose:
-            import traceback
             click.echo(traceback.format_exc(), err=True)
         sys.exit(1)
     finally:
@@ -526,7 +527,6 @@ def charts(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
     except Exception as e:
         click.echo(f"❌ Error during chart extraction: {e}", err=True)
         if verbose:
-            import traceback
             click.echo(traceback.format_exc(), err=True)
         sys.exit(1)
 
@@ -604,7 +604,6 @@ def tables(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
     except Exception as e:
         click.echo(f"❌ Error during table extraction: {e}", err=True)
         if verbose:
-            import traceback
             click.echo(traceback.format_exc(), err=True)
         sys.exit(1)
 
@@ -683,7 +682,6 @@ def both(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
     except Exception as e:
         click.echo(f"❌ Error during extraction: {e}", err=True)
         if verbose:
-            import traceback
             click.echo(traceback.format_exc(), err=True)
         sys.exit(1)
 
@@ -772,7 +770,6 @@ def visualize(pdf_path: Path, pages: int, columns: int, width: int,
     except Exception as e:
         click.echo(f"❌ Error creating visualization: {e}", err=True)
         if verbose:
-            import traceback
             click.echo(traceback.format_exc(), err=True)
         sys.exit(1)
 
@@ -805,7 +802,6 @@ def analyze(pdf_path: Path, dpi: int, min_score: float, layout_model: str, verbo
         click.echo(f"🔍 Analyzing: {pdf_path.name}")
 
         # Create layout engine for analysis only
-        from doctra.engines.layout.paddle_layout import PaddleLayoutEngine
 
         if verbose:
             click.echo(f"   Using model: {layout_model}")
@@ -903,7 +899,6 @@ def analyze(pdf_path: Path, dpi: int, min_score: float, layout_model: str, verbo
     except Exception as e:
         click.echo(f"❌ Error analyzing PDF: {e}", err=True)
         if verbose:
-            import traceback
             click.echo(traceback.format_exc(), err=True)
         sys.exit(1)
 
@@ -922,7 +917,6 @@ def info():
     click.echo("=" * 50)
 
     # Check Python version
-    import sys
     python_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
     click.echo(f"Python version: {python_version}")
 
@@ -1003,7 +997,6 @@ def info():
     # DocRes information
     click.echo("\nDocRes Image Restoration:")
     try:
-        from doctra.engines.image_restoration import DocResEngine
         docres = DocResEngine()
         click.echo(f"  ✅ DocRes available - {len(docres.get_supported_tasks())} restoration tasks")
         click.echo("  Tasks: dewarping, deshadowing, appearance, deblurring, binarization, end2end")
