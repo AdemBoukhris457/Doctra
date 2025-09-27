@@ -7,8 +7,10 @@ different CLI commands.
 
 import click
 import sys
+import traceback
 from typing import Optional, Dict, Any
 from pathlib import Path
+from doctra.utils.progress import create_beautiful_progress_bar, create_notebook_friendly_bar
 
 
 def validate_vlm_config(use_vlm: bool, vlm_api_key: Optional[str]) -> None:
@@ -58,7 +60,6 @@ def handle_exception(e: Exception, verbose: bool = False) -> None:
     """
     click.echo(f"❌ Error: {e}", err=True)
     if verbose:
-        import traceback
         click.echo(traceback.format_exc(), err=True)
     sys.exit(1)
 
@@ -271,8 +272,6 @@ def create_progress_callback(description: str, total: int):
     :return: Callable progress callback function that takes an integer
              representing the number of completed items
     """
-    import sys
-    from doctra.utils.progress import create_beautiful_progress_bar, create_notebook_friendly_bar
 
     # Enhanced environment detection
     is_notebook = "ipykernel" in sys.modules or "jupyter" in sys.modules

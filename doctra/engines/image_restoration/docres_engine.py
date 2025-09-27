@@ -18,6 +18,8 @@ import sys
 import cv2
 import numpy as np
 import torch
+import tempfile
+import time
 from pathlib import Path
 from typing import Union, List, Tuple, Optional, Dict, Any
 
@@ -308,8 +310,6 @@ class DocResEngine:
     
     def _run_single_task(self, img_array: np.ndarray, task: str, save_prompts: bool) -> Tuple[np.ndarray, Dict]:
         """Run a single restoration task"""
-        import tempfile
-        import time
         
         # Create temporary file for inference
         with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as tmp_file:
@@ -322,7 +322,6 @@ class DocResEngine:
             os.chdir(str(docres_dir))
             
             # Set global DEVICE variable that DocRes inference expects
-            import torch
             import inference  # Import the inference module to set its global DEVICE
             inference.DEVICE = self.device
             
@@ -364,8 +363,6 @@ class DocResEngine:
     
     def _run_end2end_pipeline(self, img_array: np.ndarray, save_prompts: bool) -> Tuple[np.ndarray, Dict]:
         """Run the end2end pipeline: dewarping → deshadowing → appearance"""
-        import tempfile
-        import time
         
         intermediate_steps = {}
         
@@ -374,7 +371,6 @@ class DocResEngine:
         os.chdir(str(docres_dir))
         
         # Set global DEVICE variable that DocRes inference expects
-        import torch
         import inference  # Import the inference module to set its global DEVICE
         inference.DEVICE = self.device
         
@@ -482,7 +478,6 @@ class DocResEngine:
         """
         try:
             from PIL import Image
-            import numpy as np
             from doctra.utils.pdf_io import render_pdf_to_images
             
             # Generate output path if not provided

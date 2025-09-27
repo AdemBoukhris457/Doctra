@@ -8,6 +8,7 @@ capabilities with DocRes image restoration for improved document processing.
 from __future__ import annotations
 import os
 import sys
+import numpy as np
 from typing import List, Dict, Any, Optional, Union
 from contextlib import ExitStack
 from PIL import Image
@@ -16,9 +17,17 @@ from tqdm import tqdm
 from doctra.parsers.structured_pdf_parser import StructuredPDFParser
 from doctra.engines.image_restoration import DocResEngine
 from doctra.utils.pdf_io import render_pdf_to_images
-from doctra.utils.constants import IMAGE_SUBDIRS
+from doctra.utils.constants import IMAGE_SUBDIRS, EXCLUDE_LABELS
 from doctra.utils.file_ops import ensure_output_dirs
 from doctra.utils.progress import create_beautiful_progress_bar, create_notebook_friendly_bar
+from doctra.parsers.layout_order import reading_order_key
+from doctra.utils.ocr_utils import ocr_box_text
+from doctra.exporters.image_saver import save_box_image
+from doctra.exporters.markdown_writer import write_markdown
+from doctra.exporters.html_writer import write_html, write_structured_html
+from doctra.exporters.excel_writer import write_structured_excel
+from doctra.utils.structured_utils import to_structured_dict
+from doctra.exporters.markdown_table import render_markdown_table
 
 
 class EnhancedPDFParser(StructuredPDFParser):
@@ -146,7 +155,7 @@ class EnhancedPDFParser(StructuredPDFParser):
         pil_pages = enhanced_pages
         
         # Continue with standard parsing logic
-        self._process_parsing_logic(pages, pil_pages, out_dir, pdf_filename)
+        self._process_parsing_logic(pages, pil_pages, out_dir, pdf_filename, pdf_path)
 
     def _process_pages_with_restoration(self, pdf_path: str, out_dir: str) -> List[Image.Image]:
         """
@@ -186,7 +195,6 @@ class EnhancedPDFParser(StructuredPDFParser):
                 for i, page_img in enumerate(original_pages):
                     try:
                         # Convert PIL to numpy array
-                        import numpy as np
                         img_array = np.array(page_img)
                         
                         # Apply DocRes restoration
@@ -219,21 +227,11 @@ class EnhancedPDFParser(StructuredPDFParser):
         print(f"✅ Image restoration completed. Enhanced pages saved to: {enhanced_dir}")
         return enhanced_pages
 
-    def _process_parsing_logic(self, pages, pil_pages, out_dir, pdf_filename):
+    def _process_parsing_logic(self, pages, pil_pages, out_dir, pdf_filename, pdf_path):
         """
         Process the parsing logic with enhanced pages.
         This is extracted from the parent class to allow customization.
         """
-        from doctra.utils.constants import EXCLUDE_LABELS
-        from doctra.parsers.layout_order import reading_order_key
-        from doctra.utils.ocr_utils import ocr_box_text
-        from doctra.exporters.image_saver import save_box_image
-        from doctra.exporters.markdown_writer import write_markdown
-        from doctra.exporters.html_writer import write_html
-        from doctra.exporters.excel_writer import write_structured_excel
-        from doctra.exporters.html_writer import write_structured_html
-        from doctra.utils.structured_utils import to_structured_dict
-        from doctra.exporters.markdown_table import render_markdown_table
         
         fig_count = sum(sum(1 for b in p.boxes if b.label == "figure") for p in pages)
         chart_count = sum(sum(1 for b in p.boxes if b.label == "chart") for p in pages)
