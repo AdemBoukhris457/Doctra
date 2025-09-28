@@ -141,6 +141,15 @@ class EnhancedPDFParser(StructuredPDFParser):
         if self.use_image_restoration and self.docres_engine:
             print(f"🔄 Processing PDF with image restoration: {os.path.basename(pdf_path)}")
             enhanced_pages = self._process_pages_with_restoration(pdf_path, out_dir)
+            
+            # Create enhanced PDF file using the already processed enhanced pages
+            enhanced_pdf_path = os.path.join(out_dir, f"{pdf_filename}_enhanced.pdf")
+            try:
+                print(f"🔄 Creating enhanced PDF from processed pages: {enhanced_pdf_path}")
+                self._create_enhanced_pdf_from_pages(enhanced_pages, enhanced_pdf_path)
+                print(f"✅ Enhanced PDF created: {enhanced_pdf_path}")
+            except Exception as e:
+                print(f"⚠️ Failed to create enhanced PDF: {e}")
         else:
             print(f"🔄 Processing PDF without image restoration: {os.path.basename(pdf_path)}")
             enhanced_pages = [im for (im, _, _) in render_pdf_to_images(pdf_path, dpi=self.dpi)]
@@ -239,6 +248,7 @@ class EnhancedPDFParser(StructuredPDFParser):
 
         md_lines: List[str] = ["# Enhanced Document Content\n"]
         structured_items: List[Dict[str, Any]] = []
+        page_content: Dict[int, List[str]] = {}  # Store content by page
 
         charts_desc = "Charts (VLM → table)" if self.use_vlm else "Charts (cropped)"
         tables_desc = "Tables (VLM → table)" if self.use_vlm else "Tables (cropped)"
@@ -261,6 +271,10 @@ class EnhancedPDFParser(StructuredPDFParser):
                 figures_bar = stack.enter_context(
                     create_beautiful_progress_bar(total=fig_count, desc=figures_desc, leave=True)) if fig_count else None
 
+            # Initialize page content for all pages first
+            for page_num in range(1, len(pil_pages) + 1):
+                page_content[page_num] = [f"# Page {page_num} Content\n"]
+            
             for p in pages:
                 page_num = p.page_index
                 page_img: Image.Image = pil_pages[page_num - 1]
@@ -273,7 +287,9 @@ class EnhancedPDFParser(StructuredPDFParser):
                         rel = os.path.relpath(abs_img_path, out_dir)
 
                         if box.label == "figure":
-                            md_lines.append(f"![Figure — page {page_num}]({rel})\n")
+                            figure_line = f"![Figure — page {page_num}]({rel})\n"
+                            md_lines.append(figure_line)
+                            page_content[page_num].append(figure_line)
                             if figures_bar: figures_bar.update(1)
 
                         elif box.label == "chart":
@@ -287,17 +303,21 @@ class EnhancedPDFParser(StructuredPDFParser):
                                         item["page"] = page_num
                                         item["type"] = "Chart"
                                         structured_items.append(item)
-                                        md_lines.append(
-                                            render_markdown_table(item.get("headers"), item.get("rows"),
+                                        table_content = render_markdown_table(item.get("headers"), item.get("rows"),
                                                                   title=item.get("title"))
-                                        )
+                                        md_lines.append(table_content)
+                                        page_content[page_num].append(table_content)
                                         wrote_table = True
                                 except Exception as e:
                                     pass
                                 if not wrote_table:
-                                    md_lines.append(f"![Chart — page {page_num}]({rel})\n")
+                                    chart_line = f"![Chart — page {page_num}]({rel})\n"
+                                    md_lines.append(chart_line)
+                                    page_content[page_num].append(chart_line)
                             else:
-                                md_lines.append(f"![Chart — page {page_num}]({rel})\n")
+                                chart_line = f"![Chart — page {page_num}]({rel})\n"
+                                md_lines.append(chart_line)
+                                page_content[page_num].append(chart_line)
                             if charts_bar: charts_bar.update(1)
 
                         elif box.label == "table":
@@ -311,26 +331,42 @@ class EnhancedPDFParser(StructuredPDFParser):
                                         item["page"] = page_num
                                         item["type"] = "Table"
                                         structured_items.append(item)
-                                        md_lines.append(
-                                            render_markdown_table(item.get("headers"), item.get("rows"),
+                                        table_content = render_markdown_table(item.get("headers"), item.get("rows"),
                                                                   title=item.get("title"))
-                                        )
+                                        md_lines.append(table_content)
+                                        page_content[page_num].append(table_content)
                                         wrote_table = True
                                 except Exception as e:
                                     pass
                                 if not wrote_table:
-                                    md_lines.append(f"![Table — page {page_num}]({rel})\n")
+                                    table_line = f"![Table — page {page_num}]({rel})\n"
+                                    md_lines.append(table_line)
+                                    page_content[page_num].append(table_line)
                             else:
-                                md_lines.append(f"![Table — page {page_num}]({rel})\n")
+                                table_line = f"![Table — page {page_num}]({rel})\n"
+                                md_lines.append(table_line)
+                                page_content[page_num].append(table_line)
                             if tables_bar: tables_bar.update(1)
                     else:
                         text = ocr_box_text(self.ocr_engine, page_img, box)
                         if text:
                             md_lines.append(text)
                             md_lines.append(self.box_separator if self.box_separator else "")
+                            page_content[page_num].append(text)
+                            page_content[page_num].append(self.box_separator if self.box_separator else "")
 
         md_path = write_markdown(md_lines, out_dir)
         html_path = write_html(md_lines, out_dir)
+        
+        # Create pages folder and save individual page markdown files
+        pages_dir = os.path.join(out_dir, "pages")
+        os.makedirs(pages_dir, exist_ok=True)
+        
+        for page_num, content_lines in page_content.items():
+            page_md_path = os.path.join(pages_dir, f"page_{page_num:03d}.md")
+            write_markdown(content_lines, os.path.dirname(page_md_path), os.path.basename(page_md_path))
+            print(f"📄 Saved page {page_num} content: {page_md_path}")
+            print(f"📝 Page {page_num} content preview: {content_lines[:3] if content_lines else 'No content'}")
         
         excel_path = None
         html_structured_path = None
@@ -342,6 +378,30 @@ class EnhancedPDFParser(StructuredPDFParser):
 
         print(f"✅ Enhanced parsing completed successfully!")
         print(f"📁 Output directory: {out_dir}")
+
+    def _create_enhanced_pdf_from_pages(self, enhanced_pages: List[Image.Image], output_path: str) -> None:
+        """
+        Create an enhanced PDF from already processed enhanced pages.
+        
+        :param enhanced_pages: List of enhanced PIL images
+        :param output_path: Path for the enhanced PDF
+        """
+        if not enhanced_pages:
+            raise ValueError("No enhanced pages provided")
+        
+        try:
+            # Create enhanced PDF from the processed pages
+            enhanced_pages[0].save(
+                output_path,
+                "PDF",
+                resolution=100.0,
+                save_all=True,
+                append_images=enhanced_pages[1:] if len(enhanced_pages) > 1 else []
+            )
+            print(f"✅ Enhanced PDF saved from processed pages: {output_path}")
+        except Exception as e:
+            print(f"❌ Error creating enhanced PDF from pages: {e}")
+            raise
 
     def restore_pdf_only(self, pdf_path: str, output_path: str = None, task: str = None) -> str:
         """

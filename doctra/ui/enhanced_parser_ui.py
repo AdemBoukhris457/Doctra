@@ -35,7 +35,7 @@ def run_enhanced_parse(
     ocr_oem: int,
     ocr_extra_config: str,
     box_separator: str,
-) -> Tuple[str, Optional[str], List[tuple[str, str]], List[str], str, Optional[str], Optional[str]]:
+) -> Tuple[str, Optional[str], List[str], str, Optional[str], Optional[str], str]:
     """
     Run enhanced PDF parsing with DocRes image restoration.
     
@@ -58,16 +58,16 @@ def run_enhanced_parse(
         box_separator: Separator for bounding boxes
         
     Returns:
-        Tuple of (status_message, markdown_preview, gallery_items, file_paths, zip_path, original_pdf_path, enhanced_pdf_path)
+        Tuple of (status_message, markdown_preview, file_paths, zip_path, original_pdf_path, enhanced_pdf_path, output_dir)
     """
     if not pdf_file:
-        return ("No file provided.", None, [], [], "", None, None)
+        return ("No file provided.", None, [], "", None, None, "")
 
     # Validate VLM configuration if VLM is enabled
     if use_vlm:
         vlm_error = validate_vlm_config(use_vlm, vlm_api_key)
         if vlm_error:
-            return (vlm_error, None, [], [], "", None, None)
+            return (vlm_error, None, [], "", None, None, "")
 
     original_filename = Path(pdf_file).stem
     
@@ -105,9 +105,9 @@ def run_enhanced_parse(
         # Safely encode error message for return value
         try:
             error_msg = str(e).encode('utf-8', errors='replace').decode('utf-8')
-            return (f"❌ Enhanced parsing failed: {error_msg}", None, [], [], "", None, None)
+            return (f"❌ Enhanced parsing failed: {error_msg}", None, [], "", None, None, "")
         except Exception:
-            return (f"❌ Enhanced parsing failed: <Unicode encoding error>", None, [], [], "", None, None)
+            return (f"❌ Enhanced parsing failed: <Unicode encoding error>", None, [], "", None, None, "")
 
     # Find output directory
     outputs_root = Path("outputs")
@@ -119,19 +119,50 @@ def run_enhanced_parse(
             out_dir = candidates[0] / "enhanced_parse"
         else:
             out_dir = outputs_root
+    
+    # If still no enhanced_parse directory, try to find any directory with enhanced files
+    if not out_dir.exists():
+        # Look for any directory containing enhanced PDFs
+        for candidate_dir in outputs_root.rglob("*"):
+            if candidate_dir.is_dir():
+                enhanced_pdfs = list(candidate_dir.glob("*enhanced*.pdf"))
+                if enhanced_pdfs:
+                    out_dir = candidate_dir
+                    break
 
-    # Read markdown file if it exists
-    md_file = next(out_dir.glob("*.md"), None)
+    # Load first page content initially (page-specific content)
     md_preview = None
-    if md_file and md_file.exists():
-        try:
-            with md_file.open("r", encoding="utf-8", errors="ignore") as f:
-                md_preview = f.read()
-        except Exception:
-            md_preview = None
+    try:
+        # Try to load the first page content from pages folder
+        pages_dir = out_dir / "pages"
+        first_page_path = pages_dir / "page_001.md"
+        if first_page_path.exists():
+            with first_page_path.open("r", encoding="utf-8", errors="ignore") as f:
+                md_content = f.read()
+            
+            # Convert markdown to HTML with embedded images
+            md_lines = md_content.split('\n')
+            print(f"🔄 Converting first page markdown to HTML with base directory: {out_dir}")
+            md_preview = create_page_html_content(md_lines, out_dir)
+            print(f"✅ First page HTML conversion completed")
+        else:
+            # Fallback to full markdown file if page-specific files don't exist
+            md_file = next(out_dir.glob("*.md"), None)
+            if md_file and md_file.exists():
+                with md_file.open("r", encoding="utf-8", errors="ignore") as f:
+                    md_content = f.read()
+                
+                # Convert markdown to HTML with embedded images
+                md_lines = md_content.split('\n')
+                print(f"🔄 Converting full markdown to HTML with base directory: {out_dir}")
+                md_preview = create_page_html_content(md_lines, out_dir)
+                print(f"✅ Full markdown HTML conversion completed")
+    except Exception as e:
+        print(f"❌ Error loading initial content: {e}")
+        md_preview = None
 
     # Gather output files and create ZIP
-    gallery_items, file_paths, zip_path = gather_outputs(
+    _, file_paths, zip_path = gather_outputs(
         out_dir, 
         zip_filename=f"{original_filename}_enhanced", 
         is_structured_parsing=False
@@ -144,20 +175,27 @@ def run_enhanced_parse(
         enhanced_pdf_candidates = list(out_dir.glob("*enhanced*.pdf"))
         if enhanced_pdf_candidates:
             enhanced_pdf_path = str(enhanced_pdf_candidates[0])
+            print(f"✅ Found enhanced PDF: {enhanced_pdf_path}")
         else:
             # Look in parent directory
             parent_enhanced = list(out_dir.parent.glob("*enhanced*.pdf"))
             if parent_enhanced:
                 enhanced_pdf_path = str(parent_enhanced[0])
+                print(f"✅ Found enhanced PDF in parent: {enhanced_pdf_path}")
+            else:
+                print(f"⚠️ No enhanced PDF found in {out_dir} or parent directory")
+                # Debug: list all files in the directory
+                all_files = list(out_dir.glob("*"))
+                print(f"📁 Files in output directory: {[f.name for f in all_files]}")
 
     return (
         f"✅ Enhanced parsing completed successfully!\n📁 Output directory: {out_dir}", 
         md_preview, 
-        gallery_items, 
         file_paths, 
         zip_path,
         pdf_file,  # Original PDF path
-        enhanced_pdf_path  # Enhanced PDF path
+        enhanced_pdf_path,  # Enhanced PDF path
+        str(out_dir)  # Output directory for page-specific content
     )
 
 
@@ -239,10 +277,11 @@ def sync_enhanced_page_changes(
     original_pages: List[str], 
     enhanced_pages: List[str], 
     original_pdf_path: str, 
-    enhanced_pdf_path: str
-) -> Tuple[Optional[str], Optional[str]]:
+    enhanced_pdf_path: str,
+    output_dir: str = None
+) -> Tuple[Optional[str], Optional[str], str]:
     """
-    Synchronize page changes between original and enhanced PDFs.
+    Synchronize page changes between original and enhanced PDFs and load page-specific content.
     
     Args:
         page_selector: Selected page identifier
@@ -250,18 +289,20 @@ def sync_enhanced_page_changes(
         enhanced_pages: List of enhanced page image paths
         original_pdf_path: Path to original PDF
         enhanced_pdf_path: Path to enhanced PDF
+        output_dir: Output directory for page-specific content
         
     Returns:
-        Tuple of (original_page_image, enhanced_page_image)
+        Tuple of (original_page_image, enhanced_page_image, page_content_html)
     """
     if not page_selector:
-        return None, None
+        return None, None, ""
     
     # Get the page index
     try:
         page_index = int(page_selector.split()[1]) - 1  # "Page 1" -> index 0
+        page_num = page_index + 1  # Convert back to 1-based page number
     except (ValueError, IndexError):
-        return None, None
+        return None, None, ""
     
     # Get the corresponding page from each PDF
     original_page = None
@@ -273,7 +314,29 @@ def sync_enhanced_page_changes(
     if enhanced_pages and 0 <= page_index < len(enhanced_pages):
         enhanced_page = enhanced_pages[page_index]
     
-    return original_page, enhanced_page
+    # Load page-specific content
+    page_content_html = ""
+    if output_dir:
+        try:
+            # Look for page files in the pages folder
+            pages_dir = Path(output_dir) / "pages"
+            page_md_path = pages_dir / f"page_{page_num:03d}.md"
+            if page_md_path.exists():
+                with page_md_path.open("r", encoding="utf-8", errors="ignore") as f:
+                    md_content = f.read()
+                
+                # Convert markdown to HTML with embedded images
+                md_lines = md_content.split('\n')
+                print(f"🔄 Converting page {page_num} markdown to HTML with base directory: {output_dir}")
+                print(f"📝 Sample markdown lines: {md_lines[:3] if md_lines else 'No content'}")
+                page_content_html = create_page_html_content(md_lines, Path(output_dir))
+                print(f"📄 Loaded content for page {page_num}")
+            else:
+                print(f"⚠️ Page {page_num} content file not found: {page_md_path}")
+        except Exception as e:
+            print(f"❌ Error loading page {page_num} content: {e}")
+    
+    return original_page, enhanced_page, page_content_html
 
 
 def create_enhanced_parser_tab() -> Tuple[gr.Tab, dict]:
@@ -343,10 +406,7 @@ def create_enhanced_parser_tab() -> Tuple[gr.Tab, dict]:
         
         # Content display
         with gr.Row():
-            with gr.Column():
-                enhanced_md_preview = gr.HTML(label="Extracted Content", visible=True, elem_classes=["page-content"])
-            with gr.Column():
-                enhanced_gallery = gr.Gallery(label="Extracted Images", columns=3, height=400, preview=True)
+            enhanced_md_preview = gr.HTML(label="Extracted Content", visible=True, elem_classes=["page-content"])
         
         # Downloads
         enhanced_files_out = gr.Files(label="Download individual output files")
@@ -357,6 +417,7 @@ def create_enhanced_parser_tab() -> Tuple[gr.Tab, dict]:
         enhanced_enhanced_pages_state = gr.State([])
         enhanced_original_pdf_path_state = gr.State("")
         enhanced_enhanced_pdf_path_state = gr.State("")
+        enhanced_output_dir_state = gr.State("")
 
         # Event handlers
         run_enhanced_btn.click(
@@ -368,8 +429,8 @@ def create_enhanced_parser_tab() -> Tuple[gr.Tab, dict]:
                 ocr_config_enhanced, box_sep_enhanced
             ],
             outputs=[
-                enhanced_status, enhanced_md_preview, enhanced_gallery, enhanced_files_out, enhanced_zip_out,
-                enhanced_original_pdf, enhanced_enhanced_pdf
+                enhanced_status, enhanced_md_preview, enhanced_files_out, enhanced_zip_out,
+                enhanced_original_pdf, enhanced_enhanced_pdf, enhanced_output_dir_state
             ]
         ).then(
             fn=update_enhanced_page_selector,
@@ -386,9 +447,9 @@ def create_enhanced_parser_tab() -> Tuple[gr.Tab, dict]:
             fn=sync_enhanced_page_changes,
             inputs=[
                 enhanced_page_selector, enhanced_original_pages_state, enhanced_enhanced_pages_state,
-                enhanced_original_pdf_path_state, enhanced_enhanced_pdf_path_state
+                enhanced_original_pdf_path_state, enhanced_enhanced_pdf_path_state, enhanced_output_dir_state
             ],
-            outputs=[enhanced_original_page_image, enhanced_enhanced_page_image]
+            outputs=[enhanced_original_page_image, enhanced_enhanced_page_image, enhanced_md_preview]
         )
 
     # Return state variables for external access
@@ -417,13 +478,13 @@ def create_enhanced_parser_tab() -> Tuple[gr.Tab, dict]:
         'enhanced_enhanced_pdf': enhanced_enhanced_pdf,
         'enhanced_enhanced_page_image': enhanced_enhanced_page_image,
         'enhanced_md_preview': enhanced_md_preview,
-        'enhanced_gallery': enhanced_gallery,
         'enhanced_files_out': enhanced_files_out,
         'enhanced_zip_out': enhanced_zip_out,
         'enhanced_original_pages_state': enhanced_original_pages_state,
         'enhanced_enhanced_pages_state': enhanced_enhanced_pages_state,
         'enhanced_original_pdf_path_state': enhanced_original_pdf_path_state,
-        'enhanced_enhanced_pdf_path_state': enhanced_enhanced_pdf_path_state
+        'enhanced_enhanced_pdf_path_state': enhanced_enhanced_pdf_path_state,
+        'enhanced_output_dir_state': enhanced_output_dir_state
     }
 
     return tab, state_vars

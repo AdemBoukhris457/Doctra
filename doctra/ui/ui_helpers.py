@@ -358,14 +358,25 @@ def create_page_html_content(page_content: List[str], base_dir: Optional[Path] =
                 caption = match.group(1)
                 rel_path = match.group(2).replace('\\\\', '/').replace('\\', '/').lstrip('/')
                 abs_path = (base_dir / rel_path).resolve()
+                print(f"🖼️ Processing image: {rel_path} -> {abs_path}")
+                print(f"📁 Base directory: {base_dir}")
+                print(f"📁 Absolute path exists: {abs_path.exists()}")
                 try:
                     with open(abs_path, 'rb') as f:
                         b64 = base64.b64encode(f.read()).decode('ascii')
                     processed_content.append(f'<figure><img src="data:image/jpeg;base64,{b64}" alt="{_html.escape(caption)}"/><figcaption>{_html.escape(caption)}</figcaption></figure>')
-                except Exception:
+                    print(f"✅ Image embedded successfully: {caption}")
+                except Exception as e:
+                    print(f"❌ Failed to embed image {rel_path}: {e}")
+                    print(f"📁 File exists: {abs_path.exists()}")
+                    if abs_path.exists():
+                        print(f"📁 File size: {abs_path.stat().st_size} bytes")
                     processed_content.append(f'<div>{_html.escape(caption)} (image not found)</div>')
             else:
-                paragraph_buffer.append(raw_line)
+                # If no match or no base_dir, just add the raw markdown
+                print(f"⚠️ Image reference not processed: {stripped}")
+                print(f"📁 Base directory: {base_dir}")
+                processed_content.append(f'<div>{_html.escape(stripped)}</div>')
             i += 1
             continue
 
