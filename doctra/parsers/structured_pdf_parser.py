@@ -20,7 +20,7 @@ from doctra.exporters.excel_writer import write_structured_excel
 from doctra.utils.structured_utils import to_structured_dict
 from doctra.exporters.markdown_table import render_markdown_table
 from doctra.exporters.markdown_writer import write_markdown
-from doctra.exporters.html_writer import write_html, write_structured_html
+from doctra.exporters.html_writer import write_html, write_structured_html, render_html_table, write_html_from_lines
 from doctra.utils.progress import create_beautiful_progress_bar, create_multi_progress_bars, create_notebook_friendly_bar
 
 
@@ -117,6 +117,7 @@ class StructuredPDFParser:
         table_count = sum(sum(1 for b in p.boxes if b.label == "table") for p in pages)
 
         md_lines: List[str] = ["# Extracted Content\n"]
+        html_lines: List[str] = ["<h1>Extracted Content</h1>"]  # For direct HTML generation
         structured_items: List[Dict[str, Any]] = []
 
         charts_desc = "Charts (VLM → table)" if self.use_vlm else "Charts (cropped)"
@@ -145,6 +146,7 @@ class StructuredPDFParser:
                 page_num = p.page_index
                 page_img: Image.Image = pil_pages[page_num - 1]
                 md_lines.append(f"\n## Page {page_num}\n")
+                html_lines.append(f"<h2>Page {page_num}</h2>")
 
                 for i, box in enumerate(sorted(p.boxes, key=reading_order_key), start=1):
                     if box.label in EXCLUDE_LABELS:
@@ -153,7 +155,10 @@ class StructuredPDFParser:
                         rel = os.path.relpath(abs_img_path, out_dir)
 
                         if box.label == "figure":
-                            md_lines.append(f"![Figure — page {page_num}]({rel})\n")
+                            figure_md = f"![Figure — page {page_num}]({rel})\n"
+                            figure_html = f'<img src="{rel}" alt="Figure — page {page_num}" />'
+                            md_lines.append(figure_md)
+                            html_lines.append(figure_html)
                             if figures_bar: figures_bar.update(1)
 
                         elif box.label == "chart":
@@ -167,17 +172,28 @@ class StructuredPDFParser:
                                         item["page"] = page_num
                                         item["type"] = "Chart"
                                         structured_items.append(item)
-                                        md_lines.append(
-                                            render_markdown_table(item.get("headers"), item.get("rows"),
-                                                                  title=item.get("title"))
-                                        )
+                                        
+                                        # Generate both markdown and HTML tables
+                                        table_md = render_markdown_table(item.get("headers"), item.get("rows"),
+                                                                         title=item.get("title"))
+                                        table_html = render_html_table(item.get("headers"), item.get("rows"),
+                                                                       title=item.get("title"))
+                                        
+                                        md_lines.append(table_md)
+                                        html_lines.append(table_html)
                                         wrote_table = True
                                 except Exception as e:
                                     pass
                                 if not wrote_table:
-                                    md_lines.append(f"![Chart — page {page_num}]({rel})\n")
+                                    chart_md = f"![Chart — page {page_num}]({rel})\n"
+                                    chart_html = f'<img src="{rel}" alt="Chart — page {page_num}" />'
+                                    md_lines.append(chart_md)
+                                    html_lines.append(chart_html)
                             else:
-                                md_lines.append(f"![Chart — page {page_num}]({rel})\n")
+                                chart_md = f"![Chart — page {page_num}]({rel})\n"
+                                chart_html = f'<img src="{rel}" alt="Chart — page {page_num}" />'
+                                md_lines.append(chart_md)
+                                html_lines.append(chart_html)
                             if charts_bar: charts_bar.update(1)
 
                         elif box.label == "table":
@@ -191,26 +207,47 @@ class StructuredPDFParser:
                                         item["page"] = page_num
                                         item["type"] = "Table"
                                         structured_items.append(item)
-                                        md_lines.append(
-                                            render_markdown_table(item.get("headers"), item.get("rows"),
-                                                                  title=item.get("title"))
-                                        )
+                                        
+                                        # Generate both markdown and HTML tables
+                                        table_md = render_markdown_table(item.get("headers"), item.get("rows"),
+                                                                         title=item.get("title"))
+                                        table_html = render_html_table(item.get("headers"), item.get("rows"),
+                                                                       title=item.get("title"))
+                                        
+                                        md_lines.append(table_md)
+                                        html_lines.append(table_html)
                                         wrote_table = True
                                 except Exception as e:
                                     pass
                                 if not wrote_table:
-                                    md_lines.append(f"![Table — page {page_num}]({rel})\n")
+                                    table_md = f"![Table — page {page_num}]({rel})\n"
+                                    table_html = f'<img src="{rel}" alt="Table — page {page_num}" />'
+                                    md_lines.append(table_md)
+                                    html_lines.append(table_html)
                             else:
-                                md_lines.append(f"![Table — page {page_num}]({rel})\n")
+                                table_md = f"![Table — page {page_num}]({rel})\n"
+                                table_html = f'<img src="{rel}" alt="Table — page {page_num}" />'
+                                md_lines.append(table_md)
+                                html_lines.append(table_html)
                             if tables_bar: tables_bar.update(1)
                     else:
                         text = ocr_box_text(self.ocr_engine, page_img, box)
                         if text:
                             md_lines.append(text)
                             md_lines.append(self.box_separator if self.box_separator else "")
+                            # Convert text to HTML (basic conversion)
+                            html_text = text.replace('\n', '<br>')
+                            html_lines.append(f"<p>{html_text}</p>")
+                            if self.box_separator:
+                                html_lines.append("<br>")
 
         md_path = write_markdown(md_lines, out_dir)
-        html_path = write_html(md_lines, out_dir)
+        
+        # Use HTML lines if VLM is enabled for better table formatting
+        if self.use_vlm and html_lines:
+            html_path = write_html_from_lines(html_lines, out_dir)
+        else:
+            html_path = write_html(md_lines, out_dir)
         
         excel_path = None
         html_structured_path = None
