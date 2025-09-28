@@ -68,13 +68,13 @@ def _select_emoji(key: str) -> str:
         "processing": "⚙️",
     }
     safe_map = {
-        "loading": "⏳",
-        "charts": "▦",
-        "tables": "▤",
-        "figures": "▧",
-        "ocr": "🔎",
-        "vlm": "★",
-        "processing": "⚙",
+        "loading": "🔄",
+        "charts": "📊",
+        "tables": "📋",
+        "figures": "🖼️",
+        "ocr": "🔍",
+        "vlm": "🤖",
+        "processing": "⚙️",
     }
     ascii_map = {
         "loading": "[loading]",

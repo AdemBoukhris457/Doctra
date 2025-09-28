@@ -87,12 +87,12 @@ def load_docres_weights_from_hf():
         if is_notebook:
             progress_bar = create_notebook_friendly_bar(
                 total=2, 
-                desc="🔄 Downloading DocRes models from Hugging Face Hub"
+                desc="Downloading DocRes models from Hugging Face Hub"
             )
         else:
             progress_bar = create_beautiful_progress_bar(
                 total=2, 
-                desc="🔄 Downloading DocRes models from Hugging Face Hub",
+                desc="Downloading DocRes models from Hugging Face Hub",
                 leave=True
             )
         
@@ -505,12 +505,12 @@ class DocResEngine:
             if is_notebook:
                 progress_bar = create_notebook_friendly_bar(
                     total=len(pil_pages), 
-                    desc="🔄 Processing pages"
+                    desc="Processing pages"
                 )
             else:
                 progress_bar = create_beautiful_progress_bar(
                     total=len(pil_pages), 
-                    desc="🔄 Processing pages",
+                    desc="Processing pages",
                     leave=True
                 )
             
