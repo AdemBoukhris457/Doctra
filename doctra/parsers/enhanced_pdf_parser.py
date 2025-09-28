@@ -145,9 +145,7 @@ class EnhancedPDFParser(StructuredPDFParser):
             # Create enhanced PDF file using the already processed enhanced pages
             enhanced_pdf_path = os.path.join(out_dir, f"{pdf_filename}_enhanced.pdf")
             try:
-                print(f"🔄 Creating enhanced PDF from processed pages: {enhanced_pdf_path}")
                 self._create_enhanced_pdf_from_pages(enhanced_pages, enhanced_pdf_path)
-                print(f"✅ Enhanced PDF created: {enhanced_pdf_path}")
             except Exception as e:
                 print(f"⚠️ Failed to create enhanced PDF: {e}")
         else:
@@ -186,12 +184,12 @@ class EnhancedPDFParser(StructuredPDFParser):
         if is_notebook:
             progress_bar = create_notebook_friendly_bar(
                 total=len(original_pages), 
-                desc=f"🔄 DocRes {self.restoration_task}"
+                desc=f"DocRes {self.restoration_task}"
             )
         else:
             progress_bar = create_beautiful_progress_bar(
                 total=len(original_pages), 
-                desc=f"🔄 DocRes {self.restoration_task}",
+                desc=f"DocRes {self.restoration_task}",
                 leave=True
             )
         
@@ -233,7 +231,6 @@ class EnhancedPDFParser(StructuredPDFParser):
             if hasattr(progress_bar, 'close'):
                 progress_bar.close()
         
-        print(f"✅ Image restoration completed. Enhanced pages saved to: {enhanced_dir}")
         return enhanced_pages
 
     def _process_parsing_logic(self, pages, pil_pages, out_dir, pdf_filename, pdf_path):
@@ -365,8 +362,6 @@ class EnhancedPDFParser(StructuredPDFParser):
         for page_num, content_lines in page_content.items():
             page_md_path = os.path.join(pages_dir, f"page_{page_num:03d}.md")
             write_markdown(content_lines, os.path.dirname(page_md_path), os.path.basename(page_md_path))
-            print(f"📄 Saved page {page_num} content: {page_md_path}")
-            print(f"📝 Page {page_num} content preview: {content_lines[:3] if content_lines else 'No content'}")
         
         excel_path = None
         html_structured_path = None

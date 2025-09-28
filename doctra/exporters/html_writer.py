@@ -884,6 +884,55 @@ def _get_css_styles() -> str:
             content: '☀️';
         }
 
+        /* Dark mode table styles */
+        [data-theme="dark"] .markdown-table,
+        [data-theme="dark"] table {
+            background: var(--card-bg);
+            border-color: var(--border-color);
+        }
+
+        [data-theme="dark"] .markdown-table th,
+        [data-theme="dark"] table th {
+            background: #374151;
+            color: #f9fafb;
+            border-bottom-color: var(--accent-color);
+        }
+
+        [data-theme="dark"] .markdown-table td,
+        [data-theme="dark"] table td {
+            color: #f9fafb;
+            border-bottom-color: var(--border-color);
+        }
+
+        [data-theme="dark"] .markdown-table tr:nth-child(even),
+        [data-theme="dark"] table tr:nth-child(even) {
+            background: #374151;
+        }
+
+        [data-theme="dark"] .markdown-table tr:hover,
+        [data-theme="dark"] table tr:hover {
+            background: #4b5563;
+        }
+
+        /* Dark mode footer styles to match header */
+        [data-theme="dark"] .footer {
+            background: var(--primary-color);
+            color: white;
+            border-top-color: var(--accent-color);
+        }
+
+        [data-theme="dark"] .footer-brand {
+            color: white;
+        }
+
+        [data-theme="dark"] .footer a {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        [data-theme="dark"] .footer a:hover {
+            color: white;
+        }
+
         /* Professional scrollbar */
         ::-webkit-scrollbar {
             width: 8px;

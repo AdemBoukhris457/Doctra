@@ -142,9 +142,7 @@ def run_enhanced_parse(
             
             # Convert markdown to HTML with embedded images
             md_lines = md_content.split('\n')
-            print(f"🔄 Converting first page markdown to HTML with base directory: {out_dir}")
             md_preview = create_page_html_content(md_lines, out_dir)
-            print(f"✅ First page HTML conversion completed")
         else:
             # Fallback to full markdown file if page-specific files don't exist
             md_file = next(out_dir.glob("*.md"), None)
@@ -154,9 +152,7 @@ def run_enhanced_parse(
                 
                 # Convert markdown to HTML with embedded images
                 md_lines = md_content.split('\n')
-                print(f"🔄 Converting full markdown to HTML with base directory: {out_dir}")
                 md_preview = create_page_html_content(md_lines, out_dir)
-                print(f"✅ Full markdown HTML conversion completed")
     except Exception as e:
         print(f"❌ Error loading initial content: {e}")
         md_preview = None
@@ -327,10 +323,7 @@ def sync_enhanced_page_changes(
                 
                 # Convert markdown to HTML with embedded images
                 md_lines = md_content.split('\n')
-                print(f"🔄 Converting page {page_num} markdown to HTML with base directory: {output_dir}")
-                print(f"📝 Sample markdown lines: {md_lines[:3] if md_lines else 'No content'}")
                 page_content_html = create_page_html_content(md_lines, Path(output_dir))
-                print(f"📄 Loaded content for page {page_num}")
             else:
                 print(f"⚠️ Page {page_num} content file not found: {page_md_path}")
         except Exception as e:
