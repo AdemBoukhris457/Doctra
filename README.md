@@ -1,6 +1,6 @@
 # 🚀 **Doctra - Document Parser Library** 📑🔎
 
-![Doctra Logo](https://raw.githubusercontent.com/AdemBoukhris457/Doctra/main/assets/Doctra_Logo.png)
+![Doctra Logo](https://raw.githubusercontent.com/AdemBoukhris457/Doctra/main/assets/Doctra_Banner.png)
 
 <div align="center">
 
@@ -11,15 +11,18 @@
 
 ## 📋 Table of Contents
 
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Core Components](#core-components)
+- [Installation](#🛠️-installation)
+- [Quick Start](#⚡-quick-start)
+- [Core Components](#🔧-core-components)
   - [StructuredPDFParser](#structuredpdfparser)
+  - [EnhancedPDFParser](#enhancedpdfparser)
   - [ChartTablePDFParser](#charttablepdfparser)
-- [Visualization](#visualization)
-- [Usage Examples](#usage-examples)
-- [Features](#features)
-- [Requirements](#requirements)
+  - [DocResEngine](#docresengine)
+- [Web UI (Gradio)](#🖥️-web-ui-gradio)
+- [Command Line Interface](#command-line-interface)
+- [Visualization](#🎨-visualization)
+- [Usage Examples](#📖-usage-examples)
+- [Features](#✨-features)
 
 ## 🛠️ Installation
 
@@ -132,6 +135,70 @@ parser = StructuredPDFParser(
 )
 ```
 
+### EnhancedPDFParser
+
+The `EnhancedPDFParser` extends the `StructuredPDFParser` with advanced image restoration capabilities using DocRes. This parser is ideal for processing scanned documents, low-quality PDFs, or documents with visual distortions that need enhancement before parsing.
+
+#### Key Features:
+- **Image Restoration**: Uses DocRes for document enhancement before processing
+- **Multiple Restoration Tasks**: Supports dewarping, deshadowing, appearance enhancement, deblurring, binarization, and end-to-end restoration
+- **Enhanced Quality**: Improves document quality for better OCR and layout detection
+- **All StructuredPDFParser Features**: Inherits all capabilities of the base parser
+- **Flexible Configuration**: Extensive options for restoration and processing
+
+#### Basic Usage:
+
+```python
+from doctra.parsers.enhanced_pdf_parser import EnhancedPDFParser
+
+# Basic enhanced parser with image restoration
+parser = EnhancedPDFParser(
+    use_image_restoration=True,
+    restoration_task="appearance"  # Default restoration task
+)
+
+# Parse document with enhancement
+parser.parse("scanned_document.pdf")
+```
+
+#### Advanced Configuration:
+
+```python
+parser = EnhancedPDFParser(
+    # Image Restoration Settings
+    use_image_restoration=True,
+    restoration_task="dewarping",      # Correct perspective distortion
+    restoration_device="cuda",         # Use GPU for faster processing
+    restoration_dpi=300,               # Higher DPI for better quality
+    
+    # VLM Settings
+    use_vlm=True,
+    vlm_provider="openai",
+    vlm_model="gpt-4-vision",
+    vlm_api_key="your_api_key",
+    
+    # Layout Detection Settings
+    layout_model_name="PP-DocLayout_plus-L",
+    dpi=200,
+    min_score=0.5,
+    
+    # OCR Settings
+    ocr_lang="eng",
+    ocr_psm=6
+)
+```
+
+#### DocRes Restoration Tasks:
+
+| Task | Description | Best For |
+|------|-------------|----------|
+| `appearance` | General appearance enhancement | Most documents (default) |
+| `dewarping` | Correct perspective distortion | Scanned documents with perspective issues |
+| `deshadowing` | Remove shadows and lighting artifacts | Documents with shadow problems |
+| `deblurring` | Reduce blur and improve sharpness | Blurry or low-quality scans |
+| `binarization` | Convert to black and white | Documents needing clean binarization |
+| `end2end` | Complete restoration pipeline | Severely degraded documents |
+
 ### ChartTablePDFParser
 
 The `ChartTablePDFParser` is a specialized parser focused specifically on extracting charts and tables from PDF documents. It's optimized for scenarios where you only need these specific elements, providing faster processing and more targeted output.
@@ -183,6 +250,163 @@ parser = ChartTablePDFParser(
     dpi=200,
     min_score=0.0
 )
+```
+
+### DocResEngine
+
+The `DocResEngine` provides direct access to DocRes image restoration capabilities. This engine is perfect for standalone image restoration tasks or when you need fine-grained control over the restoration process.
+
+#### Key Features:
+- **Direct Image Restoration**: Process individual images or entire PDFs
+- **Multiple Restoration Tasks**: All 6 DocRes restoration tasks available
+- **GPU Acceleration**: Automatic CUDA detection and optimization
+- **Flexible Input/Output**: Support for various image formats and PDFs
+- **Metadata Extraction**: Get detailed information about restoration process
+
+#### Basic Usage:
+
+```python
+from doctra.engines.image_restoration import DocResEngine
+
+# Initialize DocRes engine
+docres = DocResEngine(device="cuda")  # or "cpu" or None for auto-detect
+
+# Restore a single image
+restored_img, metadata = docres.restore_image(
+    image="path/to/image.jpg",
+    task="appearance"
+)
+
+# Restore entire PDF
+enhanced_pdf = docres.restore_pdf(
+    pdf_path="document.pdf",
+    output_path="enhanced_document.pdf",
+    task="appearance"
+)
+```
+
+#### Advanced Usage:
+
+```python
+# Initialize with custom settings
+docres = DocResEngine(
+    device="cuda",                    # Force GPU usage
+    use_half_precision=True,         # Use half precision for faster processing
+    model_path="custom/model.pth",    # Custom model path (optional)
+    mbd_path="custom/mbd.pth"        # Custom MBD model path (optional)
+)
+
+# Process multiple images
+images = ["doc1.jpg", "doc2.jpg", "doc3.jpg"]
+for img_path in images:
+    restored_img, metadata = docres.restore_image(
+        image=img_path,
+        task="dewarping"
+    )
+    print(f"Processed {img_path}: {metadata}")
+
+# Batch PDF processing
+pdfs = ["report1.pdf", "report2.pdf"]
+for pdf_path in pdfs:
+    output_path = f"enhanced_{os.path.basename(pdf_path)}"
+    docres.restore_pdf(
+        pdf_path=pdf_path,
+        output_path=output_path,
+        task="end2end"  # Complete restoration pipeline
+    )
+```
+
+#### Supported Restoration Tasks:
+
+| Task | Description | Use Case |
+|------|-------------|----------|
+| `appearance` | General appearance enhancement | Default choice for most documents |
+| `dewarping` | Correct document perspective distortion | Scanned documents with perspective issues |
+| `deshadowing` | Remove shadows and lighting artifacts | Documents with shadow problems |
+| `deblurring` | Reduce blur and improve sharpness | Blurry or low-quality scans |
+| `binarization` | Convert to black and white | Documents needing clean binarization |
+| `end2end` | Complete restoration pipeline | Severely degraded documents |
+
+## 🖥️ Web UI (Gradio)
+
+Doctra provides a comprehensive web interface built with Gradio that makes document processing accessible to non-technical users.
+
+#### Features:
+- **Drag & Drop Interface**: Upload PDFs by dragging and dropping
+- **Multiple Parsers**: Choose between full parsing, enhanced parsing, and chart/table extraction
+- **Real-time Processing**: See progress as documents are processed
+- **VLM Integration**: Configure API keys for AI features
+- **Output Preview**: View results directly in the browser
+- **Download Results**: Download processed files as ZIP archives
+
+#### Launch the Web UI:
+
+```python
+from doctra.ui.app import launch_ui
+
+# Launch the web interface
+launch_ui()
+```
+
+Or from command line:
+```bash
+python gradio_app.py
+```
+
+#### Web UI Components:
+
+1. **Full Parse Tab**: Complete document processing with page navigation
+2. **Tables & Charts Tab**: Specialized extraction with VLM integration
+3. **DocRes Tab**: Image restoration with before/after comparison
+4. **Enhanced Parser Tab**: Enhanced parsing with DocRes integration
+
+## Command Line Interface
+
+Doctra includes a powerful CLI for batch processing and automation.
+
+#### Available Commands:
+
+```bash
+# Full document parsing
+doctra parse document.pdf
+
+# Enhanced parsing with image restoration
+doctra enhance document.pdf --restoration-task appearance
+
+# Extract only charts and tables
+doctra extract charts document.pdf
+doctra extract tables document.pdf
+doctra extract both document.pdf --use-vlm
+
+# Visualize layout detection
+doctra visualize document.pdf
+
+# Quick document analysis
+doctra analyze document.pdf
+
+# System information
+doctra info
+```
+
+#### CLI Examples:
+
+```bash
+# Enhanced parsing with custom settings
+doctra enhance document.pdf \
+  --restoration-task dewarping \
+  --restoration-device cuda \
+  --use-vlm \
+  --vlm-provider openai \
+  --vlm-api-key your_key
+
+# Extract charts with VLM
+doctra extract charts document.pdf \
+  --use-vlm \
+  --vlm-provider gemini \
+  --vlm-api-key your_key
+
+# Batch processing
+doctra parse *.pdf --output-dir results/
 ```
 
 ## 🎨 Visualization
@@ -281,7 +505,53 @@ parser.parse("financial_report.pdf")
 # - Markdown file with all content
 ```
 
-### Example 2: Chart and Table Extraction with VLM
+### Example 2: Enhanced Parsing with Image Restoration
+
+```python
+from doctra.parsers.enhanced_pdf_parser import EnhancedPDFParser
+
+# Initialize enhanced parser with image restoration
+parser = EnhancedPDFParser(
+    use_image_restoration=True,
+    restoration_task="dewarping",  # Correct perspective distortion
+    restoration_device="cuda",    # Use GPU for faster processing
+    use_vlm=True,
+    vlm_provider="openai",
+    vlm_api_key="your_api_key"
+)
+
+# Process scanned document with enhancement
+parser.parse("scanned_document.pdf")
+
+# Output will include:
+# - Enhanced PDF with restored images
+# - All standard parsing outputs
+# - Improved OCR accuracy due to restoration
+```
+
+### Example 3: Direct Image Restoration
+
+```python
+from doctra.engines.image_restoration import DocResEngine
+
+# Initialize DocRes engine
+docres = DocResEngine(device="cuda")
+
+# Restore individual images
+restored_img, metadata = docres.restore_image(
+    image="blurry_document.jpg",
+    task="deblurring"
+)
+
+# Restore entire PDF
+docres.restore_pdf(
+    pdf_path="low_quality.pdf",
+    output_path="enhanced.pdf",
+    task="appearance"
+)
+```
+
+### Example 4: Chart and Table Extraction with VLM
 
 ```python
 from doctra.parsers.table_chart_extractor import ChartTablePDFParser
@@ -304,29 +574,42 @@ parser.parse("data_report.pdf", output_base_dir="extracted_data")
 # - Markdown tables with extracted data
 ```
 
-### Example 3: Custom Configuration
+### Example 5: Web UI Usage
 
 ```python
-from doctra.parsers.structured_pdf_parser import StructuredPDFParser
+from doctra.ui.app import launch_ui
 
-# Custom configuration for high-quality processing
-parser = StructuredPDFParser(
-    use_vlm=True,
-    vlm_provider="openai",
-    vlm_api_key="your_openai_api_key",
-    vlm__model="gpt-5",
-    layout_model_name="PP-DocLayout_plus-L",
-    dpi=300,  # Higher DPI for better quality
-    min_score=0.5,  # Higher confidence threshold
-    ocr_lang="eng",
-    ocr_psm=6,  # Uniform block of text
-    box_separator="\n\n"  # Double line breaks between elements
-)
+# Launch the web interface
+launch_ui()
 
-parser.parse("complex_document.pdf")
+# Or build the interface programmatically
+from doctra.ui.app import build_demo
+demo = build_demo()
+demo.launch(share=True)  # Share publicly
 ```
 
-### Example 4: Layout Visualization
+### Example 6: Command Line Usage
+
+```bash
+# Enhanced parsing with custom settings
+doctra enhance document.pdf \
+  --restoration-task dewarping \
+  --restoration-device cuda \
+  --use-vlm \
+  --vlm-provider openai \
+  --vlm-api-key your_key
+
+# Extract charts with VLM
+doctra extract charts document.pdf \
+  --use-vlm \
+  --vlm-provider gemini \
+  --vlm-api-key your_key
+
+# Batch processing
+doctra parse *.pdf --output-dir results/
+```
+
+### Example 7: Layout Visualization
 
 ```python
 from doctra.parsers.structured_pdf_parser import StructuredPDFParser
@@ -365,68 +648,41 @@ parser.display_pages_with_boxes("document.pdf")
 - Organized output directory structure
 - High-resolution image preservation
 
+### 🔧 Image Restoration (DocRes)
+- **6 Restoration Tasks**: Dewarping, deshadowing, appearance enhancement, deblurring, binarization, and end-to-end restoration
+- **GPU Acceleration**: Automatic CUDA detection and optimization
+- **Enhanced Quality**: Improves document quality for better OCR and layout detection
+- **Flexible Processing**: Standalone image restoration or integrated with parsing
+
 ### 🤖 VLM Integration
 - Vision Language Model support for structured data extraction
-- Multiple provider options (Gemini, OpenAI)
+- Multiple provider options (OpenAI, Gemini, Anthropic, OpenRouter)
 - Automatic conversion of charts and tables to structured formats
 
 ### 📊 Multiple Output Formats
 - **Markdown**: Human-readable document with embedded images and tables
 - **Excel**: Structured data in spreadsheet format
 - **JSON**: Programmatically accessible structured data
+- **HTML**: Interactive web-ready documents
 - **Images**: High-quality cropped visual elements
+
+### 🖥️ User Interfaces
+- **Web UI**: Gradio-based interface with drag & drop functionality
+- **Command Line**: Powerful CLI for batch processing and automation
+- **Multiple Tabs**: Full parsing, enhanced parsing, chart/table extraction, and image restoration
 
 ### ⚙️ Flexible Configuration
 - Extensive customization options
 - Performance tuning parameters
 - Output format selection
+- Device selection (CPU/GPU)
 
-## 📋 Requirements
+## 🙏 Acknowledgments
 
-### Core Dependencies
-- **PaddleOCR**: Document layout detection
-- **Outlines**: Structured output generation
-- **Tesseract**: OCR text extraction
-- **Pillow**: Image processing
-- **OpenCV**: Computer vision operations
-- **Pandas**: Data manipulation
-- **OpenPyXL**: Excel file generation
-- **Google Generative AI**: For Gemini VLM integration
-- **OpenAI**: For GPT-5 VLM integration
+Doctra builds upon several excellent open-source projects:
 
-## 🖥️ Web Interface (Gradio)
+- **[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)** - Advanced document layout detection and OCR capabilities
+- **[DocRes](https://github.com/ZZZHANG-jx/DocRes)** - State-of-the-art document image restoration model
+- **[Outlines](https://github.com/dottxt-ai/outlines)** - Structured output generation for LLMs
 
-You can try Doctra in a simple web UI powered by Gradio.
-
-### Run locally
-
-```bash
-pip install -U gradio
-python gradio_app.py
-```
-
-Then open the printed URL (default `http://127.0.0.1:7860`).
-
-Notes:
-- If using VLM, set the API key field in the UI or export `VLM_API_KEY`.
-- Outputs are saved under `outputs/<pdf_stem>/` and previewed in the UI.
-
-### Deploy on Hugging Face Spaces
-
-1) Create a new Space (type: Gradio, SDK: Python).
-
-2) Add these files to the Space repo:
-   - Your package code (or install from PyPI).
-   - `gradio_app.py` (entry point).
-   - `requirements.txt` with at least:
-
-```text
-doctra
-gradio
-```
-
-3) Set a secret named `VLM_API_KEY` if you want VLM features.
-
-4) In Space settings, set `python gradio_app.py` as the run command (or rely on auto-detect).
-
-The Space will build and expose the same interface for uploads and processing.
+We thank the developers and contributors of these projects for their valuable work that makes Doctra possible.
