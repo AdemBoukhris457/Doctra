@@ -22,6 +22,11 @@ setup(
     author_email="boukhrisadam98@gmail.com",
     url="https://github.com/AdemBoukhris457/Doctra",
     packages=find_packages(),
+    entry_points={
+        "console_scripts": [
+            "doctra=doctra.cli.main:cli",
+        ]
+    },
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -49,6 +54,7 @@ setup(
         "outlines>=0.0.34",
         "tqdm>=4.62.0",
         "matplotlib>=3.5.0",
+        "click>=8.0.0",
     ],
     extras_require={
         "openai": ["openai>=1.0.0"],
