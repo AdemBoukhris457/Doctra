@@ -63,8 +63,8 @@ theme:
     edit: material/pencil
     view: material/eye
 
-  logo: assets/Doctra_without_background.png
-  favicon: assets/Doctra_without_background.png
+  logo: https://raw.githubusercontent.com/AdemBoukhris457/Doctra/main/assets/Doctra_without_background.png
+  favicon: https://raw.githubusercontent.com/AdemBoukhris457/Doctra/main/assets/Doctra_without_background.png
 
 markdown_extensions:
   - abbr
