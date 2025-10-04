@@ -1,0 +1,159 @@
+site_name: Doctra Documentation
+site_description: Parse, extract, and analyze documents with ease
+site_author: Adem Boukhris
+site_url: https://ademboukhris457.github.io/Doctra/
+
+repo_name: AdemBoukhris457/Doctra
+repo_url: https://github.com/AdemBoukhris457/Doctra
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - content.tooltips
+    - header.autohide
+    - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+    view: material/eye
+
+  logo: assets/Doctra_Logo.png
+  favicon: assets/Doctra_Logo.png
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_root_heading: true
+            show_source: true
+            heading_level: 2
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/AdemBoukhris457/Doctra
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/doctra/
+  version:
+    provider: mike
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quick-start.md
+      - System Requirements: getting-started/system-requirements.md
+  - User Guide:
+      - Core Concepts: user-guide/core-concepts.md
+      - Parsers:
+          - Structured PDF Parser: user-guide/parsers/structured-parser.md
+          - Enhanced PDF Parser: user-guide/parsers/enhanced-parser.md
+          - Chart & Table Extractor: user-guide/parsers/chart-table-extractor.md
+      - Engines:
+          - DocRes Engine: user-guide/engines/docres-engine.md
+          - Layout Detection: user-guide/engines/layout-detection.md
+          - OCR Engine: user-guide/engines/ocr-engine.md
+          - VLM Integration: user-guide/engines/vlm-integration.md
+      - Outputs:
+          - Export Formats: user-guide/outputs/export-formats.md
+          - Visualization: user-guide/outputs/visualization.md
+  - Interfaces:
+      - Web UI: interfaces/web-ui.md
+      - Command Line: interfaces/cli.md
+  - API Reference:
+      - Parsers: api/parsers.md
+      - Engines: api/engines.md
+      - Exporters: api/exporters.md
+      - Utilities: api/utils.md
+  - Examples:
+      - Basic Usage: examples/basic-usage.md
+      - Advanced Examples: examples/advanced-examples.md
+      - Integration: examples/integration.md
+  - Contributing:
+      - Development Guide: contributing/development.md
+      - Code of Conduct: contributing/code-of-conduct.md
+  - Changelog: changelog.md
+
