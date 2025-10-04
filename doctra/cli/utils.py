@@ -13,20 +13,21 @@ from pathlib import Path
 from doctra.utils.progress import create_beautiful_progress_bar, create_notebook_friendly_bar
 
 
-def validate_vlm_config(use_vlm: bool, vlm_api_key: Optional[str]) -> None:
+def validate_vlm_config(use_vlm: bool, vlm_api_key: Optional[str], vlm_provider: str = "gemini") -> None:
     """
     Validate VLM configuration and exit with error if invalid.
     
-    Checks if VLM is enabled but no API key is provided, and exits
+    Checks if VLM is enabled but no API key is provided (except for Ollama), and exits
     with an appropriate error message if the configuration is invalid.
 
     :param use_vlm: Whether VLM processing is enabled
-    :param vlm_api_key: The VLM API key (can be None if VLM is disabled)
+    :param vlm_api_key: The VLM API key (can be None if VLM is disabled or using Ollama)
+    :param vlm_provider: VLM provider name (default: "gemini")
     :return: None
-    :raises SystemExit: If VLM is enabled but no API key is provided
+    :raises SystemExit: If VLM is enabled but no API key is provided (except for Ollama)
     """
-    if use_vlm and not vlm_api_key:
-        click.echo("❌ Error: VLM API key is required when using --use-vlm", err=True)
+    if use_vlm and vlm_provider != "ollama" and not vlm_api_key:
+        click.echo("❌ Error: VLM API key is required when using --use-vlm (except for Ollama)", err=True)
         click.echo("   Set the VLM_API_KEY environment variable or use --vlm-api-key", err=True)
         click.echo("   Example: export VLM_API_KEY=your_api_key", err=True)
         sys.exit(1)

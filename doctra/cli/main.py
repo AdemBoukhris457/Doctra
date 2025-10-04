@@ -28,6 +28,7 @@ except ImportError:
 
 # Import additional modules
 from doctra.engines.layout.paddle_layout import PaddleLayoutEngine
+from doctra.cli.utils import validate_vlm_config, handle_keyboard_interrupt
 from doctra.engines.image_restoration import DocResEngine
 
 
@@ -85,7 +86,7 @@ def vlm_options(func):
     """
     func = click.option('--use-vlm/--no-vlm', default=False,
                         help='Use Vision Language Model for table/chart extraction')(func)
-    func = click.option('--vlm-provider', type=click.Choice(['gemini', 'openai']), default='gemini',
+    func = click.option('--vlm-provider', type=click.Choice(['gemini', 'openai', 'anthropic', 'openrouter', 'ollama']), default='gemini',
                         help='VLM provider to use (default: gemini)')(func)
     func = click.option('--vlm-model', type=str, default=None,
                         help='Model name to use (defaults to provider-specific defaults)')(func)
@@ -141,23 +142,6 @@ def ocr_options(func):
     return func
 
 
-def validate_vlm_config(use_vlm: bool, vlm_api_key: Optional[str]) -> None:
-    """
-    Validate VLM configuration and exit with error if invalid.
-    
-    Checks if VLM is enabled but no API key is provided, and exits
-    with an appropriate error message if the configuration is invalid.
-
-    :param use_vlm: Whether VLM processing is enabled
-    :param vlm_api_key: The VLM API key (can be None if VLM is disabled)
-    :return: None
-    :raises SystemExit: If VLM is enabled but no API key is provided
-    """
-    if use_vlm and not vlm_api_key:
-        click.echo("❌ Error: VLM API key is required when using --use-vlm", err=True)
-        click.echo("   Set the VLM_API_KEY environment variable or use --vlm-api-key", err=True)
-        click.echo("   Example: export VLM_API_KEY=your_api_key", err=True)
-        sys.exit(1)
 
 
 @cli.command()
@@ -212,7 +196,7 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
     :param verbose: Whether to enable verbose output
     :return: None
     """
-    validate_vlm_config(use_vlm, vlm_api_key)
+    validate_vlm_config(use_vlm, vlm_api_key, vlm_provider)
 
     if verbose:
         click.echo(f"🔍 Starting full PDF parsing...")
@@ -350,7 +334,7 @@ def enhance(pdf_path: Path, output_dir: Optional[Path], restoration_task: str,
     :param verbose: Whether to enable verbose output
     :return: None
     """
-    validate_vlm_config(use_vlm, vlm_api_key)
+    validate_vlm_config(use_vlm, vlm_api_key, vlm_provider)
 
     if verbose:
         click.echo(f"🔍 Starting enhanced PDF parsing with DocRes...")
@@ -488,7 +472,7 @@ def charts(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
     :param verbose: Whether to enable verbose output
     :return: None
     """
-    validate_vlm_config(use_vlm, vlm_api_key)
+    validate_vlm_config(use_vlm, vlm_api_key, vlm_provider)
 
     if verbose:
         click.echo(f"📊 Starting chart extraction...")
@@ -564,7 +548,7 @@ def tables(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
     :param verbose: Whether to enable verbose output
     :return: None
     """
-    validate_vlm_config(use_vlm, vlm_api_key)
+    validate_vlm_config(use_vlm, vlm_api_key, vlm_provider)
 
     if verbose:
         click.echo(f"📋 Starting table extraction...")
@@ -642,7 +626,7 @@ def both(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
     :param verbose: Whether to enable verbose output
     :return: None
     """
-    validate_vlm_config(use_vlm, vlm_api_key)
+    validate_vlm_config(use_vlm, vlm_api_key, vlm_provider)
 
     if verbose:
         click.echo(f"📊📋 Starting chart and table extraction...")
@@ -972,6 +956,9 @@ def info():
     click.echo("\nVLM Providers:")
     click.echo("  • Gemini (Google) - gemini-2.5-pro, gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.0-flash")
     click.echo("  • OpenAI - gpt-5, gpt-5-mini, gpt-4.1, gpt-4.1-mini, gpt-4o")
+    click.echo("  • Anthropic - claude-opus-4-1, claude-3.5-sonnet, claude-3-haiku")
+    click.echo("  • OpenRouter - x-ai/grok-4, meta-llama/llama-3.1-405b-instruct")
+    click.echo("  • Ollama (Local) - llava:latest, gemma3:latest, llama3.2-vision:latest")
 
     # Available layout models
     click.echo("\nLayout Detection Models:")

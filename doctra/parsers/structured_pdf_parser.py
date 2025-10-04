@@ -88,11 +88,14 @@ class StructuredPDFParser:
         self.use_vlm = use_vlm
         self.vlm = None
         if self.use_vlm:
-            self.vlm = VLMStructuredExtractor(
-                vlm_provider=vlm_provider,
-                vlm_model=vlm_model,
-                api_key=vlm_api_key,
-            )
+            try:
+                self.vlm = VLMStructuredExtractor(
+                    vlm_provider=vlm_provider,
+                    vlm_model=vlm_model,
+                    api_key=vlm_api_key,
+                )
+            except Exception as e:
+                self.vlm = None
 
     def parse(self, pdf_path: str) -> None:
         """
