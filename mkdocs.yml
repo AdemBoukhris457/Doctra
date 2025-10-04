@@ -7,6 +7,10 @@ repo_name: AdemBoukhris457/Doctra
 repo_url: https://github.com/AdemBoukhris457/Doctra
 edit_uri: edit/main/docs/
 
+docs_dir: docs
+site_dir: site
+use_directory_urls: false
+
 theme:
   name: material
   palette:
@@ -59,8 +63,8 @@ theme:
     edit: material/pencil
     view: material/eye
 
-  logo: assets/Doctra_Logo.png
-  favicon: assets/Doctra_Logo.png
+  logo: assets/Doctra_without_background.png
+  favicon: assets/Doctra_without_background.png
 
 markdown_extensions:
   - abbr

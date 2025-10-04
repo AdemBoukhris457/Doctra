@@ -1,15 +1,11 @@
 # Welcome to Doctra
 
-<div align="center">
-
-![Doctra Banner](https://raw.githubusercontent.com/AdemBoukhris457/Doctra/main/assets/Doctra_Banner.png)
+![Doctra Banner](assets/Doctra_Banner.png)
 
 [![PyPI version](https://img.shields.io/pypi/v/doctra)](https://pypi.org/project/doctra/)
 [![Python versions](https://img.shields.io/pypi/pyversions/doctra)](https://pypi.org/project/doctra/)
 [![GitHub stars](https://img.shields.io/github/stars/AdemBoukhris457/Doctra)](https://github.com/AdemBoukhris457/Doctra)
 [![License](https://img.shields.io/github/license/AdemBoukhris457/Doctra)](https://github.com/AdemBoukhris457/Doctra/blob/main/LICENSE)
-
-</div>
 
 ## Overview
 
