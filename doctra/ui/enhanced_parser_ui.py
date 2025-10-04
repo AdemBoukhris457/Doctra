@@ -65,7 +65,7 @@ def run_enhanced_parse(
 
     # Validate VLM configuration if VLM is enabled
     if use_vlm:
-        vlm_error = validate_vlm_config(use_vlm, vlm_api_key)
+        vlm_error = validate_vlm_config(use_vlm, vlm_api_key, vlm_provider)
         if vlm_error:
             return (vlm_error, None, [], "", None, None, "")
 
@@ -358,7 +358,7 @@ def create_enhanced_parser_tab() -> Tuple[gr.Tab, dict]:
         # VLM settings
         with gr.Row():
             use_vlm_enhanced = gr.Checkbox(label="Use VLM (optional)", value=False)
-            vlm_provider_enhanced = gr.Dropdown(["gemini", "openai", "anthropic", "openrouter"], value="gemini", label="VLM Provider")
+            vlm_provider_enhanced = gr.Dropdown(["gemini", "openai", "anthropic", "openrouter", "ollama"], value="gemini", label="VLM Provider")
             vlm_api_key_enhanced = gr.Textbox(type="password", label="VLM API Key", placeholder="Optional if VLM disabled")
 
         # Advanced settings accordion

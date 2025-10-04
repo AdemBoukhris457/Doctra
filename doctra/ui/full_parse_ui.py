@@ -60,7 +60,7 @@ def run_full_parse(
         return ("No file provided.", None, [], [], "")
 
     # Validate VLM configuration
-    vlm_error = validate_vlm_config(use_vlm, vlm_api_key)
+    vlm_error = validate_vlm_config(use_vlm, vlm_api_key, vlm_provider)
     if vlm_error:
         return (vlm_error, None, [], [], "")
 
@@ -429,7 +429,7 @@ def create_full_parse_tab() -> Tuple[gr.Tab, dict]:
         with gr.Row():
             pdf = gr.File(file_types=[".pdf"], label="PDF")
             use_vlm = gr.Checkbox(label="Use VLM (optional)", value=False)
-            vlm_provider = gr.Dropdown(["gemini", "openai", "anthropic", "openrouter"], value="gemini", label="VLM Provider")
+            vlm_provider = gr.Dropdown(["gemini", "openai", "anthropic", "openrouter", "ollama"], value="gemini", label="VLM Provider")
             vlm_api_key = gr.Textbox(type="password", label="VLM API Key", placeholder="Optional if VLM disabled")
 
         # Advanced settings accordion

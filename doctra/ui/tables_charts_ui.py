@@ -48,7 +48,7 @@ def run_extract(
         return ("No file provided.", "", [], [], "")
     
     # Validate VLM configuration
-    vlm_error = validate_vlm_config(use_vlm, vlm_api_key)
+    vlm_error = validate_vlm_config(use_vlm, vlm_api_key, vlm_provider)
     if vlm_error:
         return (vlm_error, "", [], [], "")
 
@@ -334,7 +334,7 @@ def create_tables_charts_tab() -> Tuple[gr.Tab, dict]:
             pdf_e = gr.File(file_types=[".pdf"], label="PDF")
             target = gr.Dropdown(["tables", "charts", "both"], value="both", label="Target")
             use_vlm_e = gr.Checkbox(label="Use VLM (optional)", value=False)
-            vlm_provider_e = gr.Dropdown(["gemini", "openai", "anthropic", "openrouter"], value="gemini", label="VLM Provider")
+            vlm_provider_e = gr.Dropdown(["gemini", "openai", "anthropic", "openrouter", "ollama"], value="gemini", label="VLM Provider")
             vlm_api_key_e = gr.Textbox(type="password", label="VLM API Key", placeholder="Optional if VLM disabled")
         
         # Advanced settings accordion

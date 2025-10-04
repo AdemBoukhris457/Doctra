@@ -261,21 +261,22 @@ def parse_markdown_by_pages(md_content: str) -> List[Dict[str, Any]]:
     return pages
 
 
-def validate_vlm_config(use_vlm: bool, vlm_api_key: str) -> Optional[str]:
+def validate_vlm_config(use_vlm: bool, vlm_api_key: str, vlm_provider: str = "gemini") -> Optional[str]:
     """
     Validate VLM configuration parameters.
     
     Args:
         use_vlm: Whether VLM is enabled
         vlm_api_key: API key for VLM provider
+        vlm_provider: VLM provider name (default: "gemini")
         
     Returns:
         Error message if validation fails, None if valid
     """
-    if use_vlm and not vlm_api_key:
-        return "❌ Error: VLM API key is required when using VLM"
+    if use_vlm and vlm_provider != "ollama" and not vlm_api_key:
+        return "❌ Error: VLM API key is required when using VLM (except for Ollama)"
     
-    if use_vlm and vlm_api_key:
+    if use_vlm and vlm_api_key and vlm_provider != "ollama":
         # Basic API key validation
         if len(vlm_api_key.strip()) < 10:
             return "❌ Error: VLM API key appears to be too short or invalid"
