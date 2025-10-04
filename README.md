@@ -7,6 +7,7 @@
 [![stars](https://img.shields.io/github/stars/AdemBoukhris457/Doctra.svg)](https://github.com/AdemBoukhris457/Doctra)
 [![forks](https://img.shields.io/github/forks/AdemBoukhris457/Doctra.svg)](https://github.com/AdemBoukhris457/Doctra)
 [![PyPI version](https://img.shields.io/pypi/v/doctra)](https://pypi.org/project/doctra/)
+[![Doc Status](https://github.com/AdemBoukhris457/Doctra/actions/workflows/build-docs.yml/badge.svg)](https://ademboukhris457.github.io/Doctra/)
 </div>
 
 ## 📋 Table of Contents
