@@ -1,6 +1,6 @@
 # 🚀 **Doctra - Document Parser Library** 📑🔎
 
-![Doctra Logo](https://raw.githubusercontent.com/AdemBoukhris457/Doctra/main/assets/Doctra_Banner.png)
+![Doctra Logo](https://cdn.jsdelivr.net/gh/AdemBoukhris457/Doctra@main/assets/Doctra_Banner.png)
 
 <div align="center">
 

@@ -109,6 +109,7 @@ This will generate:
     - `"gemini"` - Google's Gemini models
     - `"anthropic"` - Claude with vision
     - `"openrouter"` - Access multiple models
+    - `"qianfan"` - Baidu AI Cloud ERNIE models
 
 ## Document Restoration
 

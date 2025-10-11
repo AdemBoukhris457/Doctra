@@ -43,9 +43,18 @@ parser_gemini = ChartTablePDFParser(
     vlm_api_key="gemini-key"
 )
 
+# Using Qianfan ERNIE (Baidu AI Cloud)
+parser_qianfan = ChartTablePDFParser(
+    use_vlm=True,
+    vlm_provider="qianfan",
+    vlm_api_key="qianfan-key",
+    vlm_model="ernie-4.5-turbo-vl-32k"
+)
+
 # Parse with different providers
-parser_openai.parse("important_doc.pdf")
-parser_gemini.parse("regular_doc.pdf")
+parser_openai.parse("doc.pdf")
+parser_gemini.parse("doc.pdf")
+parser_qianfan.parse("doc.pdf")
 ```
 
 ## Parallel Batch Processing
