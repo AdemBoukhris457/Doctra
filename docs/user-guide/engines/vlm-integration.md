@@ -12,6 +12,7 @@ Doctra integrates with Vision Language Models (VLMs) to convert visual elements 
 - **Gemini**: Google's vision models
 - **Anthropic**: Claude with vision
 - **OpenRouter**: Access multiple models
+- **Qianfan**: Baidu AI Cloud ERNIE models
 
 ## Basic Configuration
 
@@ -59,6 +60,21 @@ parser = StructuredPDFParser(
     vlm_api_key="your-anthropic-key"
 )
 ```
+
+### Qianfan (Baidu AI Cloud)
+
+```python
+parser = StructuredPDFParser(
+    use_vlm=True,
+    vlm_provider="qianfan",
+    vlm_api_key="your-qianfan-key",
+    vlm_model="ernie-4.5-turbo-vl-32k"  # Optional, defaults to ernie-4.5-turbo-vl-32k
+)
+```
+
+**Available ERNIE Models:**
+- `ernie-4.5-turbo-vl-32k` (default) - vision model with 32k context
+
 
 ## What Gets Processed
 
