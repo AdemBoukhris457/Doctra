@@ -24,7 +24,7 @@ This is the current stable release of Doctra.
     - GPU acceleration support
 
 - **VLM Integration**
-    - Support for OpenAI, Gemini, Anthropic, and OpenRouter
+    - Support for OpenAI, Gemini, Anthropic, OpenRouter, Qianfan, and Ollama
     - Structured data extraction from charts and tables
     - Automatic conversion to Excel/HTML/JSON
 

@@ -13,6 +13,7 @@ Doctra integrates with Vision Language Models (VLMs) to convert visual elements 
 - **Anthropic**: Claude with vision
 - **OpenRouter**: Access multiple models
 - **Qianfan**: Baidu AI Cloud ERNIE models
+- **Ollama**: Local models (no API key required)
 
 ## Basic Configuration
 
@@ -61,6 +62,23 @@ parser = StructuredPDFParser(
 )
 ```
 
+### OpenRouter
+
+```python
+parser = StructuredPDFParser(
+    use_vlm=True,
+    vlm_provider="openrouter",
+    vlm_api_key="your-openrouter-key",
+    vlm_model="x-ai/grok-4"  # Optional, defaults to x-ai/grok-4
+)
+```
+
+**Available Models:**
+- `x-ai/grok-4` (default) - Grok-4 model
+- `anthropic/claude-3.5-sonnet` - Claude 3.5 Sonnet
+- `openai/gpt-4o` - GPT-4o via OpenRouter
+- `google/gemini-pro-vision` - Gemini Pro Vision
+
 ### Qianfan (Baidu AI Cloud)
 
 ```python
@@ -75,6 +93,27 @@ parser = StructuredPDFParser(
 **Available ERNIE Models:**
 - `ernie-4.5-turbo-vl-32k` (default) - vision model with 32k context
 
+### Ollama (Local Models)
+
+```python
+parser = StructuredPDFParser(
+    use_vlm=True,
+    vlm_provider="ollama",
+    vlm_model="llava:latest"  # Optional, defaults to llava:latest
+)
+```
+
+**Available Models:**
+- `llava:latest` (default) - LLaVA vision model
+- `llava:7b` - LLaVA 7B model
+- `llava:13b` - LLaVA 13B model
+- `gemma2:latest` - Gemma 2 model
+- `qwen2-vl:latest` - Qwen2-VL model
+
+**Prerequisites:**
+- Ollama must be installed and running locally
+- No API key required
+- Models are downloaded automatically on first use
 
 ## What Gets Processed
 

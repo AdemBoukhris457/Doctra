@@ -102,7 +102,7 @@ parser = StructuredPDFParser()
 # Parser with VLM for structured data extraction
 parser = StructuredPDFParser(
     use_vlm=True,
-    vlm_provider="openai",  # or "gemini" or "anthropic" or "openrouter"
+    vlm_provider="openai",  # or "gemini", "anthropic", "openrouter", "qianfan", "ollama"
     vlm_api_key="your_api_key_here"
 )
 
@@ -657,7 +657,7 @@ parser.display_pages_with_boxes("document.pdf")
 
 ### 🤖 VLM Integration
 - Vision Language Model support for structured data extraction
-- Multiple provider options (OpenAI, Gemini, Anthropic, OpenRouter)
+- Multiple provider options (OpenAI, Gemini, Anthropic, OpenRouter, Qianfan, Ollama)
 - Automatic conversion of charts and tables to structured formats
 
 ### 📊 Multiple Output Formats
