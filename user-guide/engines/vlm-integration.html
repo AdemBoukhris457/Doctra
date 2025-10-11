@@ -1070,9 +1070,27 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#openrouter" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpenRouter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#qianfan-baidu-ai-cloud" class="md-nav__link">
     <span class="md-ellipsis">
       Qianfan (Baidu AI Cloud)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ollama-local-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ollama (Local Models)
     </span>
   </a>
   
@@ -1855,9 +1873,27 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#openrouter" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpenRouter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#qianfan-baidu-ai-cloud" class="md-nav__link">
     <span class="md-ellipsis">
       Qianfan (Baidu AI Cloud)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ollama-local-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ollama (Local Models)
     </span>
   </a>
   
@@ -1947,6 +1983,7 @@
 <li><strong>Anthropic</strong>: Claude with vision</li>
 <li><strong>OpenRouter</strong>: Access multiple models</li>
 <li><strong>Qianfan</strong>: Baidu AI Cloud ERNIE models</li>
+<li><strong>Ollama</strong>: Local models (no API key required)</li>
 </ul>
 <h2 id="basic-configuration">Basic Configuration<a class="headerlink" href="#basic-configuration" title="Permanent link">&para;</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredPDFParser</span>
@@ -1982,16 +2019,46 @@
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">vlm_api_key</span><span class="o">=</span><span class="s2">&quot;your-anthropic-key&quot;</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">)</span>
 </span></code></pre></div>
-<h3 id="qianfan-baidu-ai-cloud">Qianfan (Baidu AI Cloud)<a class="headerlink" href="#qianfan-baidu-ai-cloud" title="Permanent link">&para;</a></h3>
+<h3 id="openrouter">OpenRouter<a class="headerlink" href="#openrouter" title="Permanent link">&para;</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">use_vlm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">vlm_provider</span><span class="o">=</span><span class="s2">&quot;qianfan&quot;</span><span class="p">,</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">vlm_api_key</span><span class="o">=</span><span class="s2">&quot;your-qianfan-key&quot;</span><span class="p">,</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">vlm_model</span><span class="o">=</span><span class="s2">&quot;ernie-4.5-turbo-vl-32k&quot;</span>  <span class="c1"># Optional, defaults to ernie-4.5-turbo-vl-32k</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">vlm_provider</span><span class="o">=</span><span class="s2">&quot;openrouter&quot;</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">vlm_api_key</span><span class="o">=</span><span class="s2">&quot;your-openrouter-key&quot;</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">vlm_model</span><span class="o">=</span><span class="s2">&quot;x-ai/grok-4&quot;</span>  <span class="c1"># Optional, defaults to x-ai/grok-4</span>
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Available Models:</strong>
+- <code>x-ai/grok-4</code> (default) - Grok-4 model
+- <code>anthropic/claude-3.5-sonnet</code> - Claude 3.5 Sonnet
+- <code>openai/gpt-4o</code> - GPT-4o via OpenRouter
+- <code>google/gemini-pro-vision</code> - Gemini Pro Vision</p>
+<h3 id="qianfan-baidu-ai-cloud">Qianfan (Baidu AI Cloud)<a class="headerlink" href="#qianfan-baidu-ai-cloud" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">use_vlm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">vlm_provider</span><span class="o">=</span><span class="s2">&quot;qianfan&quot;</span><span class="p">,</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">vlm_api_key</span><span class="o">=</span><span class="s2">&quot;your-qianfan-key&quot;</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">vlm_model</span><span class="o">=</span><span class="s2">&quot;ernie-4.5-turbo-vl-32k&quot;</span>  <span class="c1"># Optional, defaults to ernie-4.5-turbo-vl-32k</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">)</span>
 </span></code></pre></div>
 <p><strong>Available ERNIE Models:</strong>
 - <code>ernie-4.5-turbo-vl-32k</code> (default) - vision model with 32k context</p>
+<h3 id="ollama-local-models">Ollama (Local Models)<a class="headerlink" href="#ollama-local-models" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">use_vlm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">vlm_provider</span><span class="o">=</span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">vlm_model</span><span class="o">=</span><span class="s2">&quot;llava:latest&quot;</span>  <span class="c1"># Optional, defaults to llava:latest</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Available Models:</strong>
+- <code>llava:latest</code> (default) - LLaVA vision model
+- <code>llava:7b</code> - LLaVA 7B model
+- <code>llava:13b</code> - LLaVA 13B model
+- <code>gemma2:latest</code> - Gemma 2 model
+- <code>qwen2-vl:latest</code> - Qwen2-VL model</p>
+<p><strong>Prerequisites:</strong>
+- Ollama must be installed and running locally
+- No API key required
+- Models are downloaded automatically on first use</p>
 <h2 id="what-gets-processed">What Gets Processed<a class="headerlink" href="#what-gets-processed" title="Permanent link">&para;</a></h2>
 <p>With VLM enabled:</p>
 <ul>
@@ -2000,13 +2067,13 @@
 <li><strong>Figures</strong>: Descriptions and context generated</li>
 </ul>
 <h2 id="output-files">Output Files<a class="headerlink" href="#output-files" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>outputs/
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>└── document/
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    └── full_parse/
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>        ├── tables.xlsx      # Extracted table data
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>        ├── tables.html      # HTML tables
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        ├── vlm_items.json   # Structured data
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        └── ...
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>outputs/
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>└── document/
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    └── full_parse/
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        ├── tables.xlsx      # Extracted table data
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>        ├── tables.html      # HTML tables
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        ├── vlm_items.json   # Structured data
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        └── ...
 </span></code></pre></div>
 <h2 id="cost-considerations">Cost Considerations<a class="headerlink" href="#cost-considerations" title="Permanent link">&para;</a></h2>
 <p>VLM processing requires API calls:</p>
