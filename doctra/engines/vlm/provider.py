@@ -22,10 +22,10 @@ def make_model(
     """
     Build a callable Outlines model for VLM processing.
     
-    Creates an Outlines model instance configured for Gemini, OpenAI, Anthropic, OpenRouter, or Ollama
+    Creates an Outlines model instance configured for Gemini, OpenAI, Anthropic, OpenRouter, Qianfan, or Ollama
     providers. Only one backend is active at a time, with Gemini as the default.
 
-    :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", "openrouter", or "ollama", default: "gemini")
+    :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", "openrouter", "qianfan", or "ollama", default: "gemini")
     :param vlm_model: Model name to use (defaults to provider-specific defaults)
     :param api_key: API key for the VLM provider (required for all providers except Ollama)
     :return: Configured Outlines model instance
@@ -43,6 +43,8 @@ def make_model(
             vlm_model = "claude-opus-4-1"
         elif vlm_provider == "openrouter":
             vlm_model = "x-ai/grok-4"
+        elif vlm_provider == "qianfan":
+            vlm_model = "ernie-4.5-turbo-vl-32k"
         elif vlm_provider == "ollama":
             vlm_model = "llava:latest"
 
@@ -87,11 +89,24 @@ def make_model(
             vlm_model
         )
 
+    if vlm_provider == "qianfan":
+        if not api_key:
+            raise ValueError("Qianfan provider requires api_key to be passed to make_model(...).")
+        # Create the Qianfan client with OpenAI-compatible interface
+        client = openai.OpenAI(
+            base_url="https://qianfan.baidubce.com/v2",
+            api_key=api_key,
+        )
+        return outlines.from_openai(
+            client,
+            vlm_model
+        )
+
     if vlm_provider == "ollama":
         # Ollama doesn't use Outlines, so we return a custom wrapper
         return OllamaModelWrapper(vlm_model)
 
-    raise ValueError(f"Unsupported provider: {vlm_provider}. Use 'gemini', 'openai', 'anthropic', 'openrouter', or 'ollama'.")
+    raise ValueError(f"Unsupported provider: {vlm_provider}. Use 'gemini', 'openai', 'anthropic', 'openrouter', 'qianfan', or 'ollama'.")
 
 
 class OllamaModelWrapper:
