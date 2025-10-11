@@ -264,6 +264,8 @@ Vision Language Models convert visual elements to structured data.
 - **Gemini**: Google's vision models
 - **Anthropic**: Claude with vision
 - **OpenRouter**: Access multiple models
+- **Qianfan**: Baidu AI Cloud ERNIE models
+- **Ollama**: Local models (no API key required)
 
 ### Configuration
 

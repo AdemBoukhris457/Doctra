@@ -110,6 +110,7 @@ This will generate:
     - `"anthropic"` - Claude with vision
     - `"openrouter"` - Access multiple models
     - `"qianfan"` - Baidu AI Cloud ERNIE models
+    - `"ollama"` - Local models (no API key required)
 
 ## Document Restoration
 
