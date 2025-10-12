@@ -8,6 +8,7 @@
 [![forks](https://img.shields.io/github/forks/AdemBoukhris457/Doctra.svg)](https://github.com/AdemBoukhris457/Doctra)
 [![PyPI version](https://img.shields.io/pypi/v/doctra)](https://pypi.org/project/doctra/)
 [![Documentation](https://img.shields.io/badge/documentation-available-success)](https://ademboukhris457.github.io/Doctra/index.html)
+[![Hugging Face Spaces](https://img.shields.io/badge/🤗%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/DaVinciCode/doctra-document-parser)
 </div>
 
 ## 📋 Table of Contents
