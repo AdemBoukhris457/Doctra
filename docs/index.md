@@ -1,6 +1,6 @@
 # Welcome to Doctra
 
-![Doctra Banner](https://raw.githubusercontent.com/AdemBoukhris457/Doctra/main/assets/Doctra_Banner.png)
+![Doctra Banner](https://raw.githubusercontent.com/AdemBoukhris457/Doctra/main/assets/Doctra_Banner_MultiDoc.png)
 
 [![PyPI version](https://img.shields.io/pypi/v/doctra)](https://pypi.org/project/doctra/)
 [![Python versions](https://img.shields.io/pypi/pyversions/doctra)](https://pypi.org/project/doctra/)
