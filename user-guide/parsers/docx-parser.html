@@ -12,13 +12,13 @@
         <meta name="author" content="Adem Boukhris">
       
       
-        <link rel="canonical" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/chart-table-extractor.html">
+        <link rel="canonical" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/docx-parser.html">
       
       
-        <link rel="prev" href="enhanced-parser.html">
+        <link rel="prev" href="chart-table-extractor.html">
       
       
-        <link rel="next" href="docx-parser.html">
+        <link rel="next" href="../engines/docres-engine.html">
       
       
       <link rel="icon" href="https://raw.githubusercontent.com/AdemBoukhris457/Doctra/main/assets/Doctra_without_background.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Chart & Table Extractor - Doctra Documentation</title>
+        <title>DOCX Parser - Doctra Documentation</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chart-table-extractor" class="md-skip">
+        <a href="#docx-parser" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Chart & Table Extractor
+              DOCX Parser
             
           </span>
         </div>
@@ -797,6 +797,29 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="chart-table-extractor.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chart & Table Extractor
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -814,7 +837,7 @@
   
   
   <span class="md-ellipsis">
-    Chart & Table Extractor
+    DOCX Parser
     
   </span>
   
@@ -822,12 +845,12 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="chart-table-extractor.html" class="md-nav__link md-nav__link--active">
+      <a href="docx-parser.html" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    Chart & Table Extractor
+    DOCX Parser
     
   </span>
   
@@ -859,15 +882,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Features
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#basic-usage" class="md-nav__link">
     <span class="md-ellipsis">
       Basic Usage
@@ -877,36 +891,261 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#selective-extraction" class="md-nav__link">
+  <a href="#advanced-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Selective Extraction
+      Advanced Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#with-vlm-enhancement" class="md-nav__link">
+    <span class="md-ellipsis">
+      With VLM Enhancement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-processing-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Processing Options
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output Structure
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#with-vlm-for-structured-data" class="md-nav__link">
+  <a href="#vlm-integration-features" class="md-nav__link">
     <span class="md-ellipsis">
-      With VLM for Structured Data
+      VLM Integration Features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VLM Integration Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vlm-processing-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      VLM Processing Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#excel-output-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Excel Output Features
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-to-use" class="md-nav__link">
+  <a href="#cli-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      When to Use
+      CLI Usage
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
+  <a href="#web-ui-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      See Also
+      Web UI Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameters-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameters Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vlm-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      VLM Settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processing-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processing Options
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#performance-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output Quality
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-prevention" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Prevention
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-basic-document-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Basic Document Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-vlm-enhanced-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: VLM-Enhanced Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-custom-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Custom Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Documentation
     </span>
   </a>
   
@@ -916,29 +1155,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="docx-parser.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    DOCX Parser
-    
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -1774,15 +1990,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Features
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#basic-usage" class="md-nav__link">
     <span class="md-ellipsis">
       Basic Usage
@@ -1792,36 +1999,261 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#selective-extraction" class="md-nav__link">
+  <a href="#advanced-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Selective Extraction
+      Advanced Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#with-vlm-enhancement" class="md-nav__link">
+    <span class="md-ellipsis">
+      With VLM Enhancement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-processing-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Processing Options
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output Structure
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#with-vlm-for-structured-data" class="md-nav__link">
+  <a href="#vlm-integration-features" class="md-nav__link">
     <span class="md-ellipsis">
-      With VLM for Structured Data
+      VLM Integration Features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VLM Integration Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vlm-processing-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      VLM Processing Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#excel-output-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Excel Output Features
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-to-use" class="md-nav__link">
+  <a href="#cli-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      When to Use
+      CLI Usage
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
+  <a href="#web-ui-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      See Also
+      Web UI Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameters-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameters Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vlm-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      VLM Settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processing-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processing Options
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#performance-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output Quality
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-prevention" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Prevention
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-basic-document-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Basic Document Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-vlm-enhanced-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: VLM-Enhanced Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-custom-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Custom Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Documentation
     </span>
   </a>
   
@@ -1843,7 +2275,7 @@
 
 
   
-    <a href="https://github.com/AdemBoukhris457/Doctra/edit/main/docs/user-guide/parsers/chart-table-extractor.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/AdemBoukhris457/Doctra/edit/main/docs/user-guide/parsers/docx-parser.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -1852,72 +2284,322 @@
     
       
     
-    <a href="https://github.com/AdemBoukhris457/Doctra/raw/main/docs/user-guide/parsers/chart-table-extractor.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/AdemBoukhris457/Doctra/raw/main/docs/user-guide/parsers/docx-parser.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="chart-table-extractor">Chart &amp; Table Extractor<a class="headerlink" href="#chart-table-extractor" title="Permanent link">&para;</a></h1>
-<p>Guide to using the <code>ChartTablePDFParser</code> for targeted extraction.</p>
+<h1 id="docx-parser">DOCX Parser<a class="headerlink" href="#docx-parser" title="Permanent link">&para;</a></h1>
+<p>The <code>StructuredDOCXParser</code> is a comprehensive parser for Microsoft Word documents (.docx files) that extracts text, tables, images, and structured content while preserving document formatting and order.</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>The <code>ChartTablePDFParser</code> is a specialized parser focused exclusively on extracting charts and tables from PDF documents. It's optimized for scenarios where you only need these specific elements.</p>
-<h2 id="key-features">Key Features<a class="headerlink" href="#key-features" title="Permanent link">&para;</a></h2>
+<p>The DOCX parser provides:</p>
 <ul>
-<li><strong>Focused Extraction</strong>: Extract only charts and/or tables</li>
-<li><strong>Selective Processing</strong>: Choose what to extract</li>
-<li><strong>VLM Integration</strong>: Convert visuals to structured data</li>
-<li><strong>Faster Processing</strong>: Skips unnecessary elements</li>
+<li><strong>Complete DOCX Support</strong>: Extracts text, tables, images, and formatting from Word documents</li>
+<li><strong>Document Order Preservation</strong>: Maintains the original sequence of elements (paragraphs, tables, images)</li>
+<li><strong>VLM Integration</strong>: Optional Vision Language Model support for image analysis and table extraction</li>
+<li><strong>Multiple Output Formats</strong>: Generates Markdown, HTML, and Excel files</li>
+<li><strong>Excel Export</strong>: Creates structured Excel files with Table of Contents and clickable hyperlinks</li>
+<li><strong>Formatting Preservation</strong>: Maintains text formatting (bold, italic, etc.) in output</li>
+<li><strong>Progress Tracking</strong>: Real-time progress bars for VLM processing</li>
 </ul>
 <h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChartTablePDFParser</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra.parsers.structured_docx_parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredDOCXParser</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">ChartTablePDFParser</span><span class="p">(</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">extract_charts</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">extract_tables</span><span class="o">=</span><span class="kc">True</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;data_report.pdf&quot;</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Basic DOCX parsing</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredDOCXParser</span><span class="p">(</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">extract_images</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">preserve_formatting</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">table_detection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">export_excel</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># Parse DOCX document</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;document.docx&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<h2 id="selective-extraction">Selective Extraction<a class="headerlink" href="#selective-extraction" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Extract only tables</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">ChartTablePDFParser</span><span class="p">(</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">extract_charts</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">extract_tables</span><span class="o">=</span><span class="kc">True</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">)</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Extract only charts</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">ChartTablePDFParser</span><span class="p">(</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">extract_charts</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">extract_tables</span><span class="o">=</span><span class="kc">False</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">)</span>
+<h2 id="advanced-configuration">Advanced Configuration<a class="headerlink" href="#advanced-configuration" title="Permanent link">&para;</a></h2>
+<h3 id="with-vlm-enhancement">With VLM Enhancement<a class="headerlink" href="#with-vlm-enhancement" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredDOCXParser</span><span class="p">(</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="c1"># VLM Settings</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">use_vlm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">vlm_provider</span><span class="o">=</span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>  <span class="c1"># or &quot;gemini&quot;, &quot;anthropic&quot;, &quot;openrouter&quot;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">vlm_model</span><span class="o">=</span><span class="s2">&quot;gpt-4-vision&quot;</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">vlm_api_key</span><span class="o">=</span><span class="s2">&quot;your_api_key&quot;</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="c1"># Processing Options</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">extract_images</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">preserve_formatting</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">table_detection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="n">export_excel</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">)</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="c1"># Parse with VLM enhancement</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;document.docx&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<h2 id="with-vlm-for-structured-data">With VLM for Structured Data<a class="headerlink" href="#with-vlm-for-structured-data" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">ChartTablePDFParser</span><span class="p">(</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">extract_charts</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">extract_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">use_vlm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">vlm_provider</span><span class="o">=</span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">vlm_api_key</span><span class="o">=</span><span class="s2">&quot;your-key&quot;</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">)</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;report.pdf&quot;</span><span class="p">)</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># Outputs: tables.xlsx, tables.html, vlm_items.json</span>
+<h3 id="custom-processing-options">Custom Processing Options<a class="headerlink" href="#custom-processing-options" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredDOCXParser</span><span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="c1"># Disable image extraction for faster processing</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">extract_images</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="c1"># Disable formatting preservation for plain text</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">preserve_formatting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="c1"># Disable table detection if not needed</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">table_detection</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="c1"># Disable Excel export</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">export_excel</span><span class="o">=</span><span class="kc">False</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="p">)</span>
 </span></code></pre></div>
-<h2 id="when-to-use">When to Use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h2>
-<p>Use <code>ChartTablePDFParser</code> when:</p>
+<h2 id="output-structure">Output Structure<a class="headerlink" href="#output-structure" title="Permanent link">&para;</a></h2>
+<p>When parsing a DOCX document, the parser creates:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>outputs/document_name/
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>├── document.md          # Markdown version with all content
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>├── document.html        # HTML version with styling
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>├── tables.xlsx         # Excel file with extracted tables
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>│   ├── Table of Contents  # Summary sheet with hyperlinks
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>│   ├── Table 1         # Individual table sheets
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>│   ├── Table 2
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>│   └── ...
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>└── images/             # Extracted images
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    ├── image1.png
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    ├── image2.jpg
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    └── ...
+</span></code></pre></div>
+<h2 id="vlm-integration-features">VLM Integration Features<a class="headerlink" href="#vlm-integration-features" title="Permanent link">&para;</a></h2>
+<p>When VLM is enabled, the parser:</p>
 <ul>
-<li>You only need charts and/or tables</li>
-<li>Faster processing is important</li>
-<li>Working with data-heavy documents</li>
-<li>Extracting data for analysis</li>
+<li><strong>Analyzes Images</strong>: Uses AI to extract structured data from images</li>
+<li><strong>Creates Tables</strong>: Converts chart images to structured table data</li>
+<li><strong>Enhanced Excel Output</strong>: Includes VLM-extracted tables in Excel file</li>
+<li><strong>Smart Content Display</strong>: Shows extracted tables instead of images in Markdown/HTML</li>
+<li><strong>Progress Tracking</strong>: Shows progress based on number of images processed</li>
 </ul>
-<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<h3 id="vlm-processing-flow">VLM Processing Flow<a class="headerlink" href="#vlm-processing-flow" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Image Detection</strong>: Scans document for embedded images</li>
+<li><strong>VLM Analysis</strong>: Processes each image with the selected VLM model</li>
+<li><strong>Structured Extraction</strong>: Converts visual content to structured data</li>
+<li><strong>Excel Integration</strong>: Adds VLM-extracted tables to Excel output</li>
+<li><strong>Content Replacement</strong>: Replaces image references with extracted tables in Markdown/HTML</li>
+</ol>
+<h2 id="excel-output-features">Excel Output Features<a class="headerlink" href="#excel-output-features" title="Permanent link">&para;</a></h2>
+<p>The generated Excel file includes:</p>
 <ul>
-<li><a href="../engines/vlm-integration.html">VLM Integration</a> - Structured data extraction</li>
-<li><a href="structured-parser.html">Structured Parser</a> - Full document parsing</li>
-<li><a href="../../api/parsers.html">API Reference</a> - Complete API documentation</li>
+<li><strong>Table of Contents</strong>: Summary sheet with all extracted tables</li>
+<li><strong>Clickable Hyperlinks</strong>: Navigate between table sheets</li>
+<li><strong>Consistent Styling</strong>: Professional formatting with colors and fonts</li>
+<li><strong>VLM Integration</strong>: Includes both original and VLM-extracted tables</li>
+<li><strong>Sheet Naming</strong>: Uses actual table titles as sheet names</li>
+</ul>
+<h2 id="cli-usage">CLI Usage<a class="headerlink" href="#cli-usage" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Basic DOCX parsing</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>doctra<span class="w"> </span>parse-docx<span class="w"> </span>document.docx
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># With VLM enhancement</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>doctra<span class="w"> </span>parse-docx<span class="w"> </span>document.docx<span class="w"> </span>--use-vlm<span class="w"> </span>--vlm-provider<span class="w"> </span>openai<span class="w"> </span>--vlm-api-key<span class="w"> </span>your_key
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Custom options</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>doctra<span class="w"> </span>parse-docx<span class="w"> </span>document.docx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span>--extract-images<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span>--preserve-formatting<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span>--table-detection<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span>--export-excel
+</span></code></pre></div>
+<h2 id="web-ui-usage">Web UI Usage<a class="headerlink" href="#web-ui-usage" title="Permanent link">&para;</a></h2>
+<p>The DOCX parser is available in the Gradio web interface:</p>
+<ol>
+<li><strong>Upload DOCX File</strong>: Drag and drop your Word document</li>
+<li><strong>Configure VLM</strong>: Enable VLM and set your API key</li>
+<li><strong>Processing Options</strong>: Choose extraction settings</li>
+<li><strong>Parse Document</strong>: Click "Parse DOCX" to process</li>
+<li><strong>View Results</strong>: Preview content and download outputs</li>
+</ol>
+<h2 id="parameters-reference">Parameters Reference<a class="headerlink" href="#parameters-reference" title="Permanent link">&para;</a></h2>
+<h3 id="vlm-settings">VLM Settings<a class="headerlink" href="#vlm-settings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>use_vlm</code></td>
+<td>bool</td>
+<td>False</td>
+<td>Enable VLM processing</td>
+</tr>
+<tr>
+<td><code>vlm_provider</code></td>
+<td>str</td>
+<td>None</td>
+<td>Provider: "openai", "gemini", "anthropic", "openrouter"</td>
+</tr>
+<tr>
+<td><code>vlm_api_key</code></td>
+<td>str</td>
+<td>None</td>
+<td>API key for the VLM provider</td>
+</tr>
+<tr>
+<td><code>vlm_model</code></td>
+<td>str</td>
+<td>None</td>
+<td>Specific model to use (provider-dependent)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="processing-options">Processing Options<a class="headerlink" href="#processing-options" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>extract_images</code></td>
+<td>bool</td>
+<td>True</td>
+<td>Extract embedded images from DOCX</td>
+</tr>
+<tr>
+<td><code>preserve_formatting</code></td>
+<td>bool</td>
+<td>True</td>
+<td>Preserve text formatting in output</td>
+</tr>
+<tr>
+<td><code>table_detection</code></td>
+<td>bool</td>
+<td>True</td>
+<td>Detect and extract tables</td>
+</tr>
+<tr>
+<td><code>export_excel</code></td>
+<td>bool</td>
+<td>True</td>
+<td>Export tables to Excel file</td>
+</tr>
+</tbody>
+</table>
+<h2 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h2>
+<p>The parser handles common errors:</p>
+<ul>
+<li><strong>File Not Found</strong>: Invalid DOCX file path</li>
+<li><strong>Permission Errors</strong>: Read-only files or locked documents</li>
+<li><strong>VLM API Errors</strong>: Invalid API keys or rate limits</li>
+<li><strong>Processing Errors</strong>: Corrupted documents or unsupported formats</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">try</span><span class="p">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;document.docx&quot;</span><span class="p">)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DOCX file not found!&quot;</span><span class="p">)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="performance-optimization">Performance Optimization<a class="headerlink" href="#performance-optimization" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Disable Unused Features</strong>: Turn off image extraction or Excel export if not needed</li>
+<li><strong>VLM Usage</strong>: Use VLM only when structured data extraction is required</li>
+<li><strong>Large Documents</strong>: Consider processing large documents in smaller chunks</li>
+</ul>
+<h3 id="output-quality">Output Quality<a class="headerlink" href="#output-quality" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Formatting Preservation</strong>: Keep enabled for better output quality</li>
+<li><strong>Table Detection</strong>: Essential for structured data extraction</li>
+<li><strong>VLM Enhancement</strong>: Improves table extraction from images</li>
+</ul>
+<h3 id="error-prevention">Error Prevention<a class="headerlink" href="#error-prevention" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>File Validation</strong>: Ensure DOCX files are not corrupted</li>
+<li><strong>API Keys</strong>: Set up VLM API keys before processing</li>
+<li><strong>Permissions</strong>: Ensure write access to output directory</li>
+</ul>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<h3 id="example-1-basic-document-processing">Example 1: Basic Document Processing<a class="headerlink" href="#example-1-basic-document-processing" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra.parsers.structured_docx_parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredDOCXParser</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># Initialize parser</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredDOCXParser</span><span class="p">()</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="c1"># Process document</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;report.docx&quot;</span><span class="p">)</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1"># Output: outputs/report/document.md, document.html, tables.xlsx</span>
+</span></code></pre></div>
+<h3 id="example-2-vlm-enhanced-processing">Example 2: VLM-Enhanced Processing<a class="headerlink" href="#example-2-vlm-enhanced-processing" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredDOCXParser</span><span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">use_vlm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">vlm_provider</span><span class="o">=</span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">vlm_api_key</span><span class="o">=</span><span class="s2">&quot;your_api_key&quot;</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">)</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># Process with AI enhancement</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;financial_report.docx&quot;</span><span class="p">)</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="c1"># Output: Enhanced Excel with VLM-extracted tables</span>
+</span></code></pre></div>
+<h3 id="example-3-custom-configuration">Example 3: Custom Configuration<a class="headerlink" href="#example-3-custom-configuration" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredDOCXParser</span><span class="p">(</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">extract_images</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">preserve_formatting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Plain text output</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">table_detection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">export_excel</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">)</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c1"># Process with custom settings</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;data_document.docx&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>"python-docx not installed"</strong></li>
+<li>
+<p>Solution: <code>pip install python-docx</code></p>
+</li>
+<li>
+<p><strong>"No tables extracted"</strong></p>
+</li>
+<li>Check if <code>table_detection=True</code></li>
+<li>
+<p>Verify document contains tables</p>
+</li>
+<li>
+<p><strong>"VLM API error"</strong></p>
+</li>
+<li>Verify API key is correct</li>
+<li>
+<p>Check provider and model compatibility</p>
+</li>
+<li>
+<p><strong>"Images not extracted"</strong></p>
+</li>
+<li>Check if <code>extract_images=True</code></li>
+<li>Verify document contains embedded images</li>
+</ol>
+<h3 id="performance-tips">Performance Tips<a class="headerlink" href="#performance-tips" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Use VLM only when needed (adds processing time)</li>
+<li>Disable unused features for faster processing</li>
+<li>Process large documents in smaller batches</li>
+<li>Ensure sufficient disk space for outputs</li>
+</ul>
+<h2 id="related-documentation">Related Documentation<a class="headerlink" href="#related-documentation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../api/parsers.html#structureddocxparser">API Reference</a></li>
+<li><a href="../engines/vlm-integration.html">VLM Integration</a></li>
+<li><a href="../outputs/export-formats.html">Export Formats</a></li>
+<li><a href="../../interfaces/web-ui.html">Web UI Guide</a></li>
 </ul>
 
 
@@ -1956,7 +2638,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="enhanced-parser.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Enhanced PDF Parser">
+          <a href="chart-table-extractor.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Chart &amp; Table Extractor">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1966,20 +2648,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Enhanced PDF Parser
+                Chart & Table Extractor
               </div>
             </div>
           </a>
         
         
           
-          <a href="docx-parser.html" class="md-footer__link md-footer__link--next" aria-label="Next: DOCX Parser">
+          <a href="../engines/docres-engine.html" class="md-footer__link md-footer__link--next" aria-label="Next: DocRes Engine">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                DOCX Parser
+                DocRes Engine
               </div>
             </div>
             <div class="md-footer__button md-icon">
