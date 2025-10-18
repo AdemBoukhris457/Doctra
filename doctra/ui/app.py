@@ -22,6 +22,7 @@ from doctra.ui.full_parse_ui import create_full_parse_tab
 from doctra.ui.tables_charts_ui import create_tables_charts_tab
 from doctra.ui.docres_ui import create_docres_tab
 from doctra.ui.enhanced_parser_ui import create_enhanced_parser_tab
+from doctra.ui.docx_parser_ui import create_docx_parser_tab
 
 
 def build_demo() -> gr.Blocks:
@@ -44,6 +45,7 @@ def build_demo() -> gr.Blocks:
         
         # Create modular tabs
         full_parse_tab, full_parse_state = create_full_parse_tab()
+        docx_parser_tab, docx_parser_state = create_docx_parser_tab()
         tables_charts_tab, tables_charts_state = create_tables_charts_tab()
         docres_tab, docres_state = create_docres_tab()
         enhanced_parser_tab, enhanced_parser_state = create_enhanced_parser_tab()
