@@ -19,6 +19,7 @@
   - [StructuredPDFParser](#structuredpdfparser)
   - [EnhancedPDFParser](#enhancedpdfparser)
   - [ChartTablePDFParser](#charttablepdfparser)
+  - [StructuredDOCXParser](#structureddocxparser)
   - [DocResEngine](#docresengine)
 - [Web UI (Gradio)](#🖥️-web-ui-gradio)
 - [Command Line Interface](#command-line-interface)
@@ -254,6 +255,102 @@ parser = ChartTablePDFParser(
 )
 ```
 
+### StructuredDOCXParser
+
+The `StructuredDOCXParser` is a comprehensive parser for Microsoft Word documents (.docx files) that extracts text, tables, images, and structured content while preserving document formatting and order. It supports VLM integration for enhanced content analysis and structured data extraction.
+
+#### Key Features:
+- **Complete DOCX Support**: Extracts text, tables, images, and formatting from Word documents
+- **Document Order Preservation**: Maintains the original sequence of elements (paragraphs, tables, images)
+- **VLM Integration**: Optional Vision Language Model support for image analysis and table extraction
+- **Multiple Output Formats**: Generates Markdown, HTML, and Excel files
+- **Excel Export**: Creates structured Excel files with Table of Contents and clickable hyperlinks
+- **Formatting Preservation**: Maintains text formatting (bold, italic, etc.) in output
+- **Progress Tracking**: Real-time progress bars for VLM processing
+
+#### Basic Usage:
+
+```python
+from doctra.parsers.structured_docx_parser import StructuredDOCXParser
+
+# Basic DOCX parsing
+parser = StructuredDOCXParser(
+    extract_images=True,
+    preserve_formatting=True,
+    table_detection=True,
+    export_excel=True
+)
+
+# Parse DOCX document
+parser.parse("document.docx")
+```
+
+#### Advanced Configuration with VLM:
+
+```python
+parser = StructuredDOCXParser(
+    # VLM Settings
+    use_vlm=True,
+    vlm_provider="openai",  # or "gemini", "anthropic", "openrouter"
+    vlm_model="gpt-4-vision",
+    vlm_api_key="your_api_key",
+    
+    # Processing Options
+    extract_images=True,
+    preserve_formatting=True,
+    table_detection=True,
+    export_excel=True
+)
+
+# Parse with VLM enhancement
+parser.parse("document.docx")
+```
+
+#### Output Structure:
+
+When parsing a DOCX document, the parser creates:
+
+```
+outputs/document_name/
+├── document.md          # Markdown version with all content
+├── document.html        # HTML version with styling
+├── tables.xlsx         # Excel file with extracted tables
+│   ├── Table of Contents  # Summary sheet with hyperlinks
+│   ├── Table 1         # Individual table sheets
+│   ├── Table 2
+│   └── ...
+└── images/             # Extracted images
+    ├── image1.png
+    ├── image2.jpg
+    └── ...
+```
+
+#### VLM Integration Features:
+
+When VLM is enabled, the parser:
+- **Analyzes Images**: Uses AI to extract structured data from images
+- **Creates Tables**: Converts chart images to structured table data
+- **Enhanced Excel Output**: Includes VLM-extracted tables in Excel file
+- **Smart Content Display**: Shows extracted tables instead of images in Markdown/HTML
+- **Progress Tracking**: Shows progress based on number of images processed
+
+#### CLI Usage:
+
+```bash
+# Basic DOCX parsing
+doctra parse-docx document.docx
+
+# With VLM enhancement
+doctra parse-docx document.docx --use-vlm --vlm-provider openai --vlm-api-key your_key
+
+# Custom options
+doctra parse-docx document.docx \
+  --extract-images \
+  --preserve-formatting \
+  --table-detection \
+  --export-excel
+```
+
 ### DocResEngine
 
 The `DocResEngine` provides direct access to DocRes image restoration capabilities. This engine is perfect for standalone image restoration tasks or when you need fine-grained control over the restoration process.
@@ -358,9 +455,10 @@ python gradio_app.py
 #### Web UI Components:
 
 1. **Full Parse Tab**: Complete document processing with page navigation
-2. **Tables & Charts Tab**: Specialized extraction with VLM integration
-3. **DocRes Tab**: Image restoration with before/after comparison
-4. **Enhanced Parser Tab**: Enhanced parsing with DocRes integration
+2. **DOCX Parser Tab**: Microsoft Word document parsing with VLM integration
+3. **Tables & Charts Tab**: Specialized extraction with VLM integration
+4. **DocRes Tab**: Image restoration with before/after comparison
+5. **Enhanced Parser Tab**: Enhanced parsing with DocRes integration
 
 ## Command Line Interface
 
@@ -371,6 +469,9 @@ Doctra includes a powerful CLI for batch processing and automation.
 ```bash
 # Full document parsing
 doctra parse document.pdf
+
+# DOCX document parsing
+doctra parse-docx document.docx
 
 # Enhanced parsing with image restoration
 doctra enhance document.pdf --restoration-task appearance
@@ -553,7 +654,57 @@ docres.restore_pdf(
 )
 ```
 
-### Example 4: Chart and Table Extraction with VLM
+### Example 4: DOCX Document Parsing
+
+```python
+from doctra.parsers.structured_docx_parser import StructuredDOCXParser
+
+# Basic DOCX parsing
+parser = StructuredDOCXParser(
+    extract_images=True,
+    preserve_formatting=True,
+    table_detection=True,
+    export_excel=True
+)
+
+# Parse Word document
+parser.parse("report.docx")
+
+# Output will include:
+# - Markdown file with all content
+# - HTML file with styling
+# - Excel file with extracted tables
+# - Extracted images in organized folders
+```
+
+### Example 5: DOCX Parsing with VLM Enhancement
+
+```python
+from doctra.parsers.structured_docx_parser import StructuredDOCXParser
+
+# DOCX parsing with VLM for enhanced analysis
+parser = StructuredDOCXParser(
+    use_vlm=True,
+    vlm_provider="openai",
+    vlm_model="gpt-4-vision",
+    vlm_api_key="your_api_key",
+    extract_images=True,
+    preserve_formatting=True,
+    table_detection=True,
+    export_excel=True
+)
+
+# Parse with AI enhancement
+parser.parse("financial_report.docx")
+
+# Output will include:
+# - All standard outputs
+# - VLM-extracted tables from images
+# - Enhanced Excel with Table of Contents
+# - Smart content display (tables instead of images)
+```
+
+### Example 6: Chart and Table Extraction with VLM
 
 ```python
 from doctra.parsers.table_chart_extractor import ChartTablePDFParser
@@ -564,7 +715,7 @@ parser = ChartTablePDFParser(
     extract_tables=True,
     use_vlm=True,
     vlm_provider="openai",
-    vlm_api_key="your_gemini_api_key"
+    vlm_api_key="your_api_key"
 )
 
 # Process document
@@ -576,7 +727,7 @@ parser.parse("data_report.pdf", output_base_dir="extracted_data")
 # - Markdown tables with extracted data
 ```
 
-### Example 5: Web UI Usage
+### Example 7: Web UI Usage
 
 ```python
 from doctra.ui.app import launch_ui
@@ -590,9 +741,17 @@ demo = build_demo()
 demo.launch(share=True)  # Share publicly
 ```
 
-### Example 6: Command Line Usage
+### Example 8: Command Line Usage
 
 ```bash
+# DOCX parsing with VLM
+doctra parse-docx document.docx \
+  --use-vlm \
+  --vlm-provider openai \
+  --vlm-api-key your_key \
+  --extract-images \
+  --export-excel
+
 # Enhanced parsing with custom settings
 doctra enhance document.pdf \
   --restoration-task dewarping \
@@ -611,7 +770,7 @@ doctra extract charts document.pdf \
 doctra parse *.pdf --output-dir results/
 ```
 
-### Example 7: Layout Visualization
+### Example 9: Layout Visualization
 
 ```python
 from doctra.parsers.structured_pdf_parser import StructuredPDFParser
@@ -671,7 +830,7 @@ parser.display_pages_with_boxes("document.pdf")
 ### 🖥️ User Interfaces
 - **Web UI**: Gradio-based interface with drag & drop functionality
 - **Command Line**: Powerful CLI for batch processing and automation
-- **Multiple Tabs**: Full parsing, enhanced parsing, chart/table extraction, and image restoration
+- **Multiple Tabs**: Full parsing, DOCX parsing, enhanced parsing, chart/table extraction, and image restoration
 
 ### ⚙️ Flexible Configuration
 - Extensive customization options
