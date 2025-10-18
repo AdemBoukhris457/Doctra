@@ -39,12 +39,13 @@ def cli(ctx):
     """
     🔬 Doctra - Advanced Document Processing Library
 
-    Extract text, tables, charts, and figures from PDF documents using
+    Extract text, tables, charts, and figures from PDF and DOCX documents using
     layout detection, OCR, and optional VLM (Vision Language Model) enhancement.
 
     \b
     Commands:
       parse      Full document parsing with text, tables, charts, and figures
+      parse-docx Parse DOCX documents with text, tables, and image extraction
       enhance    Enhanced parsing with DocRes image restoration
       extract    Extract only charts and/or tables from documents
       visualize  Visualize layout detection results
@@ -54,6 +55,7 @@ def cli(ctx):
     \b
     Examples:
       doctra parse document.pdf                    # Full document parsing
+      doctra parse-docx document.docx              # Parse DOCX document
       doctra enhance document.pdf                  # Enhanced parsing with image restoration
       doctra extract charts document.pdf          # Extract only charts
       doctra extract both document.pdf --use-vlm  # Extract charts & tables with VLM
@@ -251,6 +253,125 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
         click.echo(f"📄 Processing: {pdf_path.name}")
         parser.parse(str(pdf_path.absolute()))
         click.echo("✅ Full document processing completed successfully!")
+        click.echo(f"📁 Output directory: {output_dir.absolute() if output_dir else 'outputs/'}")
+
+    except KeyboardInterrupt:
+        click.echo("\n⚠️  Processing interrupted by user", err=True)
+        sys.exit(130)
+    except Exception as e:
+        click.echo(f"❌ Error during parsing: {e}", err=True)
+        if verbose:
+            click.echo(traceback.format_exc(), err=True)
+        sys.exit(1)
+    finally:
+        # Restore original working directory
+        os.chdir(original_cwd)
+
+
+@cli.command()
+@click.argument('docx_path', type=click.Path(exists=True, path_type=Path))
+@click.option('--output-dir', '-o', type=click.Path(path_type=Path),
+              help='Output directory (default: outputs/{docx_filename})')
+@vlm_options
+@click.option('--extract-images', is_flag=True, default=True,
+              help='Extract embedded images (default: True)')
+@click.option('--preserve-formatting', is_flag=True, default=True,
+              help='Preserve text formatting in output (default: True)')
+@click.option('--table-detection', is_flag=True, default=True,
+              help='Detect and extract tables (default: True)')
+@click.option('--export-excel', is_flag=True, default=True,
+              help='Export tables to Excel file (default: True)')
+@click.option('--verbose', '-v', is_flag=True,
+              help='Enable verbose output')
+def parse_docx(docx_path: Path, output_dir: Optional[Path], use_vlm: bool,
+               vlm_provider: str, vlm_model: Optional[str], vlm_api_key: Optional[str],
+               extract_images: bool, preserve_formatting: bool, table_detection: bool,
+               export_excel: bool, verbose: bool):
+    """
+    Parse a DOCX document and extract all structured content.
+
+    Performs comprehensive document processing including text extraction,
+    table detection, image extraction, and optional VLM-based content analysis.
+    Outputs markdown file and optionally Excel file with structured data.
+
+    \b
+    Examples:
+      doctra parse-docx document.docx
+      doctra parse-docx document.docx --use-vlm --vlm-api-key your_key
+      doctra parse-docx document.docx -o ./results
+      doctra parse-docx document.docx --vlm-provider openai --use-vlm
+
+    \b
+    VLM Setup:
+      Set environment variable: export VLM_API_KEY=your_api_key
+      Or use: --vlm-api-key your_api_key
+
+    :param docx_path: Path to the input DOCX file
+    :param output_dir: Output directory for results (optional)
+    :param use_vlm: Whether to use VLM for enhanced extraction
+    :param vlm_provider: VLM provider ('gemini' or 'openai')
+    :param vlm_model: Model name to use (defaults to provider-specific defaults)
+    :param vlm_api_key: API key for VLM provider
+    :param extract_images: Whether to extract embedded images
+    :param preserve_formatting: Whether to preserve text formatting
+    :param table_detection: Whether to detect and extract tables
+    :param verbose: Whether to enable verbose output
+    :return: None
+    """
+    validate_vlm_config(use_vlm, vlm_api_key, vlm_provider)
+
+    if verbose:
+        click.echo(f"🔍 Starting DOCX parsing...")
+        click.echo(f"   Input: {docx_path}")
+        if output_dir:
+            click.echo(f"   Output: {output_dir}")
+        click.echo(f"   Extract Images: {extract_images}")
+        click.echo(f"   Preserve Formatting: {preserve_formatting}")
+        click.echo(f"   Table Detection: {table_detection}")
+        if use_vlm:
+            click.echo(f"   VLM Provider: {vlm_provider}")
+            click.echo(f"   VLM Model: {vlm_model or 'default'}")
+    else:
+        click.echo(f"🔍 Initializing DOCX parser...")
+        if use_vlm:
+            click.echo(f"   Using VLM: {vlm_provider}")
+
+    # Create parser instance
+    try:
+        from doctra.parsers.structured_docx_parser import StructuredDOCXParser
+        
+        parser = StructuredDOCXParser(
+            use_vlm=use_vlm,
+            vlm_provider=vlm_provider,
+            vlm_model=vlm_model,
+            vlm_api_key=vlm_api_key,
+            extract_images=extract_images,
+            preserve_formatting=preserve_formatting,
+            table_detection=table_detection,
+            export_excel=export_excel
+        )
+    except ImportError as e:
+        click.echo(f"❌ Error importing DOCX parser: {e}", err=True)
+        click.echo("Make sure python-docx is installed: pip install python-docx", err=True)
+        sys.exit(1)
+    except Exception as e:
+        click.echo(f"❌ Error initializing parser: {e}", err=True)
+        if verbose:
+            click.echo(traceback.format_exc(), err=True)
+        sys.exit(1)
+
+    # Change to output directory if specified
+    original_cwd = os.getcwd()
+    if output_dir:
+        output_dir.mkdir(parents=True, exist_ok=True)
+        os.chdir(output_dir)
+        click.echo(f"📁 Output directory: {output_dir.absolute()}")
+
+    try:
+        # Parse the document
+        click.echo(f"📄 Processing: {docx_path.name}")
+        parser.parse(str(docx_path.absolute()))
+        click.echo("✅ DOCX parsing completed successfully!")
         click.echo(f"📁 Output directory: {output_dir.absolute() if output_dir else 'outputs/'}")
 
     except KeyboardInterrupt:

@@ -43,6 +43,7 @@ dependencies = [
     "tqdm>=4.62.0",
     "matplotlib>=3.5.0",
     "click>=8.0.0",
+    "python-docx>=0.8.11",
 ]
 
 [project.scripts]

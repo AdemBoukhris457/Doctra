@@ -2,8 +2,10 @@ from __future__ import annotations
 
 # --- keep these imports to match your snippet style ---
 import io
+import json
 import os
 import PIL
+import re
 import openai
 import outlines
 from pydantic import BaseModel
@@ -229,8 +231,6 @@ class OllamaModelWrapper:
         """
         try:
             # Try to find JSON in the response
-            import re
-            import json
             
             # Look for JSON-like content
             json_match = re.search(r'\{.*\}', content, re.DOTALL)

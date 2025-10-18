@@ -1,3 +1,4 @@
+from typing import Union
 from pydantic import BaseModel, Field
 
 class Chart(BaseModel):
@@ -28,6 +29,22 @@ class Table(BaseModel):
     :param description: Short description of the table (max 300 characters)
     :param headers: Column headers for the table data
     :param rows: Data rows containing the table values
+    """
+    title: str = Field(max_length=31)
+    description: str = Field(max_length=300)
+    headers: list[str]
+    rows: list[list[str]]
+
+class TabularArtifact(BaseModel):
+    """
+    Generic tabular extraction that can represent either a chart or a table.
+
+    Use this when you don't want to commit to a specific type.
+    
+    :param title: Title or caption of the chart/table (max 31 characters)
+    :param description: Short description of the chart/table (max 300 characters)
+    :param headers: Column headers for the data
+    :param rows: Data rows containing the values
     """
     title: str = Field(max_length=31)
     description: str = Field(max_length=300)

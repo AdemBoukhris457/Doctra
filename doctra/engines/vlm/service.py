@@ -3,7 +3,7 @@ import os
 from outlines.inputs import Image
 
 from ...utils.io_utils import get_image_from_local
-from .outlines_types import Chart, Table
+from .outlines_types import Chart, Table, TabularArtifact
 from .provider import make_model
 
 
@@ -101,3 +101,27 @@ class VLMStructuredExtractor:
             "Also provide a short description (max 300 characters) of the table."
         )
         return self._call(prompt_text, image_path, Table)
+
+    def extract_table_or_chart(self, image_path: str) -> TabularArtifact:
+        """
+        Extract structured data from an image that could be either a chart or table.
+
+        This method automatically determines whether the image contains a chart or table
+        and extracts the appropriate structured data. It's particularly useful for
+        processing images where the content type is unknown or could be either format.
+
+        :param image_path: Path to the image file to process
+        :return: TabularArtifact object containing the extracted data
+        :raises Exception: If image processing or VLM extraction fails
+        """
+        prompt_text = (
+            "Analyze the given image and determine if it contains a chart or table. "
+            "If it's a chart, convert it into a table format with headers and rows. "
+            "If it's a table, extract the data directly. "
+            "If the title is not present in the image, generate a suitable title. "
+            "Ensure that the table represents the data accurately. "
+            "The number of columns in the headers must match the number of columns in each row. "
+            "Also provide a short description (max 300 characters) of the content. "
+            "Return the data in a structured tabular format."
+        )
+        return self._call(prompt_text, image_path, TabularArtifact)
