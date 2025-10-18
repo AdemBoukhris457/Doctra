@@ -277,7 +277,7 @@ parser.parse("data_document.docx")
 
 ## Related Documentation
 
-- [API Reference](../api/parsers.md#structureddocxparser)
+- [API Reference](../../api/parsers.md#structureddocxparser)
 - [VLM Integration](../engines/vlm-integration.md)
 - [Export Formats](../outputs/export-formats.md)
-- [Web UI Guide](../interfaces/web-ui.md)
+- [Web UI Guide](../../interfaces/web-ui.md)
