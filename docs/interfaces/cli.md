@@ -56,6 +56,45 @@ doctra parse document.pdf --dpi 300 --output-dir my_outputs
 doctra parse document.pdf --use-vlm --vlm-provider openai --vlm-api-key sk-xxx
 ```
 
+### parse-docx
+
+Parse a Microsoft Word document (.docx file).
+
+```bash
+doctra parse-docx <docx_file> [OPTIONS]
+```
+
+**Options**:
+
+- `--output-dir PATH`: Output directory (default: `outputs`)
+- `--use-vlm`: Enable VLM processing
+- `--vlm-provider TEXT`: VLM provider (`openai`, `gemini`, `anthropic`, `openrouter`)
+- `--vlm-api-key TEXT`: VLM API key
+- `--vlm-model TEXT`: Specific VLM model
+- `--extract-images`: Extract embedded images (default: True)
+- `--preserve-formatting`: Preserve text formatting (default: True)
+- `--table-detection`: Detect and extract tables (default: True)
+- `--export-excel`: Export tables to Excel file (default: True)
+- `--verbose`: Enable verbose output
+
+**Examples**:
+
+```bash
+# Basic DOCX parsing
+doctra parse-docx document.docx
+
+# With VLM enhancement
+doctra parse-docx document.docx --use-vlm --vlm-provider openai --vlm-api-key sk-xxx
+
+# Custom options
+doctra parse-docx document.docx \
+  --extract-images \
+  --preserve-formatting \
+  --table-detection \
+  --export-excel \
+  --output-dir my_outputs
+```
+
 ### enhance
 
 Parse with image restoration for low-quality documents.
@@ -338,6 +377,20 @@ outputs/
         └── vlm_items.json  # If VLM enabled
 ```
 
+### DOCX Parse
+
+```
+outputs/
+└── document/
+    ├── document.md
+    ├── document.html
+    ├── tables.xlsx  # With Table of Contents
+    └── images/
+        ├── image1.png
+        ├── image2.jpg
+        └── ...
+```
+
 ## Examples
 
 ### Example 1: Basic Document Processing
@@ -362,7 +415,23 @@ doctra enhance scanned_document.pdf \
   --output-dir enhanced_results
 ```
 
-### Example 3: Extract Data for Analysis
+### Example 3: DOCX Document Processing
+
+```bash
+# Basic DOCX parsing
+doctra parse-docx report.docx
+
+# With VLM enhancement for structured data
+doctra parse-docx financial_report.docx \
+  --use-vlm \
+  --vlm-provider openai \
+  --vlm-api-key $OPENAI_API_KEY \
+  --export-excel
+
+# Result: outputs/financial_report/document.md, document.html, tables.xlsx
+```
+
+### Example 4: Extract Data for Analysis
 
 ```bash
 # Extract all tables with VLM to get structured data
@@ -374,7 +443,7 @@ doctra extract tables data_report.pdf \
 # Result: outputs/data_report/structured_parsing/parsed_tables_charts.xlsx
 ```
 
-### Example 4: Batch Processing Pipeline
+### Example 5: Batch Processing Pipeline
 
 ```bash
 #!/bin/bash
@@ -398,7 +467,7 @@ done
 echo "All documents processed!"
 ```
 
-### Example 5: Quality Check with Visualization
+### Example 6: Quality Check with Visualization
 
 ```bash
 # Visualize layout detection before full processing

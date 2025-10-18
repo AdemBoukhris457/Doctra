@@ -42,7 +42,17 @@ Complete document processing:
 - View results
 - Download outputs
 
-### 2. Tables & Charts
+### 2. DOCX Parser
+
+Microsoft Word document processing:
+
+- Upload DOCX file
+- Configure VLM settings
+- Choose processing options
+- View extracted content
+- Download structured outputs
+
+### 3. Tables & Charts
 
 Specialized extraction:
 
@@ -51,7 +61,7 @@ Specialized extraction:
 - Configure API keys
 - Download structured data
 
-### 3. DocRes
+### 4. DocRes
 
 Image restoration:
 
@@ -60,7 +70,7 @@ Image restoration:
 - Compare before/after
 - Download enhanced files
 
-### 4. Enhanced Parser
+### 5. Enhanced Parser
 
 Combined restoration and parsing:
 

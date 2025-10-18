@@ -38,6 +38,18 @@ Specialized parser for extracting charts and tables.
 
 ---
 
+## StructuredDOCXParser
+
+Comprehensive parser for Microsoft Word documents (.docx files).
+
+::: doctra.parsers.structured_docx_parser.StructuredDOCXParser
+    options:
+      show_root_heading: true
+      show_source: true
+      heading_level: 3
+
+---
+
 ## Quick Reference
 
 ### StructuredPDFParser
@@ -135,6 +147,31 @@ parser.parse(
 )
 ```
 
+### StructuredDOCXParser
+
+```python
+from doctra import StructuredDOCXParser
+
+parser = StructuredDOCXParser(
+    # VLM Settings
+    use_vlm: bool = False,
+    vlm_provider: str = None,
+    vlm_api_key: str = None,
+    vlm_model: str = None,
+    
+    # Processing Options
+    extract_images: bool = True,
+    preserve_formatting: bool = True,
+    table_detection: bool = True,
+    export_excel: bool = True
+)
+
+# Parse DOCX document
+parser.parse(
+    docx_path: str
+)
+```
+
 ## Parameter Reference
 
 ### Layout Detection Parameters
@@ -179,6 +216,15 @@ parser.parse(
 | `extract_charts` | bool | True | Extract chart elements |
 | `extract_tables` | bool | True | Extract table elements |
 
+### DOCX Processing Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `extract_images` | bool | True | Extract embedded images from DOCX |
+| `preserve_formatting` | bool | True | Preserve text formatting in output |
+| `table_detection` | bool | True | Detect and extract tables |
+| `export_excel` | bool | True | Export tables to Excel file |
+
 ### Output Parameters
 
 | Parameter | Type | Default | Description |
@@ -206,6 +252,20 @@ outputs/
     │       ├── figures/
     │       ├── charts/
     │       └── tables/
+```
+
+For DOCX parsing, generates:
+
+```
+outputs/
+└── <document_name>/
+    ├── document.md
+    ├── document.html
+    ├── tables.xlsx  # With Table of Contents
+    └── images/
+        ├── image1.png
+        ├── image2.jpg
+        └── ...
 ```
 
 ### display_pages_with_boxes() Method
