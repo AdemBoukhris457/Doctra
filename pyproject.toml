@@ -44,6 +44,14 @@ dependencies = [
     "matplotlib>=3.5.0",
     "click>=8.0.0",
     "python-docx>=0.8.11",
+    "google-generativeai>=0.3.0",
+    "openai>=1.0.0",
+    "ollama>=0.1.0",
+    "markdown-it-py>=2.0.0",
+    "gradio>=4.0.0,<5",
+    "pymupdf>=1.23.0",
+    "scikit-image>=0.19.3",
+    "torchvision",
 ]
 
 [project.scripts]
