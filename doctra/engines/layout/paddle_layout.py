@@ -4,6 +4,7 @@ import os
 import sys
 import json
 import tempfile
+import contextlib
 from dataclasses import dataclass, asdict
 from typing import Dict, List, Any, Tuple, Optional
 
@@ -13,6 +14,15 @@ from doctra.utils.pdf_io import render_pdf_to_images
 from doctra.engines.layout.layout_models import LayoutBox, LayoutPage
 from doctra.utils.progress import create_loading_bar
 import warnings
+
+
+@contextlib.contextmanager
+def silence():
+    """Context manager to suppress stdout and stderr output."""
+    with open(os.devnull, "w") as devnull, \
+         contextlib.redirect_stdout(devnull), \
+         contextlib.redirect_stderr(devnull):
+        yield
 
 
 class PaddleLayoutEngine:
@@ -54,11 +64,13 @@ class PaddleLayoutEngine:
 
         # Beautiful loading progress bar (no logging suppression)
         with create_loading_bar(f'Loading PaddleOCR layout model: "{self.model_name}"') as bar:
-            # Suppress warnings from PaddleOCR and Hugging Face during model loading
-            with warnings.catch_warnings():
-                # Suppress all warnings during model initialization to avoid HF token warnings
-                warnings.simplefilter("ignore")
-                self.model = LayoutDetection(model_name=self.model_name)
+            # Suppress all output during model loading
+            with silence():
+                # Suppress warnings from PaddleOCR and Hugging Face during model loading
+                with warnings.catch_warnings():
+                    # Suppress all warnings during model initialization to avoid HF token warnings
+                    warnings.simplefilter("ignore")
+                    self.model = LayoutDetection(model_name=self.model_name)
             bar.update(1)
 
     def predict_pdf(
