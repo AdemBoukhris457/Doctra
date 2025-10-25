@@ -54,24 +54,10 @@ class PaddleLayoutEngine:
 
         # Beautiful loading progress bar (no logging suppression)
         with create_loading_bar(f'Loading PaddleOCR layout model: "{self.model_name}"') as bar:
-            # Suppress specific warnings from PaddleOCR and Hugging Face
+            # Suppress warnings from PaddleOCR and Hugging Face during model loading
             with warnings.catch_warnings():
-                warnings.filterwarnings(
-                    "ignore",
-                    message=r"No ccache found.*",
-                    category=UserWarning,
-                )
-                # Suppress Hugging Face token warning for Google Colab users
-                warnings.filterwarnings(
-                    "ignore",
-                    message=r".*HF_TOKEN.*does not exist.*",
-                    category=UserWarning,
-                )
-                warnings.filterwarnings(
-                    "ignore",
-                    message=r".*authentication is recommended.*",
-                    category=UserWarning,
-                )
+                # Suppress all warnings during model initialization to avoid HF token warnings
+                warnings.simplefilter("ignore")
                 self.model = LayoutDetection(model_name=self.model_name)
             bar.update(1)
 

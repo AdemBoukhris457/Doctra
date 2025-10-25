@@ -30,18 +30,6 @@ try:
     from huggingface_hub.utils import disable_progress_bars
     disable_progress_bars()
     HF_HUB_AVAILABLE = True
-    
-    # Suppress Hugging Face token warnings for Google Colab users
-    warnings.filterwarnings(
-        "ignore",
-        message=r".*HF_TOKEN.*does not exist.*",
-        category=UserWarning,
-    )
-    warnings.filterwarnings(
-        "ignore",
-        message=r".*authentication is recommended.*",
-        category=UserWarning,
-    )
 except ImportError:
     HF_HUB_AVAILABLE = False
 
@@ -93,32 +81,36 @@ def load_docres_weights_from_hf():
         )
     
     try:
-        # Detect environment for progress bar
-        is_notebook = "ipykernel" in sys.modules or "jupyter" in sys.modules
-        
-        # Create progress bar for model downloads
-        if is_notebook:
-            progress_bar = create_notebook_friendly_bar(
-                total=2, 
-                desc="Downloading DocRes models from Hugging Face Hub"
-            )
-        else:
-            progress_bar = create_beautiful_progress_bar(
-                total=2, 
-                desc="Downloading DocRes models from Hugging Face Hub",
-                leave=True
-            )
-        
-        with progress_bar:
-            # Download DocRes main model
-            _ = hf_hub_download("DaVinciCode/doctra-docres-main", filename="config.json")
-            docres_path = hf_hub_download("DaVinciCode/doctra-docres-main", filename="docres.pkl")
-            progress_bar.update(1)
+        # Suppress warnings during Hugging Face downloads
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
             
-            # Download MBD model
-            _ = hf_hub_download("DaVinciCode/doctra-docres-mbd", filename="config.json")
-            mbd_path = hf_hub_download("DaVinciCode/doctra-docres-mbd", filename="mbd.pkl")
-            progress_bar.update(1)
+            # Detect environment for progress bar
+            is_notebook = "ipykernel" in sys.modules or "jupyter" in sys.modules
+            
+            # Create progress bar for model downloads
+            if is_notebook:
+                progress_bar = create_notebook_friendly_bar(
+                    total=2, 
+                    desc="Downloading DocRes models from Hugging Face Hub"
+                )
+            else:
+                progress_bar = create_beautiful_progress_bar(
+                    total=2, 
+                    desc="Downloading DocRes models from Hugging Face Hub",
+                    leave=True
+                )
+            
+            with progress_bar:
+                # Download DocRes main model
+                _ = hf_hub_download("DaVinciCode/doctra-docres-main", filename="config.json")
+                docres_path = hf_hub_download("DaVinciCode/doctra-docres-main", filename="docres.pkl")
+                progress_bar.update(1)
+                
+                # Download MBD model
+                _ = hf_hub_download("DaVinciCode/doctra-docres-mbd", filename="config.json")
+                mbd_path = hf_hub_download("DaVinciCode/doctra-docres-mbd", filename="mbd.pkl")
+                progress_bar.update(1)
         
         # Verify file sizes (silently)
         docres_size = Path(docres_path).stat().st_size
