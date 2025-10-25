@@ -24,11 +24,24 @@ from pathlib import Path
 from typing import Union, List, Tuple, Optional, Dict, Any
 
 # Hugging Face Hub imports
+import warnings
 try:
     from huggingface_hub import hf_hub_download
     from huggingface_hub.utils import disable_progress_bars
     disable_progress_bars()
     HF_HUB_AVAILABLE = True
+    
+    # Suppress Hugging Face token warnings for Google Colab users
+    warnings.filterwarnings(
+        "ignore",
+        message=r".*HF_TOKEN.*does not exist.*",
+        category=UserWarning,
+    )
+    warnings.filterwarnings(
+        "ignore",
+        message=r".*authentication is recommended.*",
+        category=UserWarning,
+    )
 except ImportError:
     HF_HUB_AVAILABLE = False
 
