@@ -1049,7 +1049,7 @@ def info():
     # Optional VLM dependencies
     click.echo("\nVLM Dependencies (Optional):")
     vlm_deps = [
-        ('google.generativeai', 'google-generativeai', 'Gemini VLM support'),
+        ('google.genai', 'google-genai', 'Gemini VLM support'),
         ('openai', 'openai', 'OpenAI VLM support'),
     ]
 
