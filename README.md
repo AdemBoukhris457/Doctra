@@ -589,6 +589,12 @@ The visualization shows:
 | `spacing` | 40 | Spacing between pages in pixels |
 | `save_path` | None | Path to save visualization (if None, displays on screen) |
 
+## 📓 Interactive Notebooks
+
+| Notebook | Colab Badge | Description |
+|----------|-------------|-------------|
+| **01_doctra_quick_start** | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Z9UH9r1ZxGHm2cAFVKy7W9cKjcgBDOlG?usp=sharing) | Comprehensive tutorial covering layout detection, content extraction, and multi-format outputs with visual examples |
+
 ## 📖 Usage Examples
 
 ### Example 1: Basic Document Processing
