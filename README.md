@@ -59,7 +59,7 @@ brew install poppler
 ```
 
 #### Windows
-Download and install from [Poppler for Windows](http://blog.alivate.com.au/poppler-windows/) or use conda:
+Download and install from [Poppler for Windows](https://poppler.freedesktop.org/) or use conda:
 ```bash
 conda install -c conda-forge poppler
 ```

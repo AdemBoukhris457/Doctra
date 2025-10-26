@@ -64,7 +64,7 @@ conda install -c conda-forge poppler
 
 #### Option 2: Manual Installation
 
-1. Download Poppler for Windows from [this link](http://blog.alivate.com.au/poppler-windows/)
+1. Download Poppler for Windows from [this link](https://poppler.freedesktop.org/)
 2. Extract the archive
 3. Add the `bin` directory to your system PATH
 
