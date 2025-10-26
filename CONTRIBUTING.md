@@ -48,7 +48,7 @@ pip install -e ".[dev]"
 # 4. Install system dependencies
 # Ubuntu/Debian: sudo apt install poppler-utils
 # macOS: brew install poppler
-# Windows: Download from http://blog.alivate.com.au/poppler-windows/
+# Windows: Download from https://poppler.freedesktop.org/
 
 # 5. Install pre-commit hooks
 pre-commit install
