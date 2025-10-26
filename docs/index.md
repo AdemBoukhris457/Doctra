@@ -5,6 +5,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/doctra)](https://pypi.org/project/doctra/)
 [![Python versions](https://img.shields.io/pypi/pyversions/doctra)](https://pypi.org/project/doctra/)
 [![GitHub stars](https://img.shields.io/github/stars/AdemBoukhris457/Doctra)](https://github.com/AdemBoukhris457/Doctra)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Z9UH9r1ZxGHm2cAFVKy7W9cKjcgBDOlG?usp=sharing)
 [![License](https://img.shields.io/github/license/AdemBoukhris457/Doctra)](https://github.com/AdemBoukhris457/Doctra/blob/main/LICENSE)
 
 ## Overview
