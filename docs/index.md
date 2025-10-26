@@ -100,6 +100,12 @@ parser.parse("document.pdf")
 - :material-github: **GitHub Issues**: [Report bugs or request features](https://github.com/AdemBoukhris457/Doctra/issues)
 - :material-package: **PyPI**: [View package details](https://pypi.org/project/doctra/)
 
+## 📓 Interactive Notebooks
+
+| Notebook | Colab Badge | Description |
+|----------|-------------|-------------|
+| **01_doctra_quick_start** | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Z9UH9r1ZxGHm2cAFVKy7W9cKjcgBDOlG?usp=sharing) | Comprehensive tutorial covering layout detection, content extraction, and multi-format outputs with visual examples |
+
 ## What's Next?
 
 <div class="grid cards" markdown>
