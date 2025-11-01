@@ -786,4 +786,4 @@ class SplitTableMatch:
 
 - [Structured Parser Guide](../parsers/structured-parser.md) - Main parser documentation
 - [API Reference](../../api/parsers.md) - Complete parameter reference
-- [Examples](../../../examples/basic-usage.md) - Code examples and use cases
+- [Examples](../../examples/basic-usage.md) - Code examples and use cases

@@ -187,7 +187,7 @@ Consider disabling when:
 
 **Clustering**: Detected line segments are clustered using adaptive thresholds based on image width, ensuring that multiple detections of the same column boundary are merged into a single column marker.
 
-For a complete, detailed explanation with visual schemas and examples, see the [Split Table Merging Guide](../../features/split-table-merging.md).
+For a complete, detailed explanation with visual schemas and examples, see the [Split Table Merging Guide](../features/split-table-merging.md).
 
 ## Output Structure
 
