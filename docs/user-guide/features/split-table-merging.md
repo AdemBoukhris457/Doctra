@@ -181,7 +181,7 @@ Page 1                              Page 2
 │  │  Segment 1       │        │  Segment 2       │          │
 │  │                 │        │                 │          │
 │  │  │  │  │  │  │  │        │  │  │  │  │  │  │          │
-│  │  └──┴──┴──┴──┘        │  └──┴──┴──┴──┘          │
+│  │  └──┴──┴──┴──┘        │  └──┴──┴──┘          │          │
 │  │                 │        │                 │          │
 │  │  Detected:      │        │  Detected:      │          │
 │  │  5 columns      │        │  5 columns      │          │
@@ -369,7 +369,7 @@ RGB Image → Grayscale → Enhanced → Binary → Morphology → Ready for LSD
 **Column Extraction Process**:
 ```
 ┌─────────────────────────────────────┐
-│ 1. Detect all line segments (LSD)   │
+│ 1. Detect all line segments (LSD) │
 │    → Returns: List of (x1,y1,x2,y2)│
 └──────────────┬──────────────────────┘
                │
@@ -786,5 +786,4 @@ class SplitTableMatch:
 
 - [Structured Parser Guide](../parsers/structured-parser.md) - Main parser documentation
 - [API Reference](../../api/parsers.md) - Complete parameter reference
-- [Examples](../../examples/) - Code examples and use cases
-
+- [Examples](../../../examples/basic-usage.md) - Code examples and use cases

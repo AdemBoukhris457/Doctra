@@ -211,7 +211,7 @@ Use `StructuredPDFParser` for:
 
 ## See Also
 
-- [Split Table Merging](../../features/split-table-merging.md) - Detailed guide to automatic table merging
+- [Split Table Merging](../features/split-table-merging.md) - Detailed guide to automatic table merging
 - [Enhanced Parser](enhanced-parser.md) - With image restoration
 - [Chart & Table Extractor](chart-table-extractor.md) - Focused extraction
 - [API Reference](../../api/parsers.md) - Complete API documentation
