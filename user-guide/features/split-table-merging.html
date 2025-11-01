@@ -925,6 +925,75 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#process-overview-a-step-by-step-narrative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process Overview: A Step-by-Step Narrative
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Process Overview: A Step-by-Step Narrative">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-initial-situation" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Initial Situation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-finding-potential-matches-proximity-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Finding Potential Matches (Proximity Detection)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-verifying-the-match-structural-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Verifying the Match (Structural Validation)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-merging-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Merging Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fallback-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fallback Mechanisms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-final-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Final Result
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#detection-algorithm" class="md-nav__link">
     <span class="md-ellipsis">
       Detection Algorithm
@@ -1112,7 +1181,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fallback-mechanisms" class="md-nav__link">
+  <a href="#fallback-mechanisms_1" class="md-nav__link">
     <span class="md-ellipsis">
       Fallback Mechanisms
     </span>
@@ -2225,6 +2294,75 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#process-overview-a-step-by-step-narrative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process Overview: A Step-by-Step Narrative
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Process Overview: A Step-by-Step Narrative">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-initial-situation" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Initial Situation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-finding-potential-matches-proximity-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Finding Potential Matches (Proximity Detection)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-verifying-the-match-structural-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Verifying the Match (Structural Validation)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-merging-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Merging Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fallback-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fallback Mechanisms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-final-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Final Result
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#detection-algorithm" class="md-nav__link">
     <span class="md-ellipsis">
       Detection Algorithm
@@ -2412,7 +2550,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fallback-mechanisms" class="md-nav__link">
+  <a href="#fallback-mechanisms_1" class="md-nav__link">
     <span class="md-ellipsis">
       Fallback Mechanisms
     </span>
@@ -2707,6 +2845,7 @@
 <h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#how-it-works">How It Works</a></li>
+<li><a href="#process-overview-a-step-by-step-narrative">Process Overview: A Step-by-Step Narrative</a></li>
 <li><a href="#detection-algorithm">Detection Algorithm</a></li>
 <li><a href="#visual-schema">Visual Schema</a></li>
 <li><a href="#phase-by-phase-breakdown">Phase-by-Phase Breakdown</a></li>
@@ -2721,234 +2860,247 @@
 <li><strong>Phase 2: Structural Validation</strong> - Deep structural analysis using computer vision</li>
 </ol>
 <p>This design balances speed (avoiding expensive operations on all pairs) with accuracy (validating only promising candidates).</p>
+<h2 id="process-overview-a-step-by-step-narrative">Process Overview: A Step-by-Step Narrative<a class="headerlink" href="#process-overview-a-step-by-step-narrative" title="Permanent link">&para;</a></h2>
+<p>To help you understand how split table merging works, here's a walkthrough of what happens when Doctra processes a document with split tables:</p>
+<h3 id="the-initial-situation">The Initial Situation<a class="headerlink" href="#the-initial-situation" title="Permanent link">&para;</a></h3>
+<p>Imagine you have a financial report with a large table that spans two pages. On page 1, the table starts at row 1 and continues until row 15, but runs out of space near the bottom. On page 2, the table resumes at row 16 and continues with the remaining data. To a human reader, this is clearly one continuous table, but to a document parser, these appear as two separate table images.</p>
+<h3 id="phase-1-finding-potential-matches-proximity-detection">Phase 1: Finding Potential Matches (Proximity Detection)<a class="headerlink" href="#phase-1-finding-potential-matches-proximity-detection" title="Permanent link">&para;</a></h3>
+<p>When Doctra begins processing your document, it first identifies all tables on every page. Let's say it finds 8 tables total across 5 pages. Now, instead of performing expensive computer vision analysis on all 64 possible pairs (8×8), Doctra uses smart heuristics to quickly filter potential matches.</p>
+<p><strong>The Position Check</strong>: Doctra looks for tables that are positioned at page boundaries. A table on page 1 that's very close to the bottom (say, within 20% of the page height from the bottom) is a strong candidate for being the first part of a split table. Similarly, a table on page 2 that's very close to the top (within 15% from the top) could be the continuation. If both conditions are met, this pair moves to the next check.</p>
+<p><strong>The Overlap Check</strong>: Even if two tables are at page boundaries, they might be completely different tables. Doctra checks if they overlap horizontally. If two tables have at least 50% horizontal overlap, it suggests they're aligned and could be the same table. Think of it like two puzzle pieces - if they don't overlap at all, they probably don't belong together.</p>
+<p><strong>The Gap Analysis</strong>: Pages have headers, footers, and margins that create gaps between content. Doctra calculates the total gap between the end of the first table and the start of the second table, accounting for the page break. If this gap is reasonable (typically within 25% of the page height), it indicates the tables were separated by a normal page break rather than being intentionally placed far apart.</p>
+<p><strong>The Width Check</strong>: Finally, Doctra verifies that both table segments have similar widths. A table that's 800 pixels wide on page 1 shouldn't suddenly become 500 pixels wide on page 2 - that would indicate a different table structure. Similar widths suggest structural continuity.</p>
+<p>If all four checks pass, Doctra has found a promising candidate pair and proceeds to deeper analysis. This filtering is crucial - it means Doctra only spends computational resources on pairs that are likely matches, keeping the process fast.</p>
+<h3 id="phase-2-verifying-the-match-structural-validation">Phase 2: Verifying the Match (Structural Validation)<a class="headerlink" href="#phase-2-verifying-the-match-structural-validation" title="Permanent link">&para;</a></h3>
+<p>For pairs that pass Phase 1, Doctra performs a more detailed analysis using computer vision to confirm they're truly parts of the same table.</p>
+<p><strong>Image Preprocessing</strong>: Before analyzing structure, Doctra enhances the table images. It converts them to grayscale, improves contrast using CLAHE (Contrast Limited Adaptive Histogram Equalization), converts to binary (black and white), and applies morphological operations to connect broken or dashed lines. This prepares the images for accurate line detection.</p>
+<p><strong>Column Detection</strong>: Using OpenCV's Line Segment Detector (LSD), Doctra identifies all vertical lines in each table segment. These vertical lines represent column boundaries. The algorithm detects line segments, filters for near-vertical lines (75° to 105°), extracts their x-coordinates, clusters nearby coordinates together (since multiple small line segments might represent one column), and finally removes columns too close to the edges (which are often just page borders).</p>
+<p><strong>Column Comparison</strong>: Now Doctra compares the detected columns between the two segments. First, it checks if the column counts are similar - if one segment has 5 columns and the other has 8, they're probably different tables. However, Doctra uses adaptive tolerance - for larger tables (more columns), it allows slightly more variation since column detection can be less precise on complex tables.</p>
+<p><strong>Alignment Validation</strong>: Even if the column counts match, the columns need to align between segments. Doctra pairs each column from segment 1 with the closest column in segment 2 and measures the distance. If at least 60% of columns align within a small tolerance (default 10 pixels), it indicates the same table structure continues across pages.</p>
+<p><strong>Confidence Scoring</strong>: Based on all these factors, Doctra calculates a confidence score between 0 and 1:
+- Column count match contributes up to 0.3 points
+- Column alignment contributes up to 0.4 points<br />
+- Width similarity contributes up to 0.1 points
+- Horizontal overlap contributes up to 0.2 points</p>
+<p>If the final confidence score meets the minimum threshold (default 0.65), Doctra confirms this is a split table and proceeds to merge.</p>
+<h3 id="the-merging-process">The Merging Process<a class="headerlink" href="#the-merging-process" title="Permanent link">&para;</a></h3>
+<p>Once a match is confirmed, Doctra creates a composite image by stacking the two table segments vertically. The merged image is then treated as a single table for the rest of the processing pipeline. If you have VLM (Vision Language Model) enabled, Doctra extracts structured data from the complete merged table rather than from fragmented pieces.</p>
+<h3 id="fallback-mechanisms">Fallback Mechanisms<a class="headerlink" href="#fallback-mechanisms" title="Permanent link">&para;</a></h3>
+<p>Sometimes, tables don't have clear column boundaries (borderless tables) or column detection fails due to image quality. Doctra has fallback mechanisms:
+- If too many columns are detected (likely noise), it falls back to proximity-based matching with lower confidence
+- If no columns are detected in either segment, it relies solely on Phase 1 checks with moderate confidence</p>
+<p>This ensures that even tables without clear borders can be merged if they meet the proximity criteria.</p>
+<h3 id="the-final-result">The Final Result<a class="headerlink" href="#the-final-result" title="Permanent link">&para;</a></h3>
+<p>In your financial report example, Doctra would detect that the table on page 1 (rows 1-15) and page 2 (rows 16+) are parts of the same table. It would merge them into a single image containing all rows, and this complete table would appear in your output markdown, HTML, or Excel files as one continuous table rather than two fragments. The merged table is labeled with the page range (e.g., "pages 1-2") and includes the confidence score so you can verify the quality of the merge.</p>
+<p>This two-phase approach ensures that Doctra can accurately merge split tables while remaining efficient enough for production use, processing large documents with many tables in reasonable time.</p>
 <h2 id="detection-algorithm">Detection Algorithm<a class="headerlink" href="#detection-algorithm" title="Permanent link">&para;</a></h2>
 <h3 id="high-level-flow">High-Level Flow<a class="headerlink" href="#high-level-flow" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────────────┐
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                    Start: Parse PDF Document                     │
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>└────────────────────────────┬────────────────────────────────────┘
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>                             │
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                             ▼
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                    ┌────────────────┐
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                    │ Extract Tables │
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                    │ from All Pages │
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>                    └────────┬───────┘
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>                             │
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>                             ▼
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        ┌──────────────────────────────────────────┐
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        │     Phase 1: Proximity Detection         │
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        │  ────────────────────────────────────   │
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        │  1. Check position (bottom/top)          │
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        │  2. Check horizontal overlap             │
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        │  3. Check gap between tables             │
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>        │  4. Check width similarity               │
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        └────────────┬─────────────────────────────┘
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>                     │
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>         ┌───────────┴───────────┐
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>         │                       │
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>         ▼ YES                   ▼ NO
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>┌─────────────────┐      ┌──────────────┐
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>│ Candidate Match │      │ Skip Pair    │
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│  Found → Phase 2│      │ Try Next     │
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>└────────┬────────┘      └──────────────┘
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>         │
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>         ▼
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>┌──────────────────────────────────────────┐
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>│     Phase 2: Structural Validation      │
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>│  ────────────────────────────────────    │
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>│  1. Detect columns (LSD)                 │
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>│  2. Compare column counts                │
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>│  3. Check column alignment               │
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>│  4. Calculate confidence score           │
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>└────────────┬─────────────────────────────┘
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>             │
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>    ┌────────┴────────┐
-</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>    │                 │
-</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>    ▼ YES             ▼ NO
-</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>┌────────────┐    ┌──────────┐
-</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>│   Merge    │    │  Reject  │
-</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>│  Tables    │    │  Match   │
-</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>└────────────┘    └──────────┘
-</span></code></pre></div>
+<pre class="mermaid"><code>flowchart TD
+    A[Start: Parse PDF Document] --&gt; B[Extract Tables from All Pages]
+    B --&gt; C{Phase 1: Proximity Detection}
+
+    C --&gt; D[1. Check Position&lt;br/&gt;bottom/top thresholds]
+    D --&gt; E[2. Check Horizontal Overlap&lt;br/&gt;≥50% required]
+    E --&gt; F[3. Check Gap Between Tables&lt;br/&gt;≤25% of page height]
+    F --&gt; G[4. Check Width Similarity&lt;br/&gt;≤20% difference]
+
+    G --&gt; H{All Checks Pass?}
+    H --&gt;|Yes| I[Phase 2: Structural Validation]
+    H --&gt;|No| J[Skip Pair&lt;br/&gt;Try Next]
+
+    I --&gt; K[1. Detect Columns using LSD]
+    K --&gt; L[2. Compare Column Counts&lt;br/&gt;Adaptive tolerance]
+    L --&gt; M[3. Check Column Alignment&lt;br/&gt;≥60% must align]
+    M --&gt; N[4. Calculate Confidence Score]
+
+    N --&gt; O{Confidence ≥ 0.65?}
+    O --&gt;|Yes| P[✅ Merge Tables]
+    O --&gt;|No| Q[❌ Reject Match]
+
+    J --&gt; R[Continue with Next Pair]
+    Q --&gt; R
+    P --&gt; S[Create Merged Image]
+
+    style P fill:#90EE90
+    style Q fill:#FFB6C1
+    style I fill:#87CEEB
+    style C fill:#DDA0DD</code></pre>
 <h2 id="visual-schema">Visual Schema<a class="headerlink" href="#visual-schema" title="Permanent link">&para;</a></h2>
 <h3 id="document-layout-representation">Document Layout Representation<a class="headerlink" href="#document-layout-representation" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Page 1                              Page 2
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>┌─────────────────────────┐        ┌─────────────────────────┐
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│                         │        │                         │
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│                         │        │  Table Segment 2        │
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│                         │        │  ┌─────────────────┐   │
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│                         │        │  │  Row 6          │   │
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│  Table Segment 1         │        │  │  Row 7          │   │
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│  ┌─────────────────┐    │        │  │  Row 8          │   │
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│  │  Row 1          │    │        │  │  ...            │   │
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│  │  Row 2          │    │        │  └─────────────────┘   │
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│  │  Row 3          │    │        │                         │
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>│  │  Row 4          │    │        │                         │
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>│  │  Row 5          │    │        │                         │
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>│  └─────────────────┘    │        │                         │
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>│         ▼               │        │         ▲               │
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>│   (close to bottom)     │        │   (close to top)        │
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>│                         │        │                         │
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>└─────────────────────────┘        └─────────────────────────┘
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>       │                                        │
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>       └──────────── Gap: 18.8% ────────────────┘
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>        (page break + headers/footers)
-</span></code></pre></div>
+<pre class="mermaid"><code>graph LR
+    subgraph Page1["📄 Page 1"]
+        direction TB
+        P1_Content[Document Content]
+        P1_Table["📊 Table Segment 1&lt;br/&gt;Row 1&lt;br/&gt;Row 2&lt;br/&gt;Row 3&lt;br/&gt;Row 4&lt;br/&gt;Row 5&lt;br/&gt;&lt;br/&gt;📍 Close to bottom&lt;br/&gt;(≥80% of page)"]
+        P1_Content --&gt; P1_Table
+    end
+
+    subgraph Gap["🔄 Gap: 18.8%&lt;br/&gt;(Page break +&lt;br/&gt;headers/footers)"]
+        G[Gap]
+    end
+
+    subgraph Page2["📄 Page 2"]
+        direction TB
+        P2_Table["📊 Table Segment 2&lt;br/&gt;📍 Close to top&lt;br/&gt;(≤15% from top)&lt;br/&gt;&lt;br/&gt;Row 6&lt;br/&gt;Row 7&lt;br/&gt;Row 8&lt;br/&gt;..."]
+        P2_Content[Document Content]
+        P2_Table --&gt; P2_Content
+    end
+
+    P1_Table --&gt; Gap
+    Gap --&gt; P2_Table
+
+    style P1_Table fill:#FFE4B5
+    style P2_Table fill:#FFE4B5
+    style Gap fill:#F0F0F0</code></pre>
 <h3 id="phase-1-proximity-detection-schema">Phase 1: Proximity Detection Schema<a class="headerlink" href="#phase-1-proximity-detection-schema" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>┌─────────────────────────────────────────────────────────────┐
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>│              Proximity Detection Checks                     │
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>├─────────────────────────────────────────────────────────────┤
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>│                                                             │
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>│  Check 1: Position                                          │
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>│  ┌──────────────┐                    ┌──────────────┐      │
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>│  │   Page 1     │                    │   Page 2     │      │
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>│  │              │                    │              │      │
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>│  │              │                    │  ┌────────┐  │      │
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>│  │              │                    │  │  Seg2  │  │      │
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>│  │              │                    │  │        │  │      │
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>│  │  ┌────────┐  │                    │  └────────┘  │      │
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>│  │  │  Seg1  │  │                    │     ▲        │      │
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>│  │  │        │  │                    │   y1 ≤ 15%   │      │
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>│  │  └────────┘  │                    │              │      │
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>│  │     ▼        │                    │              │      │
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>│  │  y2 ≥ 80%    │                    │              │      │
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>│  │              │                    │              │      │
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>│  └──────────────┘                    └──────────────┘      │
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>│                                                             │
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>│  Check 2: Horizontal Overlap                                │
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>│  ┌──────────────────────────────────────────────┐          │
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>│  │  Seg1:  x1=100  ──────────  x2=900          │          │
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>│  │         └─────────────────────────────────┐ │          │
-</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>│  │                                            │ │          │
-</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>│  │  Seg2:      x1=120  ──────────  x2=920     │ │          │
-</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>│  │             └───────────────────────────┐  │ │          │
-</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>│  │                                         │  │ │          │
-</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>│  │  Overlap: 780px / 800px = 97.5% ✅      │  │ │          │
-</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>│  └────────────────────────────────────────┴──┴─┘          │
-</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>│                                                             │
-</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>│  Check 3: Gap Analysis                                      │
-</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>│  ┌──────────────────────────────────────────────┐          │
-</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>│  │  Gap = (Page1_height - Seg1_y2) + Seg2_y1  │          │
-</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>│  │      = (1000px - 850px) + 150px            │          │
-</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>│  │      = 300px (30% of page height)          │          │
-</span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>│  │                                             │          │
-</span><span id="__span-2-38"><a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>│  │  Threshold: 25% → 300px &gt; 250px ❌          │          │
-</span><span id="__span-2-39"><a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>│  └──────────────────────────────────────────────┘          │
-</span><span id="__span-2-40"><a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>│                                                             │
-</span><span id="__span-2-41"><a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>│  Check 4: Width Similarity                                  │
-</span><span id="__span-2-42"><a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>│  ┌──────────────┐         ┌──────────────┐                 │
-</span><span id="__span-2-43"><a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>│  │  Seg1 Width  │         │  Seg2 Width  │                 │
-</span><span id="__span-2-44"><a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>│  │   800px      │  vs     │   820px      │                 │
-</span><span id="__span-2-45"><a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>│  │              │         │              │                 │
-</span><span id="__span-2-46"><a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a>│  │  Difference: 20px (2.5%) ✅                              │
-</span><span id="__span-2-47"><a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>│  └──────────────┘         └──────────────┘                 │
-</span><span id="__span-2-48"><a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>└─────────────────────────────────────────────────────────────┘
-</span></code></pre></div>
+<pre class="mermaid"><code>flowchart TD
+    Start[Proximity Detection] --&gt; Check1[Check 1: Position]
+
+    Check1 --&gt; C1A["📍 Segment 1&lt;br/&gt;y2 ≥ 80% of page&lt;br/&gt;(Close to bottom)"]
+    Check1 --&gt; C1B["📍 Segment 2&lt;br/&gt;y1 ≤ 15% of page&lt;br/&gt;(Close to top)"]
+    C1A --&gt; C1Result{Position OK?}
+    C1B --&gt; C1Result
+
+    C1Result --&gt;|Yes| Check2[Check 2: Horizontal Overlap]
+    C1Result --&gt;|No| Fail1[❌ Reject]
+
+    Check2 --&gt; C2Calc["Calculate Overlap&lt;br/&gt;Overlap = min(x2_1, x2_2) - max(x1_1, x1_2)&lt;br/&gt;Ratio = Overlap / max(width1, width2)"]
+    C2Calc --&gt; C2Result{Overlap ≥ 50%?}
+
+    C2Result --&gt;|Yes| Check3[Check 3: Gap Analysis]
+    C2Result --&gt;|No| Fail2[❌ Reject]
+
+    Check3 --&gt; C3Calc["Gap = (Page1_height - Seg1_y2) + Seg2_y1&lt;br/&gt;Gap Ratio = Gap / Page Height"]
+    C3Calc --&gt; C3Result{Gap ≤ 25%?}
+
+    C3Result --&gt;|Yes| Check4[Check 4: Width Similarity]
+    C3Result --&gt;|No| Fail3[❌ Reject]
+
+    Check4 --&gt; C4Calc["Width Diff = |width1 - width2|&lt;br/&gt;Ratio = Diff / max(width1, width2)"]
+    C4Calc --&gt; C4Result{Width Diff ≤ 20%?}
+
+    C4Result --&gt;|Yes| Pass[✅ All Checks Pass&lt;br/&gt;Proceed to Phase 2]
+    C4Result --&gt;|No| Fail4[❌ Reject]
+
+    style Pass fill:#90EE90
+    style Fail1 fill:#FFB6C1
+    style Fail2 fill:#FFB6C1
+    style Fail3 fill:#FFB6C1
+    style Fail4 fill:#FFB6C1
+    style Check1 fill:#FFE4B5
+    style Check2 fill:#FFE4B5
+    style Check3 fill:#FFE4B5
+    style Check4 fill:#FFE4B5</code></pre>
 <h3 id="phase-2-structural-validation-schema">Phase 2: Structural Validation Schema<a class="headerlink" href="#phase-2-structural-validation-schema" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>┌─────────────────────────────────────────────────────────────┐
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>│           Structural Validation Process                      │
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>├─────────────────────────────────────────────────────────────┤
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>│                                                             │
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>│  Step 1: Image Preprocessing                                │
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>│  ┌─────────────────────────────────────────┐               │
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>│  │  Original Image                         │               │
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>│  │  → Grayscale Conversion                 │               │
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>│  │  → CLAHE Contrast Enhancement           │               │
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>│  │  → OTSU Binary Thresholding             │               │
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>│  │  → Morphological Operations             │               │
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>│  │  Result: Enhanced binary image ready    │               │
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>│  │         for line detection              │               │
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>│  └─────────────────────────────────────────┘               │
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>│                                                             │
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>│  Step 2: LSD Column Detection                               │
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>│  ┌──────────────────┐        ┌──────────────────┐          │
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>│  │  Segment 1       │        │  Segment 2       │          │
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>│  │                 │        │                 │          │
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>│  │  │  │  │  │  │  │        │  │  │  │  │  │  │          │
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>│  │  └──┴──┴──┴──┘        │  └──┴──┴──┘          │          │
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>│  │                 │        │                 │          │
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>│  │  Detected:      │        │  Detected:      │          │
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>│  │  5 columns      │        │  5 columns      │          │
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>│  │  Positions:     │        │  Positions:     │          │
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>│  │  [100, 250,     │        │  [100, 250,     │          │
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>│  │   400, 550,     │        │   400, 550,     │          │
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>│  │   700]         │        │   700]         │          │
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>│  └──────────────────┘        └──────────────────┘          │
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>│                                                             │
-</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>│  Step 3: Column Alignment Check                             │
-</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>│  ┌─────────────────────────────────────────┐               │
-</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>│  │  Seg1 Cols:  [100, 250, 400, 550, 700]  │               │
-</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>│  │  Seg2 Cols:  [102, 248, 402, 552, 698]  │               │
-</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>│  │                                         │               │
-</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>│  │  Differences: [2, 2, 2, 2, 2] pixels    │               │
-</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>│  │  All &lt; 10px tolerance ✅                 │               │
-</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>│  │                                         │               │
-</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>│  │  Alignment Score: 100%                  │               │
-</span><span id="__span-3-40"><a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>│  └─────────────────────────────────────────┘               │
-</span><span id="__span-3-41"><a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>│                                                             │
-</span><span id="__span-3-42"><a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>│  Step 4: Confidence Calculation                             │
-</span><span id="__span-3-43"><a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>│  ┌─────────────────────────────────────────┐               │
-</span><span id="__span-3-44"><a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>│  │  Factors:                               │               │
-</span><span id="__span-3-45"><a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>│  │  - Column count match:  +0.3            │               │
-</span><span id="__span-3-46"><a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>│  │  - Column alignment:    +0.4            │               │
-</span><span id="__span-3-47"><a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a>│  │  - Width similarity:    +0.1            │               │
-</span><span id="__span-3-48"><a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>│  │  - Overlap ratio:        +0.2            │               │
-</span><span id="__span-3-49"><a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>│  │                                         │               │
-</span><span id="__span-3-50"><a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>│  │  Total Confidence: 1.0 (100%) ✅        │               │
-</span><span id="__span-3-51"><a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>│  └─────────────────────────────────────────┘               │
-</span><span id="__span-3-52"><a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>└─────────────────────────────────────────────────────────────┘
-</span></code></pre></div>
+<pre class="mermaid"><code>flowchart TD
+    Start[Structural Validation] --&gt; Preprocess[Step 1: Image Preprocessing]
+
+    Preprocess --&gt; P1[RGB Image]
+    P1 --&gt; P2[Grayscale Conversion]
+    P2 --&gt; P3[CLAHE Enhancement]
+    P3 --&gt; P4[OTSU Thresholding]
+    P4 --&gt; P5[Morphological Operations]
+    P5 --&gt; P6["Enhanced Binary Image&lt;br/&gt;Ready for LSD"]
+
+    P6 --&gt; LSD[Step 2: LSD Column Detection]
+
+    LSD --&gt; LSD1["Segment 1&lt;br/&gt;Detect Vertical Lines"]
+    LSD --&gt; LSD2["Segment 2&lt;br/&gt;Detect Vertical Lines"]
+
+    LSD1 --&gt; Col1["Columns Detected&lt;br/&gt;Positions: 100, 250, 400, 550, 700&lt;br/&gt;Count: 5"]
+    LSD2 --&gt; Col2["Columns Detected&lt;br/&gt;Positions: 102, 248, 402, 552, 698&lt;br/&gt;Count: 5"]
+
+    Col1 --&gt; Compare[Step 3: Column Comparison]
+    Col2 --&gt; Compare
+
+    Compare --&gt; CountCheck{"Column Count&lt;br/&gt;Difference within Threshold?"}
+    CountCheck --&gt;|Yes| AlignCheck["Calculate Alignment&lt;br/&gt;Check position difference"]
+    CountCheck --&gt;|No| Reject1["Reject: Count Mismatch"]
+
+    AlignCheck --&gt; AlignResult["Alignment Score&lt;br/&gt;Aligned columns / Total columns&lt;br/&gt;Example: 5/5 = 100%"]
+    AlignResult --&gt; AlignCheck2{"Alignment &gt;= 60%?"}
+
+    AlignCheck2 --&gt;|Yes| ConfCalc[Step 4: Confidence Calculation]
+    AlignCheck2 --&gt;|No| Reject2["Reject: Poor Alignment"]
+
+    ConfCalc --&gt; ConfFactors["Score Factors&lt;br/&gt;Column match: +0.3&lt;br/&gt;Alignment: +0.4&lt;br/&gt;Width similarity: +0.1&lt;br/&gt;Overlap: +0.2"]
+    ConfFactors --&gt; ConfScore{"Confidence &gt;= 0.65?"}
+
+    ConfScore --&gt;|Yes| Merge["Merge Tables&lt;br/&gt;Confidence: 1.0"]
+    ConfScore --&gt;|No| Reject3["Reject: Low Confidence"]
+
+    style Merge fill:#90EE90
+    style Reject1 fill:#FFB6C1
+    style Reject2 fill:#FFB6C1
+    style Reject3 fill:#FFB6C1
+    style Preprocess fill:#87CEEB
+    style LSD fill:#DDA0DD</code></pre>
 <h2 id="phase-by-phase-breakdown">Phase-by-Phase Breakdown<a class="headerlink" href="#phase-by-phase-breakdown" title="Permanent link">&para;</a></h2>
 <h3 id="phase-1-proximity-detection">Phase 1: Proximity Detection<a class="headerlink" href="#phase-1-proximity-detection" title="Permanent link">&para;</a></h3>
 <h4 id="11-position-check">1.1 Position Check<a class="headerlink" href="#11-position-check" title="Permanent link">&para;</a></h4>
 <p><strong>Purpose</strong>: Identify tables that are positioned at page boundaries, which is a strong indicator of page breaks.</p>
 <p><strong>Algorithm</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>For table segment 1 on page N:
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  bottom_ratio = segment_y2 / page_height
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  If bottom_ratio &gt;= (1.0 - bottom_threshold_ratio):
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    ✅ Candidate for first segment
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>For table segment 2 on page N+1:
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  top_ratio = segment_y1 / page_height
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  If top_ratio &lt;= top_threshold_ratio:
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    ✅ Candidate for second segment
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>For table segment 1 on page N:
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  bottom_ratio = segment_y2 / page_height
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  If bottom_ratio &gt;= (1.0 - bottom_threshold_ratio):
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    ✅ Candidate for first segment
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>For table segment 2 on page N+1:
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  top_ratio = segment_y1 / page_height
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  If top_ratio &lt;= top_threshold_ratio:
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    ✅ Candidate for second segment
 </span></code></pre></div></p>
 <p><strong>Example</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Page Height: 1000px
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Segment 1 y2: 850px
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  → bottom_ratio = 850/1000 = 0.85
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  → Threshold: 1.0 - 0.20 = 0.80
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  → 0.85 &gt;= 0.80 ✅ PASS
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>Segment 2 y1: 150px
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>  → top_ratio = 150/1000 = 0.15
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  → Threshold: 0.15
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  → 0.15 &lt;= 0.15 ✅ PASS
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Page Height: 1000px
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Segment 1 y2: 850px
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  → bottom_ratio = 850/1000 = 0.85
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  → Threshold: 1.0 - 0.20 = 0.80
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  → 0.85 &gt;= 0.80 ✅ PASS
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>Segment 2 y1: 150px
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  → top_ratio = 150/1000 = 0.15
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  → Threshold: 0.15
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  → 0.15 &lt;= 0.15 ✅ PASS
 </span></code></pre></div></p>
 <h4 id="12-horizontal-overlap-check">1.2 Horizontal Overlap Check<a class="headerlink" href="#12-horizontal-overlap-check" title="Permanent link">&para;</a></h4>
 <p><strong>Purpose</strong>: Ensure tables are aligned horizontally, indicating they're the same table.</p>
 <p><strong>Algorithm</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>overlap = calculate_overlap(seg1_x1, seg1_x2, seg2_x1, seg2_x2)
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  = max(0, min(seg1_x2, seg2_x2) - max(seg1_x1, seg2_x1))
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>overlap_ratio = overlap / max(seg1_width, seg2_width)
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>If overlap_ratio &gt;= 0.5:
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  ✅ PASS (at least 50% overlap)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>overlap = calculate_overlap(seg1_x1, seg1_x2, seg2_x1, seg2_x2)
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  = max(0, min(seg1_x2, seg2_x2) - max(seg1_x1, seg2_x1))
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>overlap_ratio = overlap / max(seg1_width, seg2_width)
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>If overlap_ratio &gt;= 0.5:
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  ✅ PASS (at least 50% overlap)
 </span></code></pre></div></p>
-<p><strong>Visual Representation</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Seg1:  |───────────|
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Seg2:     |───────────|
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>       └─┘─────────┘
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>       Overlap = 7 units / 11 units = 63.6% ✅
-</span></code></pre></div></p>
+<p><strong>Visual Representation</strong>:</p>
+<pre class="mermaid"><code>graph LR
+    subgraph Seg1["Segment 1"]
+        S1[Table Width&lt;br/&gt;11 units]
+    end
+
+    subgraph Seg2["Segment 2"]
+        S2[Table Width&lt;br/&gt;11 units]
+    end
+
+    subgraph Overlap["Overlap Zone"]
+        OV["Overlap: 7 units&lt;br/&gt;Ratio: 63.6% ✅"]
+    end
+
+    S1 -.-&gt;|Overlap| OV
+    S2 -.-&gt;|Overlap| OV
+
+    style Overlap fill:#90EE90
+    style Seg1 fill:#FFE4B5
+    style Seg2 fill:#FFE4B5</code></pre>
 <h4 id="13-gap-analysis">1.3 Gap Analysis<a class="headerlink" href="#13-gap-analysis" title="Permanent link">&para;</a></h4>
 <p><strong>Purpose</strong>: Measure the space between tables accounting for page breaks, headers, and footers.</p>
 <p><strong>Algorithm</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>gap_pixels = (page1_height - seg1_y2) + seg2_y1
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>gap_ratio = gap_pixels / page1_height
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>If gap_ratio &lt;= max_gap_ratio:
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>  ✅ PASS (gap is reasonable)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>gap_pixels = (page1_height - seg1_y2) + seg2_y1
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>gap_ratio = gap_pixels / page1_height
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>If gap_ratio &lt;= max_gap_ratio:
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  ✅ PASS (gap is reasonable)
 </span></code></pre></div></p>
 <p><strong>Considerations</strong>:
 - Headers/footers take up space
@@ -2957,13 +3109,13 @@
 <h4 id="14-width-similarity-check">1.4 Width Similarity Check<a class="headerlink" href="#14-width-similarity-check" title="Permanent link">&para;</a></h4>
 <p><strong>Purpose</strong>: Verify both segments have similar widths, confirming they share the same structure.</p>
 <p><strong>Algorithm</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>width1 = seg1_x2 - seg1_x1
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>width2 = seg2_x2 - seg2_x1
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>width_diff = abs(width1 - width2)
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>width_ratio = width_diff / max(width1, width2)
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>If width_ratio &lt;= width_similarity_threshold (0.20):
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>  ✅ PASS (widths are similar)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>width1 = seg1_x2 - seg1_x1
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>width2 = seg2_x2 - seg2_x1
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>width_diff = abs(width1 - width2)
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>width_ratio = width_diff / max(width1, width2)
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>If width_ratio &lt;= width_similarity_threshold (0.20):
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  ✅ PASS (widths are similar)
 </span></code></pre></div></p>
 <h3 id="phase-2-structural-validation">Phase 2: Structural Validation<a class="headerlink" href="#phase-2-structural-validation" title="Permanent link">&para;</a></h3>
 <h4 id="21-image-preprocessing">2.1 Image Preprocessing<a class="headerlink" href="#21-image-preprocessing" title="Permanent link">&para;</a></h4>
@@ -2972,199 +3124,230 @@
 <ol>
 <li>
 <p><strong>Grayscale Conversion</strong>
-   <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Original RGB → Grayscale
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Original RGB → Grayscale
 </span></code></pre></div></p>
 </li>
 <li>
 <p><strong>Contrast Enhancement (CLAHE)</strong>
-   <div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Apply Contrast Limited Adaptive Histogram Equalization
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>→ Improves line visibility in low-contrast areas
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Apply Contrast Limited Adaptive Histogram Equalization
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>→ Improves line visibility in low-contrast areas
 </span></code></pre></div></p>
 </li>
 <li>
 <p><strong>Binary Thresholding (OTSU)</strong>
-   <div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Grayscale → Binary (black/white)
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>→ OTSU automatically determines optimal threshold
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Grayscale → Binary (black/white)
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>→ OTSU automatically determines optimal threshold
 </span></code></pre></div></p>
 </li>
 <li>
 <p><strong>Morphological Operations</strong>
-   <div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Apply MORPH_CLOSE with vertical kernel (1x5)
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>→ Connects broken or dashed lines
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>→ Enhances vertical line detection
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Apply MORPH_CLOSE with vertical kernel (1x5)
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>→ Connects broken or dashed lines
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>→ Enhances vertical line detection
 </span></code></pre></div></p>
 </li>
 </ol>
-<p><strong>Visual Flow</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>RGB Image → Grayscale → Enhanced → Binary → Morphology → Ready for LSD
-</span></code></pre></div></p>
+<p><strong>Visual Flow</strong>:</p>
+<pre class="mermaid"><code>graph LR
+    A[RGB Image] --&gt; B[Grayscale&lt;br/&gt;Conversion]
+    B --&gt; C[CLAHE&lt;br/&gt;Enhancement]
+    C --&gt; D[OTSU&lt;br/&gt;Thresholding]
+    D --&gt; E[Morphological&lt;br/&gt;Operations]
+    E --&gt; F[Ready for&lt;br/&gt;LSD Detection]
+
+    style A fill:#FFE4B5
+    style B fill:#DDA0DD
+    style C fill:#87CEEB
+    style D fill:#98FB98
+    style E fill:#F0E68C
+    style F fill:#90EE90</code></pre>
 <h4 id="22-lsd-column-detection">2.2 LSD Column Detection<a class="headerlink" href="#22-lsd-column-detection" title="Permanent link">&para;</a></h4>
 <p><strong>Purpose</strong>: Detect vertical lines representing column boundaries using OpenCV's Line Segment Detector.</p>
 <p><strong>LSD Algorithm Overview</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>1. Gradient Computation
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>   → Calculate image gradients
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>   → Identify edge regions
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>2. Line Region Growing
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>   → Grow line segments from seed points
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>   → Connect adjacent pixels with similar orientation
-</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>
-</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>3. Region Validation
-</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>   → Verify regions meet line criteria
-</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>   → Filter by length and support
-</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>
-</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>4. Refinement
-</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>   → Refine line endpoints
-</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>   → Adjust for sub-pixel accuracy
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>1. Gradient Computation
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>   → Calculate image gradients
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>   → Identify edge regions
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>2. Line Region Growing
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>   → Grow line segments from seed points
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>   → Connect adjacent pixels with similar orientation
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>3. Region Validation
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>   → Verify regions meet line criteria
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>   → Filter by length and support
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>4. Refinement
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>   → Refine line endpoints
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>   → Adjust for sub-pixel accuracy
 </span></code></pre></div></p>
-<p><strong>Column Extraction Process</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>┌─────────────────────────────────────┐
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>│ 1. Detect all line segments (LSD) │
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>│    → Returns: List of (x1,y1,x2,y2)│
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>└──────────────┬──────────────────────┘
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>               │
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>               ▼
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>┌─────────────────────────────────────┐
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>│ 2. Filter by angle                  │
-</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>│    → Keep: 75° ≤ angle ≤ 105°       │
-</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>│    → Remove: horizontal/diagonal    │
-</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>└──────────────┬──────────────────────┘
-</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>               │
-</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>               ▼
-</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>┌─────────────────────────────────────┐
-</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>│ 3. Extract x-coordinates            │
-</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>│    → Collect: x1, x2 for each line  │
-</span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>│    → Result: [x1, x2, x3, ..., xn]  │
-</span><span id="__span-16-18"><a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>└──────────────┬──────────────────────┘
-</span><span id="__span-16-19"><a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>               │
-</span><span id="__span-16-20"><a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>               ▼
-</span><span id="__span-16-21"><a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>┌─────────────────────────────────────┐
-</span><span id="__span-16-22"><a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>│ 4. Cluster nearby coordinates       │
-</span><span id="__span-16-23"><a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>│    → Threshold: 1% of image width    │
-</span><span id="__span-16-24"><a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>│    → Merge: |x_i - x_j| &lt; threshold│
-</span><span id="__span-16-25"><a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>│    → Result: [col1, col2, col3,...]│
-</span><span id="__span-16-26"><a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a>└──────────────┬──────────────────────┘
-</span><span id="__span-16-27"><a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a>               │
-</span><span id="__span-16-28"><a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a>               ▼
-</span><span id="__span-16-29"><a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a>┌─────────────────────────────────────┐
-</span><span id="__span-16-30"><a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a>│ 5. Filter edge columns              │
-</span><span id="__span-16-31"><a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a>│    → Remove: within 2% of edges     │
-</span><span id="__span-16-32"><a id="__codelineno-16-32" name="__codelineno-16-32" href="#__codelineno-16-32"></a>│    → Result: Valid column positions │
-</span><span id="__span-16-33"><a id="__codelineno-16-33" name="__codelineno-16-33" href="#__codelineno-16-33"></a>└─────────────────────────────────────┘
-</span></code></pre></div></p>
+<p><strong>Column Extraction Process</strong>:</p>
+<pre class="mermaid"><code>flowchart TD
+    Step1["Step 1: Detect Line Segments&lt;br/&gt;LSD Algorithm&lt;br/&gt;Returns: List of (x1,y1,x2,y2)"] --&gt; Step2
+
+    Step2["Step 2: Filter by Angle&lt;br/&gt;Keep: 75° to 105°&lt;br/&gt;Remove: horizontal/diagonal lines"] --&gt; Step3
+
+    Step3["Step 3: Extract X-Coordinates&lt;br/&gt;Collect: x1, x2 for each line&lt;br/&gt;Result: [x1, x2, x3, ..., xn]"] --&gt; Step4
+
+    Step4["Step 4: Cluster Nearby Coordinates&lt;br/&gt;Threshold: 1% of image width&lt;br/&gt;Merge: |x_i - x_j| &lt; threshold&lt;br/&gt;Result: [col1, col2, col3, ...]"] --&gt; Step5
+
+    Step5["Step 5: Filter Edge Columns&lt;br/&gt;Remove: within 2% of edges&lt;br/&gt;Result: Valid column positions"]
+
+    style Step1 fill:#FFE4B5
+    style Step2 fill:#DDA0DD
+    style Step3 fill:#87CEEB
+    style Step4 fill:#98FB98
+    style Step5 fill:#90EE90</code></pre>
 <p><strong>Clustering Example</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Detected x-coordinates:
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>[98, 100, 102, 248, 250, 252, 398, 400, 402]
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>After clustering (threshold=5px):
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>[100, 250, 400]  ← 3 columns detected
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Detected x-coordinates:
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>[98, 100, 102, 248, 250, 252, 398, 400, 402]
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>After clustering (threshold=5px):
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>[100, 250, 400]  ← 3 columns detected
 </span></code></pre></div></p>
 <h4 id="23-column-count-matching">2.3 Column Count Matching<a class="headerlink" href="#23-column-count-matching" title="Permanent link">&para;</a></h4>
 <p><strong>Purpose</strong>: Compare the number of columns in both segments with adaptive tolerance.</p>
 <p><strong>Algorithm</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>col_count1 = len(columns_detected_in_seg1)
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>col_count2 = len(columns_detected_in_seg2)
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>diff = abs(col_count1 - col_count2)
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a># Adaptive threshold based on table size
-</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>max_cols = max(col_count1, col_count2)
-</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>
-</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>If max_cols &lt;= 5:
-</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>    max_allowed_diff = 1
-</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>Else if max_cols &lt;= 10:
-</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>    max_allowed_diff = 2
-</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>Else if max_cols &lt;= 20:
-</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>    max_allowed_diff = max(3, int(max_cols * 0.15))
-</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>Else:
-</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>    max_allowed_diff = max(5, int(max_cols * 0.20))
-</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>
-</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>If diff &lt;= max_allowed_diff:
-</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>    ✅ PASS
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>col_count1 = len(columns_detected_in_seg1)
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>col_count2 = len(columns_detected_in_seg2)
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>diff = abs(col_count1 - col_count2)
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a># Adaptive threshold based on table size
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>max_cols = max(col_count1, col_count2)
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>If max_cols &lt;= 5:
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    max_allowed_diff = 1
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>Else if max_cols &lt;= 10:
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    max_allowed_diff = 2
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>Else if max_cols &lt;= 20:
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>    max_allowed_diff = max(3, int(max_cols * 0.15))
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>Else:
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>    max_allowed_diff = max(5, int(max_cols * 0.20))
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>If diff &lt;= max_allowed_diff:
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>    ✅ PASS
 </span></code></pre></div></p>
 <p><strong>Examples</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Small table: 4 vs 5 columns → diff=1 → ✅ (threshold=1)
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>Medium: 8 vs 10 → diff=2 → ✅ (threshold=2)
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>Large: 15 vs 18 → diff=3 → ✅ (threshold=3, 15*0.15=2.25→3)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Small table: 4 vs 5 columns → diff=1 → ✅ (threshold=1)
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Medium: 8 vs 10 → diff=2 → ✅ (threshold=2)
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>Large: 15 vs 18 → diff=3 → ✅ (threshold=3, 15*0.15=2.25→3)
 </span></code></pre></div></p>
 <h4 id="24-column-alignment-validation">2.4 Column Alignment Validation<a class="headerlink" href="#24-column-alignment-validation" title="Permanent link">&para;</a></h4>
 <p><strong>Purpose</strong>: Verify columns align between segments, ensuring structural continuity.</p>
 <p><strong>Algorithm</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>For each column in segment1:
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    Find closest column in segment2
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    Calculate distance = |col1_pos - col2_pos|
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    If distance &lt;= tolerance:
-</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>        ✅ Aligned column
-</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    Else:
-</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>        ❌ Misaligned column
-</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>
-</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>alignment_score = aligned_columns / total_columns
-</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>
-</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>If alignment_score &gt;= 0.6:
-</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>    ✅ PASS (at least 60% alignment)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>For each column in segment1:
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    Find closest column in segment2
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    Calculate distance = |col1_pos - col2_pos|
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    If distance &lt;= tolerance:
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>        ✅ Aligned column
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    Else:
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>        ❌ Misaligned column
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>alignment_score = aligned_columns / total_columns
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>If alignment_score &gt;= 0.6:
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>    ✅ PASS (at least 60% alignment)
 </span></code></pre></div></p>
-<p><strong>Visual Example</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Segment 1 columns:     Segment 2 columns:
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>   100px ────────         102px ────────  (diff: 2px ✅)
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>   250px ────────         248px ────────  (diff: 2px ✅)
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>   400px ────────         402px ────────  (diff: 2px ✅)
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>   550px ────────         552px ────────  (diff: 2px ✅)
-</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>   700px ────────         698px ────────  (diff: 2px ✅)
-</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>
-</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>All columns aligned → Score: 5/5 = 100% ✅
-</span></code></pre></div></p>
+<p><strong>Visual Example</strong>:</p>
+<pre class="mermaid"><code>graph TB
+    subgraph Seg1["Segment 1 Columns"]
+        C1A[Column 1: 100px]
+        C2A[Column 2: 250px]
+        C3A[Column 3: 400px]
+        C4A[Column 4: 550px]
+        C5A[Column 5: 700px]
+    end
+
+    subgraph Seg2["Segment 2 Columns"]
+        C1B[Column 1: 102px]
+        C2B[Column 2: 248px]
+        C3B[Column 3: 402px]
+        C4B[Column 4: 552px]
+        C5B[Column 5: 698px]
+    end
+
+    subgraph Alignment["Alignment Check"]
+        A1["Diff: 2px ✅"]
+        A2["Diff: 2px ✅"]
+        A3["Diff: 2px ✅"]
+        A4["Diff: 2px ✅"]
+        A5["Diff: 2px ✅"]
+        AScore["Score: 5/5 = 100% ✅"]
+    end
+
+    C1A --&gt; A1
+    C1B --&gt; A1
+    C2A --&gt; A2
+    C2B --&gt; A2
+    C3A --&gt; A3
+    C3B --&gt; A3
+    C4A --&gt; A4
+    C4B --&gt; A4
+    C5A --&gt; A5
+    C5B --&gt; A5
+
+    A1 --&gt; AScore
+    A2 --&gt; AScore
+    A3 --&gt; AScore
+    A4 --&gt; AScore
+    A5 --&gt; AScore
+
+    style Alignment fill:#90EE90
+    style Seg1 fill:#FFE4B5
+    style Seg2 fill:#FFE4B5
+    style AScore fill:#90EE90</code></pre>
 <h4 id="25-confidence-calculation">2.5 Confidence Calculation<a class="headerlink" href="#25-confidence-calculation" title="Permanent link">&para;</a></h4>
 <p><strong>Purpose</strong>: Compute overall confidence score for the merge decision.</p>
 <p><strong>Scoring Formula</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>confidence = 0.0
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a># Column count match (max 0.3)
-</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>if column_count_match:
-</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>    confidence += 0.3
-</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>elif column_diff &lt;= 1:
-</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>    confidence += 0.2
-</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>elif column_diff &lt;= 2:
-</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>    confidence += 0.1
-</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>
-</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a># Column alignment (max 0.4)
-</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a>alignment_weight = alignment_score * 0.4
-</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>confidence += alignment_weight
-</span><span id="__span-22-14"><a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a>
-</span><span id="__span-22-15"><a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a># Width similarity (max 0.1)
-</span><span id="__span-22-16"><a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a>width_score = 1.0 - min(1.0, width_ratio / 0.2)
-</span><span id="__span-22-17"><a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a>confidence += width_score * 0.1
-</span><span id="__span-22-18"><a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a>
-</span><span id="__span-22-19"><a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a># Overlap ratio (max 0.2)
-</span><span id="__span-22-20"><a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a>overlap_score = min(1.0, (overlap_ratio - 0.5) / 0.5)  # 0.5-1.0 → 0.0-1.0
-</span><span id="__span-22-21"><a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a>confidence += overlap_score * 0.2
-</span><span id="__span-22-22"><a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a>
-</span><span id="__span-22-23"><a id="__codelineno-22-23" name="__codelineno-22-23" href="#__codelineno-22-23"></a>Final: confidence (0.0 - 1.0)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>confidence = 0.0
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a># Column count match (max 0.3)
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>if column_count_match:
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    confidence += 0.3
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>elif column_diff &lt;= 1:
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    confidence += 0.2
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>elif column_diff &lt;= 2:
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    confidence += 0.1
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a># Column alignment (max 0.4)
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>alignment_weight = alignment_score * 0.4
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>confidence += alignment_weight
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a># Width similarity (max 0.1)
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>width_score = 1.0 - min(1.0, width_ratio / 0.2)
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>confidence += width_score * 0.1
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>
+</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a># Overlap ratio (max 0.2)
+</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>overlap_score = min(1.0, (overlap_ratio - 0.5) / 0.5)  # 0.5-1.0 → 0.0-1.0
+</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>confidence += overlap_score * 0.2
+</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a>
+</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a>Final: confidence (0.0 - 1.0)
 </span></code></pre></div></p>
 <p><strong>Example Calculation</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Perfect match:
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>  - Column count: 5 vs 5 → +0.3
-</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>  - Alignment: 100% → +0.4
-</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>  - Width: 800px vs 802px (0.25%) → +0.1
-</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>  - Overlap: 98% → +0.2
-</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>  Total: 1.0 (100% confidence) ✅
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Perfect match:
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>  - Column count: 5 vs 5 → +0.3
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>  - Alignment: 100% → +0.4
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>  - Width: 800px vs 802px (0.25%) → +0.1
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>  - Overlap: 98% → +0.2
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>  Total: 1.0 (100% confidence) ✅
 </span></code></pre></div></p>
-<h3 id="fallback-mechanisms">Fallback Mechanisms<a class="headerlink" href="#fallback-mechanisms" title="Permanent link">&para;</a></h3>
+<h3 id="fallback-mechanisms_1">Fallback Mechanisms<a class="headerlink" href="#fallback-mechanisms_1" title="Permanent link">&para;</a></h3>
 <h4 id="too-many-columns-detected">Too Many Columns Detected<a class="headerlink" href="#too-many-columns-detected" title="Permanent link">&para;</a></h4>
 <p><strong>Problem</strong>: LSD may detect noise (horizontal lines, text boundaries) as columns.</p>
 <p><strong>Solution</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>If detected_columns &gt; 20:
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>    → Likely noise, not real columns
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>    → Skip structural validation
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>    → Use proximity-based fallback
-</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>    → Confidence: 0.70 (lower than validated)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>If detected_columns &gt; 20:
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    → Likely noise, not real columns
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    → Skip structural validation
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    → Use proximity-based fallback
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    → Confidence: 0.70 (lower than validated)
 </span></code></pre></div></p>
 <h4 id="no-columns-detected">No Columns Detected<a class="headerlink" href="#no-columns-detected" title="Permanent link">&para;</a></h4>
 <p><strong>Problem</strong>: Borderless tables or poor image quality prevent column detection.</p>
 <p><strong>Solution</strong>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>If columns_detected == 0 in both segments:
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>    → Tables lack visible borders
-</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>    → Fall back to proximity matching
-</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>    → Confidence: 0.65
-</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>    → Reason: &quot;Proximity match (no columns detected by LSD)&quot;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>If columns_detected == 0 in both segments:
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    → Tables lack visible borders
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    → Fall back to proximity matching
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    → Confidence: 0.65
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    → Reason: &quot;Proximity match (no columns detected by LSD)&quot;
 </span></code></pre></div></p>
 <h2 id="configuration-parameters">Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Permanent link">&para;</a></h2>
 <h3 id="detailed-parameter-reference">Detailed Parameter Reference<a class="headerlink" href="#detailed-parameter-reference" title="Permanent link">&para;</a></h3>
@@ -3225,68 +3408,68 @@
 </table>
 <h3 id="tuning-guidelines">Tuning Guidelines<a class="headerlink" href="#tuning-guidelines" title="Permanent link">&para;</a></h3>
 <h4 id="for-documents-with-large-headersfooters">For Documents with Large Headers/Footers<a class="headerlink" href="#for-documents-with-large-headersfooters" title="Permanent link">&para;</a></h4>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>    <span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.30</span><span class="p">,</span>  <span class="c1"># Increase to 30% for larger headers</span>
-</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.30</span><span class="p">,</span>  <span class="c1"># Increase to 30% for larger headers</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="p">)</span>
 </span></code></pre></div>
 <h4 id="for-stricter-merging-fewer-false-positives">For Stricter Merging (Fewer False Positives)<a class="headerlink" href="#for-stricter-merging-fewer-false-positives" title="Permanent link">&para;</a></h4>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
-</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>    <span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.80</span><span class="p">,</span>  <span class="c1"># Higher threshold</span>
-</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>    <span class="n">column_alignment_tolerance</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>  <span class="c1"># Tighter alignment</span>
-</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.80</span><span class="p">,</span>  <span class="c1"># Higher threshold</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="n">column_alignment_tolerance</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>  <span class="c1"># Tighter alignment</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="p">)</span>
 </span></code></pre></div>
 <h4 id="for-more-aggressive-merging-catch-more-cases">For More Aggressive Merging (Catch More Cases)<a class="headerlink" href="#for-more-aggressive-merging-catch-more-cases" title="Permanent link">&para;</a></h4>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
-</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>    <span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span>  <span class="c1"># Lower threshold</span>
-</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>    <span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span>  <span class="c1"># Allow larger gaps</span>
-</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>    <span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>  <span class="c1"># More lenient position check</span>
-</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>    <span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span>
-</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span>  <span class="c1"># Lower threshold</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    <span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span>  <span class="c1"># Allow larger gaps</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>  <span class="c1"># More lenient position check</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    <span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="example-1-financial-report-table">Example 1: Financial Report Table<a class="headerlink" href="#example-1-financial-report-table" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Document: Quarterly Financial Report
-</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>Pages: 2 pages, table spans both
-</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
-</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>Detection Result:
-</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>✅ Match found: Page 1→2
-</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>   Confidence: 0.92
-</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>   Reason: LSD validation: 6 vs 6 columns, alignment=0.95
-</span><span id="__span-29-8"><a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>   Gap: 18.8% of page height
-</span><span id="__span-29-9"><a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>
-</span><span id="__span-29-10"><a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>Output:
-</span><span id="__span-29-11"><a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a>- Merged image: merged_table_1_2.png
-</span><span id="__span-29-12"><a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a>- Markdown: Single table entry with note &quot;pages 1-2&quot;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Document: Quarterly Financial Report
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>Pages: 2 pages, table spans both
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>Detection Result:
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>✅ Match found: Page 1→2
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>   Confidence: 0.92
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>   Reason: LSD validation: 6 vs 6 columns, alignment=0.95
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>   Gap: 18.8% of page height
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>Output:
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>- Merged image: merged_table_1_2.png
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>- Markdown: Single table entry with note &quot;pages 1-2&quot;
 </span></code></pre></div>
 <h3 id="example-2-borderless-table">Example 2: Borderless Table<a class="headerlink" href="#example-2-borderless-table" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Document: Research Data Table
-</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>Pages: 2 pages, no visible borders
-</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>
-</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>Detection Result:
-</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>✅ Match found: Page 3→4
-</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>   Confidence: 0.70
-</span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>   Reason: Proximity match (too many columns detected, likely noise)
-</span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>   Note: Using fallback validation (no clear column boundaries)
-</span><span id="__span-30-9"><a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>
-</span><span id="__span-30-10"><a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a>Output:
-</span><span id="__span-30-11"><a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a>- Merged image created
-</span><span id="__span-30-12"><a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a>- Lower confidence due to lack of structural validation
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>Document: Research Data Table
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>Pages: 2 pages, no visible borders
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>Detection Result:
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>✅ Match found: Page 3→4
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>   Confidence: 0.70
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>   Reason: Proximity match (too many columns detected, likely noise)
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>   Note: Using fallback validation (no clear column boundaries)
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>Output:
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>- Merged image created
+</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a>- Lower confidence due to lack of structural validation
 </span></code></pre></div>
 <h3 id="example-3-rejected-match">Example 3: Rejected Match<a class="headerlink" href="#example-3-rejected-match" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>Document: Separate Tables
-</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>Pages: 2 pages with different tables
-</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>
-</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>Detection Result:
-</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>❌ No match
-</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>   Reason: Column count mismatch (4 vs 7 columns)
-</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>   Confidence: 0.45 (below threshold of 0.65)
-</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>
-</span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>Output:
-</span><span id="__span-31-10"><a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a>- Tables processed separately
-</span><span id="__span-31-11"><a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a>- No merge attempted
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Document: Separate Tables
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>Pages: 2 pages with different tables
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>Detection Result:
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>❌ No match
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>   Reason: Column count mismatch (4 vs 7 columns)
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>   Confidence: 0.45 (below threshold of 0.65)
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>Output:
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>- Tables processed separately
+</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>- No merge attempted
 </span></code></pre></div>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <h3 id="tables-not-being-merged">Tables Not Being Merged<a class="headerlink" href="#tables-not-being-merged" title="Permanent link">&para;</a></h3>
@@ -3295,26 +3478,26 @@
 <ol>
 <li>
 <p><strong>Check Position Thresholds</strong>
-   <div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># Verify tables are actually near page boundaries</span>
-</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.25</span>  <span class="c1"># Try increasing</span>
-</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.20</span>
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># Verify tables are actually near page boundaries</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.25</span>  <span class="c1"># Try increasing</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.20</span>
 </span></code></pre></div></p>
 </li>
 <li>
 <p><strong>Check Gap Tolerance</strong>
-   <div class="language-python highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="c1"># Large headers/footers may require:</span>
-</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.30</span>  <span class="c1"># Increase from 0.25</span>
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Large headers/footers may require:</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.30</span>  <span class="c1"># Increase from 0.25</span>
 </span></code></pre></div></p>
 </li>
 <li>
 <p><strong>Lower Confidence Threshold</strong>
-   <div class="language-python highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.60</span>  <span class="c1"># Try lowering from 0.65</span>
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.60</span>  <span class="c1"># Try lowering from 0.65</span>
 </span></code></pre></div></p>
 </li>
 <li>
 <p><strong>Enable Debug Mode</strong>
-   <div class="language-python highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 </span></code></pre></div></p>
 </li>
 </ol>
@@ -3324,18 +3507,18 @@
 <ol>
 <li>
 <p><strong>Increase Confidence Threshold</strong>
-   <div class="language-python highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.75</span>  <span class="c1"># More conservative</span>
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.75</span>  <span class="c1"># More conservative</span>
 </span></code></pre></div></p>
 </li>
 <li>
 <p><strong>Tighten Alignment Tolerance</strong>
-   <div class="language-python highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="n">column_alignment_tolerance</span><span class="o">=</span><span class="mf">5.0</span>  <span class="c1"># Stricter alignment</span>
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">column_alignment_tolerance</span><span class="o">=</span><span class="mf">5.0</span>  <span class="c1"># Stricter alignment</span>
 </span></code></pre></div></p>
 </li>
 <li>
 <p><strong>Adjust Position Thresholds</strong>
-   <div class="language-python highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.15</span>  <span class="c1"># More restrictive</span>
-</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.10</span>
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.15</span>  <span class="c1"># More restrictive</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.10</span>
 </span></code></pre></div></p>
 </li>
 </ol>
@@ -3345,7 +3528,7 @@
 <ol>
 <li>
 <p><strong>Disable if not needed</strong>
-   <div class="language-python highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># Skip detection entirely</span>
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># Skip detection entirely</span>
 </span></code></pre></div></p>
 </li>
 <li>
@@ -3359,7 +3542,7 @@
 <li><strong>Low image quality</strong></li>
 <li>
 <p>Solution: Increase DPI
-   <div class="language-python highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="n">dpi</span><span class="o">=</span><span class="mi">300</span>  <span class="c1"># Instead of 200</span>
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="n">dpi</span><span class="o">=</span><span class="mi">300</span>  <span class="c1"># Instead of 200</span>
 </span></code></pre></div></p>
 </li>
 <li>
@@ -3376,29 +3559,29 @@
 </ol>
 <h2 id="technical-implementation-details">Technical Implementation Details<a class="headerlink" href="#technical-implementation-details" title="Permanent link">&para;</a></h2>
 <h3 id="data-structures">Data Structures<a class="headerlink" href="#data-structures" title="Permanent link">&para;</a></h3>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="nd">@dataclass</span>
-</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">TableSegment</span><span class="p">:</span>
-</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a table segment with bounding box and page info.&quot;&quot;&quot;</span>
-</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>    <span class="n">page_index</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>    <span class="n">box_index</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>    <span class="n">x1</span><span class="p">:</span> <span class="nb">float</span>
-</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a>    <span class="n">y1</span><span class="p">:</span> <span class="nb">float</span>
-</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a>    <span class="n">x2</span><span class="p">:</span> <span class="nb">float</span>
-</span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a>    <span class="n">y2</span><span class="p">:</span> <span class="nb">float</span>
-</span><span id="__span-41-10"><a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a>    <span class="n">page_width</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-41-11"><a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a>    <span class="n">page_height</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-41-12"><a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a>    <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span>  <span class="c1"># Cropped table image</span>
-</span><span id="__span-41-13"><a id="__codelineno-41-13" name="__codelineno-41-13" href="#__codelineno-41-13"></a>    <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span>
-</span><span id="__span-41-14"><a id="__codelineno-41-14" name="__codelineno-41-14" href="#__codelineno-41-14"></a>
-</span><span id="__span-41-15"><a id="__codelineno-41-15" name="__codelineno-41-15" href="#__codelineno-41-15"></a><span class="nd">@dataclass</span>
-</span><span id="__span-41-16"><a id="__codelineno-41-16" name="__codelineno-41-16" href="#__codelineno-41-16"></a><span class="k">class</span><span class="w"> </span><span class="nc">SplitTableMatch</span><span class="p">:</span>
-</span><span id="__span-41-17"><a id="__codelineno-41-17" name="__codelineno-41-17" href="#__codelineno-41-17"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a validated split table match.&quot;&quot;&quot;</span>
-</span><span id="__span-41-18"><a id="__codelineno-41-18" name="__codelineno-41-18" href="#__codelineno-41-18"></a>    <span class="n">segment1</span><span class="p">:</span> <span class="n">TableSegment</span>
-</span><span id="__span-41-19"><a id="__codelineno-41-19" name="__codelineno-41-19" href="#__codelineno-41-19"></a>    <span class="n">segment2</span><span class="p">:</span> <span class="n">TableSegment</span>
-</span><span id="__span-41-20"><a id="__codelineno-41-20" name="__codelineno-41-20" href="#__codelineno-41-20"></a>    <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span>
-</span><span id="__span-41-21"><a id="__codelineno-41-21" name="__codelineno-41-21" href="#__codelineno-41-21"></a>    <span class="n">merge_reason</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-41-22"><a id="__codelineno-41-22" name="__codelineno-41-22" href="#__codelineno-41-22"></a>    <span class="n">column_count1</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-41-23"><a id="__codelineno-41-23" name="__codelineno-41-23" href="#__codelineno-41-23"></a>    <span class="n">column_count2</span><span class="p">:</span> <span class="nb">int</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="nd">@dataclass</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">TableSegment</span><span class="p">:</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a table segment with bounding box and page info.&quot;&quot;&quot;</span>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>    <span class="n">page_index</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>    <span class="n">box_index</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>    <span class="n">x1</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="__span-33-7"><a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>    <span class="n">y1</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="__span-33-8"><a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>    <span class="n">x2</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="__span-33-9"><a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>    <span class="n">y2</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="__span-33-10"><a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a>    <span class="n">page_width</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-33-11"><a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a>    <span class="n">page_height</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-33-12"><a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a>    <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span>  <span class="c1"># Cropped table image</span>
+</span><span id="__span-33-13"><a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a>    <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="__span-33-14"><a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a>
+</span><span id="__span-33-15"><a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a><span class="nd">@dataclass</span>
+</span><span id="__span-33-16"><a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a><span class="k">class</span><span class="w"> </span><span class="nc">SplitTableMatch</span><span class="p">:</span>
+</span><span id="__span-33-17"><a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a validated split table match.&quot;&quot;&quot;</span>
+</span><span id="__span-33-18"><a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a>    <span class="n">segment1</span><span class="p">:</span> <span class="n">TableSegment</span>
+</span><span id="__span-33-19"><a id="__codelineno-33-19" name="__codelineno-33-19" href="#__codelineno-33-19"></a>    <span class="n">segment2</span><span class="p">:</span> <span class="n">TableSegment</span>
+</span><span id="__span-33-20"><a id="__codelineno-33-20" name="__codelineno-33-20" href="#__codelineno-33-20"></a>    <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="__span-33-21"><a id="__codelineno-33-21" name="__codelineno-33-21" href="#__codelineno-33-21"></a>    <span class="n">merge_reason</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-33-22"><a id="__codelineno-33-22" name="__codelineno-33-22" href="#__codelineno-33-22"></a>    <span class="n">column_count1</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-33-23"><a id="__codelineno-33-23" name="__codelineno-33-23" href="#__codelineno-33-23"></a>    <span class="n">column_count2</span><span class="p">:</span> <span class="nb">int</span>
 </span></code></pre></div>
 <h3 id="performance-characteristics">Performance Characteristics<a class="headerlink" href="#performance-characteristics" title="Permanent link">&para;</a></h3>
 <ul>
