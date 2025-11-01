@@ -75,6 +75,14 @@ parser = StructuredPDFParser(
     vlm_api_key: str = None,
     vlm_model: str = None,
     
+    # Split Table Merging
+    merge_split_tables: bool = False,
+    bottom_threshold_ratio: float = 0.20,
+    top_threshold_ratio: float = 0.15,
+    max_gap_ratio: float = 0.25,
+    column_alignment_tolerance: float = 10.0,
+    min_merge_confidence: float = 0.65,
+    
     # Output Settings
     box_separator: str = "\n"
 )
@@ -208,6 +216,17 @@ parser.parse(
 | `restoration_task` | str | "appearance" | Restoration task type |
 | `restoration_device` | str | None | Device: "cuda", "cpu", or None (auto-detect) |
 | `restoration_dpi` | int | 200 | DPI for restoration processing |
+
+### Split Table Merging Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `merge_split_tables` | bool | False | Enable automatic detection and merging of tables split across pages |
+| `bottom_threshold_ratio` | float | 0.20 | Ratio (0-1) for detecting tables near bottom of page. Tables within this ratio from the bottom are considered candidates. |
+| `top_threshold_ratio` | float | 0.15 | Ratio (0-1) for detecting tables near top of page. Tables within this ratio from the top are considered candidates. |
+| `max_gap_ratio` | float | 0.25 | Maximum allowed gap between table segments as ratio of page height. Accounts for headers, footers, and page margins. |
+| `column_alignment_tolerance` | float | 10.0 | Pixel tolerance for column alignment validation when comparing table structures. |
+| `min_merge_confidence` | float | 0.65 | Minimum confidence score (0-1) required to merge two table segments. Higher values are more conservative. |
 
 ### Extraction Parameters
 
