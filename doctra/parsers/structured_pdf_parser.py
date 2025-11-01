@@ -2,6 +2,7 @@ from __future__ import annotations
 import os
 import re
 import sys
+import logging
 from typing import List, Dict, Any
 from contextlib import ExitStack
 from PIL import Image, ImageDraw, ImageFont
@@ -22,6 +23,7 @@ from doctra.exporters.markdown_table import render_markdown_table
 from doctra.exporters.markdown_writer import write_markdown
 from doctra.exporters.html_writer import write_html, write_structured_html, render_html_table, write_html_from_lines
 from doctra.utils.progress import create_beautiful_progress_bar, create_multi_progress_bars, create_notebook_friendly_bar
+from doctra.parsers.split_table_detector import SplitTableDetector, SplitTableMatch
 
 
 class StructuredPDFParser:
@@ -31,6 +33,9 @@ class StructuredPDFParser:
     Processes PDF documents to extract text, tables, charts, and figures.
     Supports OCR for text extraction and optional VLM processing for
     converting visual elements into structured data.
+    
+    Features automatic detection and merging of tables split across pages
+    using proximity detection and LSD-based structure analysis.
 
     :param use_vlm: Whether to use VLM for structured data extraction (default: False)
     :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
@@ -44,6 +49,12 @@ class StructuredPDFParser:
     :param ocr_oem: Tesseract OCR engine mode (default: 3)
     :param ocr_extra_config: Additional Tesseract configuration (default: "")
     :param box_separator: Separator between text boxes in output (default: "\n")
+    :param merge_split_tables: Whether to detect and merge split tables (default: False)
+    :param bottom_threshold_ratio: Ratio for "too close to bottom" detection (default: 0.20)
+    :param top_threshold_ratio: Ratio for "too close to top" detection (default: 0.10)
+    :param max_gap_ratio: Maximum allowed gap between tables (default: 0.05)
+    :param column_alignment_tolerance: Pixel tolerance for column alignment (default: 10.0)
+    :param min_merge_confidence: Minimum confidence score for merging (default: 0.7)
     """
 
     def __init__(
@@ -61,9 +72,17 @@ class StructuredPDFParser:
             ocr_oem: int = 3,
             ocr_extra_config: str = "",
             box_separator: str = "\n",
+            merge_split_tables: bool = False,
+            bottom_threshold_ratio: float = 0.20,
+            top_threshold_ratio: float = 0.15,
+            max_gap_ratio: float = 0.25,
+            column_alignment_tolerance: float = 10.0,
+            min_merge_confidence: float = 0.65,
     ):
         """
         Initialize the StructuredPDFParser with processing configuration.
+        
+        Also suppresses noisy DEBUG logs from external libraries.
 
         :param use_vlm: Whether to use VLM for structured data extraction (default: False)
         :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
@@ -77,6 +96,12 @@ class StructuredPDFParser:
         :param ocr_oem: Tesseract OCR engine mode (default: 3)
         :param ocr_extra_config: Additional Tesseract configuration (default: "")
         :param box_separator: Separator between text boxes in output (default: "\n")
+        :param merge_split_tables: Whether to detect and merge split tables (default: False)
+        :param bottom_threshold_ratio: Ratio for "too close to bottom" detection (default: 0.20)
+        :param top_threshold_ratio: Ratio for "too close to top" detection (default: 0.15)
+        :param max_gap_ratio: Maximum allowed gap between tables (default: 0.25, accounts for headers/footers)
+        :param column_alignment_tolerance: Pixel tolerance for column alignment (default: 10.0)
+        :param min_merge_confidence: Minimum confidence score for merging (default: 0.65)
         """
         self.layout_engine = PaddleLayoutEngine(model_name=layout_model_name)
         self.dpi = dpi
@@ -96,6 +121,23 @@ class StructuredPDFParser:
                 )
             except Exception as e:
                 self.vlm = None
+        
+        # Initialize split table detector
+        self.merge_split_tables = merge_split_tables
+        if self.merge_split_tables:
+            self.split_table_detector = SplitTableDetector(
+                bottom_threshold_ratio=bottom_threshold_ratio,
+                top_threshold_ratio=top_threshold_ratio,
+                max_gap_ratio=max_gap_ratio,
+                column_alignment_tolerance=column_alignment_tolerance,
+                min_merge_confidence=min_merge_confidence,
+            )
+        else:
+            self.split_table_detector = None
+        
+        # Suppress noisy DEBUG logs from external libraries
+        logging.getLogger('pytesseract').setLevel(logging.WARNING)
+        logging.getLogger('markdown_it').setLevel(logging.WARNING)
 
     def parse(self, pdf_path: str) -> None:
         """
@@ -114,6 +156,22 @@ class StructuredPDFParser:
             pdf_path, batch_size=1, layout_nms=True, dpi=self.dpi, min_score=self.min_score
         )
         pil_pages = [im for (im, _, _) in render_pdf_to_images(pdf_path, dpi=self.dpi)]
+
+        # Detect split tables before processing
+        split_table_matches: List[SplitTableMatch] = []
+        merged_table_segments = []  # Track TableSegment objects that are merged
+        
+        if self.merge_split_tables and self.split_table_detector:
+            try:
+                split_table_matches = self.split_table_detector.detect_split_tables(pages, pil_pages)
+                # Track which segments are part of merges
+                for match in split_table_matches:
+                    merged_table_segments.append(match.segment1)
+                    merged_table_segments.append(match.segment2)
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                split_table_matches = []
 
         fig_count = sum(sum(1 for b in p.boxes if b.label == "figure") for p in pages)
         chart_count = sum(sum(1 for b in p.boxes if b.label == "chart") for p in pages)
@@ -200,6 +258,11 @@ class StructuredPDFParser:
                             if charts_bar: charts_bar.update(1)
 
                         elif box.label == "table":
+                            # Skip tables that are part of merged split tables
+                            is_merged = any(seg.match_box(box, page_num) for seg in merged_table_segments)
+                            if is_merged:
+                                continue
+                            
                             if self.use_vlm and self.vlm:
                                 wrote_table = False
                                 try:
@@ -243,6 +306,80 @@ class StructuredPDFParser:
                             html_lines.append(f"<p>{html_text}</p>")
                             if self.box_separator:
                                 html_lines.append("<br>")
+
+            # Process merged split tables
+            if split_table_matches and self.split_table_detector:
+                for match_idx, match in enumerate(split_table_matches):
+                    try:
+                        # Merge the table images
+                        merged_img = self.split_table_detector.merge_table_images(match)
+                        
+                        # Save merged image
+                        tables_dir = os.path.join(out_dir, "tables")
+                        os.makedirs(tables_dir, exist_ok=True)
+                        merged_filename = f"merged_table_{match.segment1.page_index}_{match.segment2.page_index}.png"
+                        merged_path = os.path.join(tables_dir, merged_filename)
+                        merged_img.save(merged_path)
+                        
+                        abs_merged_path = os.path.abspath(merged_path)
+                        rel_merged = os.path.relpath(abs_merged_path, out_dir)
+                        
+                        # Add to markdown/HTML at the page where first segment appears
+                        pages_str = f"pages {match.segment1.page_index}-{match.segment2.page_index}"
+                        
+                        if self.use_vlm and self.vlm:
+                            wrote_table = False
+                            try:
+                                table = self.vlm.extract_table(abs_merged_path)
+                                item = to_structured_dict(table)
+                                if item:
+                                    # Add page and type information to structured item
+                                    item["page"] = f"{match.segment1.page_index}-{match.segment2.page_index}"
+                                    item["type"] = "Table (Merged)"
+                                    item["split_merge"] = True
+                                    item["merge_confidence"] = match.confidence
+                                    structured_items.append(item)
+                                    
+                                    # Generate both markdown and HTML tables
+                                    table_md = render_markdown_table(
+                                        item.get("headers"), 
+                                        item.get("rows"),
+                                        title=item.get("title") or f"Merged Table ({pages_str})"
+                                    )
+                                    table_html = render_html_table(
+                                        item.get("headers"), 
+                                        item.get("rows"),
+                                        title=item.get("title") or f"Merged Table ({pages_str})"
+                                    )
+                                    
+                                    # Insert before the next page section or at end
+                                    md_lines.append(f"\n### Merged Table ({pages_str})\n")
+                                    md_lines.append(table_md)
+                                    html_lines.append(f'<h3>Merged Table ({pages_str})</h3>')
+                                    html_lines.append(table_html)
+                                    wrote_table = True
+                            except Exception as e:
+                                pass
+                            
+                            if not wrote_table:
+                                table_md = f"![Merged Table — {pages_str}]({rel_merged})\n"
+                                table_html = f'<img src="{rel_merged}" alt="Merged Table — {pages_str}" />'
+                                md_lines.append(f"\n### Merged Table ({pages_str})\n")
+                                md_lines.append(table_md)
+                                html_lines.append(f'<h3>Merged Table ({pages_str})</h3>')
+                                html_lines.append(table_html)
+                        else:
+                            table_md = f"![Merged Table — {pages_str}]({rel_merged})\n"
+                            table_html = f'<img src="{rel_merged}" alt="Merged Table — {pages_str}" />'
+                            md_lines.append(f"\n### Merged Table ({pages_str})\n")
+                            md_lines.append(table_md)
+                            html_lines.append(f'<h3>Merged Table ({pages_str})</h3>')
+                            html_lines.append(table_html)
+                        
+                        if tables_bar: tables_bar.update(1)
+                        
+                    except Exception as e:
+                        print(f"⚠️  Warning: Failed to merge table {match_idx + 1}: {e}")
 
         md_path = write_markdown(md_lines, out_dir)
         
