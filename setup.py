@@ -64,6 +64,7 @@ setup(
         "pymupdf>=1.23.0",
         "scikit-image>=0.19.3",
         "torchvision",
+        "jsonlines",
     ],
     extras_require={
         "openai": ["openai>=1.0.0"],

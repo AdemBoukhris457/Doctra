@@ -49,6 +49,7 @@ dependencies = [
     "ollama>=0.1.0",
     "markdown-it-py>=2.0.0",
     "gradio",
+    "jsonlines",
     "pymupdf>=1.23.0",
     "scikit-image>=0.19.3",
     "torchvision",
