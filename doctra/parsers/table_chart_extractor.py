@@ -20,11 +20,76 @@ from doctra.utils.file_ops import ensure_output_dirs
 
 from doctra.engines.vlm.service import VLMStructuredExtractor
 from doctra.exporters.excel_writer import write_structured_excel
-from doctra.utils.structured_utils import to_structured_dict
+from doctra.utils.structured_utils import to_structured_dict, html_table_to_structured_dict
 from doctra.exporters.markdown_table import render_markdown_table
 from doctra.exporters.markdown_writer import write_markdown
 from doctra.exporters.html_writer import write_structured_html
 import json
+
+# Try to import unitable recognize_table function
+UNITABLE_IMPORT_ERROR = None
+try:
+    import sys
+    import importlib.util
+    from pathlib import Path
+    
+    # Get the exact path to unitable inference.py
+    unitable_dir = Path(__file__).parent.parent / "third_party" / "doctra"
+    inference_path = unitable_dir / "inference.py"
+    
+    # Use importlib to load from the specific path to avoid conflicts with docres/inference.py
+    # Make sure unitable_dir is in sys.path so relative imports work
+    if inference_path.exists():
+        # Add unitable directory to sys.path if not already there
+        # This is critical for relative imports like "from src.model import ..."
+        unitable_dir_str = str(unitable_dir)
+        if unitable_dir_str not in sys.path:
+            sys.path.insert(0, unitable_dir_str)
+        
+        # Save current state
+        old_cwd = Path.cwd()
+        import os
+        
+        try:
+            # Temporarily change working directory to unitable_dir for imports
+            # This allows relative imports in inference.py to work correctly
+            os.chdir(unitable_dir_str)
+            
+            # Load the module with the correct context
+            spec = importlib.util.spec_from_file_location(
+                "unitable_inference", 
+                inference_path,
+                submodule_search_locations=[unitable_dir_str]
+            )
+            if spec and spec.loader:
+                unitable_inference = importlib.util.module_from_spec(spec)
+                # Set important attributes for proper import resolution
+                unitable_inference.__file__ = str(inference_path)
+                unitable_inference.__name__ = "unitable_inference"
+                unitable_inference.__package__ = None
+                # Store in sys.modules to allow imports within the module
+                sys.modules["unitable_inference"] = unitable_inference
+                
+                # Execute the module (this will run all imports)
+                spec.loader.exec_module(unitable_inference)
+                
+                # Extract the recognize_table function
+                recognize_table = unitable_inference.recognize_table
+                UNITABLE_AVAILABLE = True
+            else:
+                raise ImportError("Could not create module spec for unitable inference")
+        finally:
+            # Always restore original working directory
+            try:
+                os.chdir(str(old_cwd))
+            except:
+                pass  # Ignore errors restoring directory
+    else:
+        raise ImportError(f"UniTable inference.py not found at {inference_path}")
+except (ImportError, Exception) as e:
+    UNITABLE_AVAILABLE = False
+    recognize_table = None
+    UNITABLE_IMPORT_ERROR = str(e)
 
 
 class ChartTablePDFParser:
@@ -38,6 +103,7 @@ class ChartTablePDFParser:
     :param extract_charts: Whether to extract charts from the document (default: True)
     :param extract_tables: Whether to extract tables from the document (default: True)
     :param use_vlm: Whether to use VLM for structured data extraction (default: False)
+    :param use_unitable: Whether to use UniTable for table parsing (only for tables, not charts) (default: False)
     :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
     :param vlm_model: Model name to use (defaults to provider-specific defaults)
     :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
@@ -52,6 +118,7 @@ class ChartTablePDFParser:
             extract_charts: bool = True,
             extract_tables: bool = True,
             use_vlm: bool = False,
+            use_unitable: bool = False,
             vlm_provider: str = "gemini",
             vlm_model: str | None = None,
             vlm_api_key: str | None = None,
@@ -65,6 +132,7 @@ class ChartTablePDFParser:
         :param extract_charts: Whether to extract charts from the document (default: True)
         :param extract_tables: Whether to extract tables from the document (default: True)
         :param use_vlm: Whether to use VLM for structured data extraction (default: False)
+        :param use_unitable: Whether to use UniTable for table parsing (only for tables, not charts) (default: False)
         :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
         :param vlm_model: Model name to use (defaults to provider-specific defaults)
         :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
@@ -89,6 +157,38 @@ class ChartTablePDFParser:
                 vlm_model=vlm_model,
                 api_key=vlm_api_key,
             )
+        
+        # Set up unitable
+        self.use_unitable = use_unitable and UNITABLE_AVAILABLE and extract_tables
+        
+        # Warn user if they requested unitable but it's not available
+        if use_unitable and not UNITABLE_AVAILABLE:
+            print(f"⚠️  Warning: UniTable was requested but is not available.")
+            if UNITABLE_IMPORT_ERROR:
+                print(f"   Import error: {UNITABLE_IMPORT_ERROR}")
+                # Provide helpful installation suggestions for common missing dependencies
+                if "jsonlines" in str(UNITABLE_IMPORT_ERROR):
+                    print(f"   💡 Install missing dependency: pip install jsonlines")
+                elif "torch" in str(UNITABLE_IMPORT_ERROR):
+                    print(f"   💡 Install missing dependency: pip install torch torchvision")
+                elif "tokenizers" in str(UNITABLE_IMPORT_ERROR):
+                    print(f"   💡 Install missing dependency: pip install tokenizers")
+                elif "No module named" in str(UNITABLE_IMPORT_ERROR):
+                    # Extract the module name from the error
+                    import re
+                    match = re.search(r"No module named ['\"]([^'\"]+)['\"]", str(UNITABLE_IMPORT_ERROR))
+                    if match:
+                        module_name = match.group(1)
+                        print(f"   💡 Install missing dependency: pip install {module_name}")
+            print(f"   Tables will be extracted as images only.")
+        
+        if self.use_unitable:
+            unitable_base = Path(__file__).parent.parent / "third_party" / "doctra"
+            self.unitable_model_dir = unitable_base / "experiments" / "unitable_weights"
+            self.unitable_vocab_dir = unitable_base / "vocab"
+        else:
+            self.unitable_model_dir = None
+            self.unitable_vocab_dir = None
 
     def parse(self, pdf_path: str, output_base_dir: str = "outputs") -> None:
         """
@@ -127,13 +227,14 @@ class ChartTablePDFParser:
         chart_count = sum(sum(1 for b in p.boxes if b.label == "chart") for p in pages) if self.extract_charts else 0
         table_count = sum(sum(1 for b in p.boxes if b.label == "table") for p in pages) if self.extract_tables else 0
 
-        if self.use_vlm:
+        # Initialize structured extraction variables if using VLM or unitable for tables
+        if self.use_vlm or self.use_unitable:
             md_lines: List[str] = ["# Extracted Charts and Tables\n"]
             structured_items: List[Dict[str, Any]] = []
             vlm_items: List[Dict[str, Any]] = []
 
         charts_desc = "Charts (VLM → table)" if self.use_vlm else "Charts (cropped)"
-        tables_desc = "Tables (VLM → table)" if self.use_vlm else "Tables (cropped)"
+        tables_desc = "Tables (UniTable → table)" if self.use_unitable else ("Tables (VLM → table)" if self.use_vlm else "Tables (cropped)")
 
         chart_counter = 1
         table_counter = 1
@@ -159,7 +260,7 @@ class ChartTablePDFParser:
 
                 target_items = [box for box in p.boxes if box.label in target_labels]
 
-                if target_items and self.use_vlm:
+                if target_items and (self.use_vlm or self.use_unitable):
                     md_lines.append(f"\n## Page {page_num}\n")
 
                 for box in sorted(target_items, key=reading_order_key):
@@ -216,10 +317,11 @@ class ChartTablePDFParser:
                         cropped_img = page_img.crop((box.x1, box.y1, box.x2, box.y2))
                         cropped_img.save(table_path)
 
-                        if self.use_vlm and self.vlm:
-                            rel_path = os.path.join("tables", table_filename)
-                            wrote_table = False
+                        rel_path = os.path.join("tables", table_filename)
+                        wrote_table = False
 
+                        # Try VLM extraction if enabled
+                        if self.use_vlm and self.vlm:
                             try:
                                 extracted_table = self.vlm.extract_table(table_path)
                                 structured_item = to_structured_dict(extracted_table)
@@ -247,9 +349,56 @@ class ChartTablePDFParser:
                                     wrote_table = True
                             except Exception:
                                 pass
+                        
+                        # Try UniTable extraction if enabled (always saves images, optionally parses)
+                        if self.use_unitable and not wrote_table:
+                            if recognize_table is None:
+                                print(f"⚠️  Warning: UniTable not available. Check if inference module can be imported.")
+                            else:
+                                try:
+                                    # Use unitable to recognize the table
+                                    result = recognize_table(
+                                        table_image_path=table_path,
+                                        model_dir=str(self.unitable_model_dir),
+                                        vocab_dir=str(self.unitable_vocab_dir),
+                                        device=None,  # Auto-detect device
+                                        visualize=False,
+                                        output_dir=None,  # Don't save outputs separately
+                                    )
+                                    
+                                    # Convert HTML output to structured dict
+                                    if result and result.get("html"):
+                                        structured_item = html_table_to_structured_dict(
+                                            result["html"],
+                                            title=f"Table {table_counter} — page {page_num}"
+                                        )
+                                        if structured_item:
+                                            # Add page and type information
+                                            structured_item["page"] = page_num
+                                            structured_item["type"] = "Table"
+                                            structured_items.append(structured_item)
+                                            vlm_items.append({
+                                                "kind": "table",
+                                                "page": page_num,
+                                                "image_rel_path": rel_path,
+                                                "title": structured_item.get("title"),
+                                                "headers": structured_item.get("headers"),
+                                                "rows": structured_item.get("rows"),
+                                            })
+                                            md_lines.append(
+                                                render_markdown_table(
+                                                    structured_item.get("headers"),
+                                                    structured_item.get("rows"),
+                                                    title=structured_item.get("title")
+                                                )
+                                            )
+                                            wrote_table = True
+                                except Exception:
+                                    # Silently fail and continue
+                                    pass
 
-                            if not wrote_table:
-                                md_lines.append(f"![Table {table_counter} — page {page_num}]({rel_path})\n")
+                        if not wrote_table and (self.use_vlm or self.use_unitable):
+                            md_lines.append(f"![Table {table_counter} — page {page_num}]({rel_path})\n")
 
                         table_counter += 1
                         if tables_bar:
@@ -257,8 +406,8 @@ class ChartTablePDFParser:
 
         excel_path = None
 
-        if self.use_vlm:
-
+        # Generate outputs if using VLM or unitable
+        if self.use_vlm or self.use_unitable:
             if structured_items:
                 if self.extract_charts and self.extract_tables:
                     excel_filename = "parsed_tables_charts.xlsx"
@@ -280,6 +429,10 @@ class ChartTablePDFParser:
             if 'vlm_items' in locals() and vlm_items:
                 with open(os.path.join(out_dir, "vlm_items.json"), 'w', encoding='utf-8') as jf:
                     json.dump(vlm_items, jf, ensure_ascii=False, indent=2)
+            
+            # Write markdown file
+            if 'md_lines' in locals() and md_lines:
+                write_markdown(md_lines, out_dir, "extracted_tables_charts.md")
 
         extraction_types = []
         if self.extract_charts:
