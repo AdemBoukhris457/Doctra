@@ -34,7 +34,7 @@ try:
     from pathlib import Path
     
     # Get the exact path to unitable inference.py
-    unitable_dir = Path(__file__).parent.parent / "third_party" / "doctra"
+    unitable_dir = Path(__file__).parent.parent / "third_party" / "unitable"
     inference_path = unitable_dir / "inference.py"
     
     # Use importlib to load from the specific path to avoid conflicts with docres/inference.py
@@ -183,7 +183,7 @@ class ChartTablePDFParser:
             print(f"   Tables will be extracted as images only.")
         
         if self.use_unitable:
-            unitable_base = Path(__file__).parent.parent / "third_party" / "doctra"
+            unitable_base = Path(__file__).parent.parent / "third_party" / "unitable"
             self.unitable_model_dir = unitable_base / "experiments" / "unitable_weights"
             self.unitable_vocab_dir = unitable_base / "vocab"
         else:
