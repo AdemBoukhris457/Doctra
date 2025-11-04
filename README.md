@@ -89,7 +89,7 @@ The `StructuredPDFParser` is a comprehensive PDF parser that extracts all types 
 
 #### Key Features:
 - **Layout Detection**: Uses PaddleOCR for accurate document layout analysis
-- **OCR Processing**: Extracts text from all document elements
+- **OCR Processing**: Supports both PyTesseract (default) and PaddleOCR PP-OCRv5_server for text extraction
 - **Visual Element Extraction**: Saves figures, charts, and tables as images
 - **VLM Integration**: Optional conversion of visual elements to structured data
 - **Multiple Output Formats**: Generates Markdown, Excel, and structured JSON
@@ -128,11 +128,18 @@ parser = StructuredPDFParser(
     dpi=200,
     min_score=0.0,
     
-    # OCR Settings
+    # OCR Settings (PyTesseract - default)
+    ocr_engine="pytesseract",  # or "paddleocr" for PaddleOCR PP-OCRv5_server
     ocr_lang="eng",
     ocr_psm=4,
     ocr_oem=3,
     ocr_extra_config="",
+    
+    # PaddleOCR Settings (when ocr_engine="paddleocr")
+    # paddleocr_device="gpu",  # Use "cpu" if no GPU available
+    # paddleocr_use_doc_orientation_classify=False,
+    # paddleocr_use_doc_unwarping=False,
+    # paddleocr_use_textline_orientation=False,
     
     # Output Settings
     box_separator="\n"
@@ -187,8 +194,12 @@ parser = EnhancedPDFParser(
     min_score=0.5,
     
     # OCR Settings
+    ocr_engine="pytesseract",  # or "paddleocr" for PaddleOCR PP-OCRv5_server
     ocr_lang="eng",
-    ocr_psm=6
+    ocr_psm=6,
+    
+    # PaddleOCR Settings (when ocr_engine="paddleocr")
+    # paddleocr_device="gpu",
 )
 ```
 
@@ -639,6 +650,29 @@ parser.parse("scanned_document.pdf")
 # - Improved OCR accuracy due to restoration
 ```
 
+### Example 2b: Using PaddleOCR for Better Accuracy
+
+```python
+from doctra.parsers.structured_pdf_parser import StructuredPDFParser
+
+# Use PaddleOCR PP-OCRv5_server for superior accuracy
+parser = StructuredPDFParser(
+    ocr_engine="paddleocr",
+    paddleocr_device="gpu",  # Use GPU for faster processing
+    paddleocr_use_doc_orientation_classify=False,
+    paddleocr_use_doc_unwarping=False,
+    paddleocr_use_textline_orientation=False
+)
+
+# Process document with PaddleOCR
+parser.parse("complex_document.pdf")
+
+# PaddleOCR provides:
+# - Higher accuracy for complex documents
+# - Better performance on GPU
+# - Automatic model management
+```
+
 ### Example 3: Direct Image Restoration
 
 ```python
@@ -807,9 +841,12 @@ parser.display_pages_with_boxes("document.pdf")
 - Configurable confidence thresholds
 
 ### 📝 OCR Processing
-- High-quality text extraction using Tesseract
-- Support for multiple languages
-- Configurable OCR parameters
+- **Dual OCR Engine Support**: Choose between PyTesseract (default) or PaddleOCR PP-OCRv5_server
+- **PaddleOCR PP-OCRv5_server**: Advanced model from PaddleOCR 3.0 with superior accuracy
+- **PyTesseract**: Traditional OCR with extensive language support and fine-grained control
+- Support for multiple languages (PyTesseract)
+- GPU acceleration for PaddleOCR
+- Configurable OCR parameters for both engines
 
 ### 🖼️ Visual Element Extraction
 - Automatic cropping and saving of figures, charts, and tables
