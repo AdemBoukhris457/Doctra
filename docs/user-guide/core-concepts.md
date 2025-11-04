@@ -171,17 +171,42 @@ This shows bounding boxes with colors:
 
 ## OCR Processing
 
-OCR (Optical Character Recognition) extracts text from images.
+OCR (Optical Character Recognition) extracts text from images. Doctra supports two OCR engines:
+
+### OCR Engines
+
+**PyTesseract** (default)
+:   Traditional Tesseract OCR with extensive language support and fine-grained control.
+
+**PaddleOCR**
+:   Advanced PP-OCRv5_server model (PaddleOCR 3.0) with superior accuracy and GPU acceleration.
 
 ### Configuration
 
+**Using PyTesseract (default):**
+
 ```python
 parser = StructuredPDFParser(
+    ocr_engine="pytesseract",  # Optional, this is the default
     ocr_lang="eng",  # Language
     ocr_psm=6,  # Page segmentation mode
     ocr_oem=3  # OCR Engine mode
 )
 ```
+
+**Using PaddleOCR:**
+
+```python
+parser = StructuredPDFParser(
+    ocr_engine="paddleocr",
+    paddleocr_device="gpu",  # Use "cpu" if no GPU available
+    paddleocr_use_doc_orientation_classify=False,
+    paddleocr_use_doc_unwarping=False,
+    paddleocr_use_textline_orientation=False
+)
+```
+
+### PyTesseract Parameters
 
 **ocr_lang**
 :   Tesseract language code. Examples: `eng`, `fra`, `spa`, `deu`
@@ -201,22 +226,50 @@ parser = StructuredPDFParser(
     - `1`: Neural nets LSTM
     - `3`: Default (both)
 
+### PaddleOCR Parameters
+
+**paddleocr_device**
+:   Processing device: `"gpu"` (default, recommended) or `"cpu"`
+
+**paddleocr_use_doc_orientation_classify**
+:   Enable automatic document orientation detection (default: `False`)
+
+**paddleocr_use_doc_unwarping**
+:   Enable perspective correction for scanned documents (default: `False`)
+
+**paddleocr_use_textline_orientation**
+:   Enable text line orientation classification (default: `False`)
+
 ### Improving OCR Accuracy
 
-1. **Increase DPI**: Higher resolution = better text recognition
+1. **Choose PaddleOCR for complex documents**: Better accuracy on degraded or complex documents
+   ```python
+   parser = StructuredPDFParser(
+       ocr_engine="paddleocr",
+       paddleocr_device="gpu"
+   )
+   ```
+
+2. **Increase DPI**: Higher resolution = better text recognition
    ```python
    parser = StructuredPDFParser(dpi=300)
    ```
 
-2. **Use Image Restoration**: Enhance document quality first
+3. **Use Image Restoration**: Enhance document quality first
    ```python
    from doctra import EnhancedPDFParser
-   parser = EnhancedPDFParser(use_image_restoration=True)
+   parser = EnhancedPDFParser(
+       use_image_restoration=True,
+       ocr_engine="paddleocr"  # Combine for best results
+   )
    ```
 
-3. **Correct Language**: Specify document language
+4. **Correct Language** (PyTesseract): Specify document language
    ```python
-   parser = StructuredPDFParser(ocr_lang="fra")  # French
+   parser = StructuredPDFParser(
+       ocr_engine="pytesseract",
+       ocr_lang="fra"  # French
+   )
    ```
 
 ## Image Restoration

@@ -194,10 +194,17 @@ parser.parse(
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `ocr_lang` | str | "eng" | Tesseract language code |
-| `ocr_psm` | int | 4 | Page segmentation mode |
-| `ocr_oem` | int | 3 | OCR engine mode |
-| `ocr_extra_config` | str | "" | Additional Tesseract configuration |
+| `ocr_engine` | str | "pytesseract" | OCR engine to use: "pytesseract" or "paddleocr" |
+| `ocr_lang` | str | "eng" | Tesseract language code (PyTesseract only) |
+| `ocr_psm` | int | 4 | Page segmentation mode (PyTesseract only) |
+| `ocr_oem` | int | 3 | OCR engine mode (PyTesseract only) |
+| `ocr_extra_config` | str | "" | Additional Tesseract configuration (PyTesseract only) |
+| `paddleocr_use_doc_orientation_classify` | bool | False | Enable document orientation classification (PaddleOCR only) |
+| `paddleocr_use_doc_unwarping` | bool | False | Enable text image rectification (PaddleOCR only) |
+| `paddleocr_use_textline_orientation` | bool | False | Enable text line orientation classification (PaddleOCR only) |
+| `paddleocr_device` | str | "gpu" | Device for PaddleOCR: "cpu" or "gpu" (PaddleOCR only) |
+
+**Note**: When using `ocr_engine="paddleocr"`, PaddleOCR 3.0's PP-OCRv5_server model is used by default. Models are automatically downloaded on first use.
 
 ### VLM Parameters
 
