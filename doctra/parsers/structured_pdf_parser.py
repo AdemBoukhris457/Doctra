@@ -10,7 +10,7 @@ from tqdm import tqdm
 from doctra.utils.pdf_io import render_pdf_to_images
 from doctra.engines.layout.paddle_layout import PaddleLayoutEngine
 from doctra.engines.layout.layout_models import LayoutPage
-from doctra.engines.ocr import PytesseractOCREngine
+from doctra.engines.ocr import PytesseractOCREngine, PaddleOCREngine
 from doctra.utils.constants import EXCLUDE_LABELS, IMAGE_SUBDIRS
 from doctra.parsers.layout_order import reading_order_key
 from doctra.utils.ocr_utils import ocr_box_text
@@ -44,10 +44,15 @@ class StructuredPDFParser:
     :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
     :param dpi: DPI for PDF rendering (default: 200)
     :param min_score: Minimum confidence score for layout detection (default: 0.0)
-    :param ocr_lang: OCR language code (default: "eng")
-    :param ocr_psm: Tesseract page segmentation mode (default: 4)
-    :param ocr_oem: Tesseract OCR engine mode (default: 3)
-    :param ocr_extra_config: Additional Tesseract configuration (default: "")
+    :param ocr_engine: OCR engine to use ("pytesseract" or "paddleocr", default: "pytesseract")
+    :param ocr_lang: OCR language code (default: "eng") - only used with pytesseract
+    :param ocr_psm: Tesseract page segmentation mode (default: 4) - only used with pytesseract
+    :param ocr_oem: Tesseract OCR engine mode (default: 3) - only used with pytesseract
+    :param ocr_extra_config: Additional Tesseract configuration (default: "") - only used with pytesseract
+    :param paddleocr_use_doc_orientation_classify: Enable document orientation classification for PaddleOCR (default: False)
+    :param paddleocr_use_doc_unwarping: Enable text image rectification for PaddleOCR (default: False)
+    :param paddleocr_use_textline_orientation: Enable text line orientation classification for PaddleOCR (default: False)
+    :param paddleocr_device: Device to use for PaddleOCR ("cpu" or "gpu", default: "gpu")
     :param box_separator: Separator between text boxes in output (default: "\n")
     :param merge_split_tables: Whether to detect and merge split tables (default: False)
     :param bottom_threshold_ratio: Ratio for "too close to bottom" detection (default: 0.20)
@@ -67,10 +72,15 @@ class StructuredPDFParser:
             layout_model_name: str = "PP-DocLayout_plus-L",
             dpi: int = 200,
             min_score: float = 0.0,
+            ocr_engine: str = "pytesseract",
             ocr_lang: str = "eng",
             ocr_psm: int = 4,
             ocr_oem: int = 3,
             ocr_extra_config: str = "",
+            paddleocr_use_doc_orientation_classify: bool = False,
+            paddleocr_use_doc_unwarping: bool = False,
+            paddleocr_use_textline_orientation: bool = False,
+            paddleocr_device: str = "gpu",
             box_separator: str = "\n",
             merge_split_tables: bool = False,
             bottom_threshold_ratio: float = 0.20,
@@ -91,10 +101,15 @@ class StructuredPDFParser:
         :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
         :param dpi: DPI for PDF rendering (default: 200)
         :param min_score: Minimum confidence score for layout detection (default: 0.0)
-        :param ocr_lang: OCR language code (default: "eng")
-        :param ocr_psm: Tesseract page segmentation mode (default: 4)
-        :param ocr_oem: Tesseract OCR engine mode (default: 3)
-        :param ocr_extra_config: Additional Tesseract configuration (default: "")
+        :param ocr_engine: OCR engine to use ("pytesseract" or "paddleocr", default: "pytesseract")
+        :param ocr_lang: OCR language code (default: "eng") - only used with pytesseract
+        :param ocr_psm: Tesseract page segmentation mode (default: 4) - only used with pytesseract
+        :param ocr_oem: Tesseract OCR engine mode (default: 3) - only used with pytesseract
+        :param ocr_extra_config: Additional Tesseract configuration (default: "") - only used with pytesseract
+        :param paddleocr_use_doc_orientation_classify: Enable document orientation classification for PaddleOCR (default: False)
+        :param paddleocr_use_doc_unwarping: Enable text image rectification for PaddleOCR (default: False)
+        :param paddleocr_use_textline_orientation: Enable text line orientation classification for PaddleOCR (default: False)
+        :param paddleocr_device: Device to use for PaddleOCR ("cpu" or "gpu", default: "gpu")
         :param box_separator: Separator between text boxes in output (default: "\n")
         :param merge_split_tables: Whether to detect and merge split tables (default: False)
         :param bottom_threshold_ratio: Ratio for "too close to bottom" detection (default: 0.20)
@@ -106,9 +121,22 @@ class StructuredPDFParser:
         self.layout_engine = PaddleLayoutEngine(model_name=layout_model_name)
         self.dpi = dpi
         self.min_score = min_score
-        self.ocr_engine = PytesseractOCREngine(
-            lang=ocr_lang, psm=ocr_psm, oem=ocr_oem, extra_config=ocr_extra_config
-        )
+        
+        # Initialize OCR engine based on user choice
+        if ocr_engine.lower() == "paddleocr":
+            self.ocr_engine = PaddleOCREngine(
+                use_doc_orientation_classify=paddleocr_use_doc_orientation_classify,
+                use_doc_unwarping=paddleocr_use_doc_unwarping,
+                use_textline_orientation=paddleocr_use_textline_orientation,
+                device=paddleocr_device
+            )
+        elif ocr_engine.lower() == "pytesseract":
+            self.ocr_engine = PytesseractOCREngine(
+                lang=ocr_lang, psm=ocr_psm, oem=ocr_oem, extra_config=ocr_extra_config
+            )
+        else:
+            raise ValueError(f"Invalid ocr_engine: {ocr_engine}. Must be 'pytesseract' or 'paddleocr'")
+        
         self.box_separator = box_separator
         self.use_vlm = use_vlm
         self.vlm = None
