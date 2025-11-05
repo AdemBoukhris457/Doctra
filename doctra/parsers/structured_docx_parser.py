@@ -133,44 +133,34 @@ class StructuredDOCXParser:
         print(f"📄 Processing DOCX: {docx_path.name}")
         
         try:
-            # Load the DOCX document
             doc = Document(docx_path)
             
-            # Extract document structure
             document_data = self._extract_document_structure(doc)
             
-            # Extract images if enabled
             images_data = []
             if self.extract_images:
                 images_data = self._extract_images(doc, output_dir)
             
-            # Extract tables from the document structure
             tables_data = [elem for elem in document_data['elements'] if elem['type'] == 'table']
             
-            # Calculate total steps based on number of images
             if self.use_vlm and self.vlm and images_data:
-                total_steps = len(images_data)  # One step per image
+                total_steps = len(images_data)
             else:
-                total_steps = 1  # Just one step if no VLM processing
+                total_steps = 1
             
-            # Create progress bar
             progress_bar = tqdm(total=total_steps, desc="Processing DOCX", unit="image")
             
-            # Process VLM data first if enabled
             vlm_extracted_data = []
             if self.use_vlm and self.vlm and images_data:
                 vlm_extracted_data = self._process_vlm_data(images_data, output_dir, progress_bar)
             else:
-                # If no VLM processing, just update the progress bar
                 progress_bar.update(1)
             
             progress_bar.close()
             
-            # Generate outputs (no progress bar for these as they're fast)
             self._generate_markdown_output(document_data, images_data, output_dir, vlm_extracted_data)
             self._generate_html_output(document_data, images_data, output_dir, vlm_extracted_data)
             
-            # Generate Excel output if enabled
             if self.export_excel:
                 if vlm_extracted_data:
                     self._generate_excel_output_with_vlm(tables_data, vlm_extracted_data, output_dir)
@@ -195,7 +185,6 @@ class StructuredDOCXParser:
             'metadata': {}
         }
         
-        # Extract metadata
         document_data['metadata'] = {
             'title': doc.core_properties.title or '',
             'author': doc.core_properties.author or '',
@@ -204,7 +193,6 @@ class StructuredDOCXParser:
             'modified': str(doc.core_properties.modified) if doc.core_properties.modified else '',
         }
         
-        # Extract document elements in order (paragraphs and tables)
         self._extract_document_elements_in_order(doc, document_data)
         
         return document_data
@@ -215,10 +203,8 @@ class StructuredDOCXParser:
         paragraph_index = 0
         table_index = 0
         
-        # Get all document elements by iterating through the document body
         for element in doc.element.body:
-            if element.tag.endswith('p'):  # Paragraph
-                # Find the corresponding paragraph object
+            if element.tag.endswith('p'):
                 for para in doc.paragraphs:
                     if para._element == element and para.text.strip():
                         para_data = {
@@ -241,8 +227,7 @@ class StructuredDOCXParser:
                         paragraph_index += 1
                         break
             
-            elif element.tag.endswith('tbl'):  # Table
-                # Find the corresponding table object
+            elif element.tag.endswith('tbl'):
                 for table in doc.tables:
                     if table._element == element:
                         table_data = {
@@ -254,7 +239,6 @@ class StructuredDOCXParser:
                             'markdown': ''
                         }
                         
-                        # Extract table data
                         for row_idx, row in enumerate(table.rows):
                             row_data = []
                             for cell in row.cells:
@@ -262,7 +246,6 @@ class StructuredDOCXParser:
                                 row_data.append(cell_text)
                             table_data['data'].append(row_data)
                         
-                        # Generate markdown table
                         if table_data['data']:
                             headers = table_data['data'][0] if table_data['data'] else []
                             rows = table_data['data'][1:] if len(table_data['data']) > 1 else []
@@ -272,7 +255,6 @@ class StructuredDOCXParser:
                         table_index += 1
                         break
         
-        # Store elements in order
         document_data['elements'] = elements
 
     def _extract_tables(self, doc: DocumentType, output_dir: Path) -> List[Dict[str, Any]]:
@@ -288,7 +270,6 @@ class StructuredDOCXParser:
                 'markdown': ''
             }
             
-            # Extract table data
             for row_idx, row in enumerate(table.rows):
                 row_data = []
                 for cell in row.cells:
@@ -296,9 +277,7 @@ class StructuredDOCXParser:
                     row_data.append(cell_text)
                 table_data['data'].append(row_data)
             
-            # Generate markdown table
             if table_data['data']:
-                # Extract headers (first row) and data rows
                 headers = table_data['data'][0] if table_data['data'] else []
                 rows = table_data['data'][1:] if len(table_data['data']) > 1 else []
                 table_data['markdown'] = render_markdown_table(headers, rows)
@@ -314,13 +293,10 @@ class StructuredDOCXParser:
         images_dir = output_dir / "images"
         images_dir.mkdir(exist_ok=True)
         
-        # Extract images from document relationships
         try:
             for rel in doc.part.rels.values():
                 if hasattr(rel, 'target_ref'):
-                    # Safely get content type
                     content_type = getattr(rel, 'target_content_type', 'unknown')
-                    # Check if this is an image relationship
                     is_image = False
                     if "image" in rel.target_ref or "media" in rel.target_ref:
                         is_image = True
@@ -330,13 +306,10 @@ class StructuredDOCXParser:
                         is_image = True
                     
                     if is_image:
-                        # Get the actual image data
                         try:
                             image_blob = rel.target_part.blob
                             if image_blob:
-                                # Clean the filename and create proper path
                                 original_filename = rel.target_ref
-                                # Remove any directory structure from the filename
                                 clean_filename = Path(original_filename).name
                                 
                                 image_data = {
@@ -346,11 +319,9 @@ class StructuredDOCXParser:
                                     'path': str(images_dir / clean_filename)
                                 }
                                 
-                                # Ensure the target directory exists
                                 target_path = Path(image_data['path'])
                                 target_path.parent.mkdir(parents=True, exist_ok=True)
                                 
-                                # Save the image
                                 with open(target_path, 'wb') as f:
                                     f.write(image_blob)
                                 
@@ -369,14 +340,11 @@ class StructuredDOCXParser:
         if images_data:
             for i, img_data in enumerate(images_data):
                 try:
-                    # Update progress bar for each image
                     if progress_bar:
                         progress_bar.set_description(f"Processing image {i+1}/{len(images_data)}: {img_data['filename']}")
                     
-                    # Use VLM to extract structured data from image
                     result = self.vlm.extract_table_or_chart(img_data['path'])
                     
-                    # Convert to structured format
                     if hasattr(result, 'title') and hasattr(result, 'description'):
                         vlm_data = {
                             'title': result.title,
@@ -452,11 +420,9 @@ class StructuredDOCXParser:
         """Generate markdown output."""
         markdown_content = []
         
-        # Add document metadata
         if document_data['metadata']['title']:
             markdown_content.append(f"# {document_data['metadata']['title']}")
         
-        # Process elements in order
         for element in document_data['elements']:
             if element['type'] == 'paragraph':
                 if element['is_heading']:
@@ -469,38 +435,30 @@ class StructuredDOCXParser:
                     markdown_content.append(f"\n## Table {element['index'] + 1}")
                     markdown_content.append(element['markdown'])
         
-        # Add VLM extracted tables if available, otherwise add image references
         if vlm_extracted_data:
-            # Replace images with VLM extracted tables
             for i, vlm_table in enumerate(vlm_extracted_data):
                 if vlm_table['rows']:
                     markdown_content.append(f"\n## {vlm_table['title']}")
                     if vlm_table['description']:
                         markdown_content.append(f"*{vlm_table['description']}*")
                     
-                    # Generate markdown table from VLM data
                     if vlm_table['headers'] and vlm_table['rows']:
                         vlm_markdown = render_markdown_table(vlm_table['headers'], vlm_table['rows'])
                         markdown_content.append(vlm_markdown)
         else:
-            # Add image references only if no VLM data
             for img in images_data:
-                # Use relative path for markdown
                 relative_path = f"images/{img['filename']}"
                 markdown_content.append(f"\n![{img['filename']}]({relative_path})")
         
-        # Write markdown file
         write_markdown(markdown_content, str(output_dir), "document.md")
 
     def _generate_html_output(self, document_data: Dict, images_data: List, output_dir: Path, vlm_extracted_data: List = None):
         """Generate HTML output."""
         html_content = []
         
-        # Add document title
         if document_data['metadata']['title']:
             html_content.append(f"<h1>{document_data['metadata']['title']}</h1>")
         
-        # Process elements in order
         for element in document_data['elements']:
             if element['type'] == 'paragraph':
                 if element['is_heading']:
@@ -514,29 +472,22 @@ class StructuredDOCXParser:
                     html_table = self._generate_html_table(element['data'])
                     html_content.append(html_table)
         
-        # Add VLM extracted tables if available, otherwise add image references
         if vlm_extracted_data:
-            # Replace images with VLM extracted tables
             for i, vlm_table in enumerate(vlm_extracted_data):
                 if vlm_table['rows']:
                     html_content.append(f"<h2>{vlm_table['title']}</h2>")
                     if vlm_table['description']:
                         html_content.append(f"<p><em>{vlm_table['description']}</em></p>")
                     
-                    # Generate HTML table from VLM data
                     if vlm_table['headers'] and vlm_table['rows']:
-                        # Create table data with headers
                         table_data = [vlm_table['headers']] + vlm_table['rows']
                         vlm_html_table = self._generate_html_table(table_data)
                         html_content.append(vlm_html_table)
         else:
-            # Add images only if no VLM data
             for img in images_data:
-                # Use relative path for HTML
                 relative_path = f"images/{img['filename']}"
                 html_content.append(f'<img src="{relative_path}" alt="{img["filename"]}" />')
         
-        # Write HTML file
         write_html(html_content, str(output_dir), "document.html")
 
     def _generate_excel_output(self, tables_data: List, output_dir: Path):
@@ -551,33 +502,27 @@ class StructuredDOCXParser:
             return
         
         try:
-            # Create a new workbook
             wb = Workbook()
-            wb.remove(wb.active)  # Remove default sheet
+            wb.remove(wb.active)
             
-            # Define styling constants (matching VLM version)
-            HEADER_FILL = PatternFill(fill_type="solid", start_color="FF2E7D32", end_color="FF2E7D32")  # Green
+            HEADER_FILL = PatternFill(fill_type="solid", start_color="FF2E7D32", end_color="FF2E7D32")
             HEADER_FONT = Font(color="FFFFFFFF", bold=True)
             HEADER_ALIGN = Alignment(horizontal="center", vertical="center", wrap_text=True)
             
-            # Create Table of Contents data
             toc_data = []
             sheet_index = 1
-            sheet_mapping = {}  # For hyperlinks
+            sheet_mapping = {}
             
             for i, table in enumerate(tables_data):
                 if table['data']:
-                    # Use table title if available, otherwise fallback to generic name
                     table_title = table.get('title', f"Table {i+1}")
                     sheet_name = self._safe_sheet_name(table_title)
                     ws = wb.create_sheet(title=sheet_name)
                     
-                    # Add data to worksheet
                     for row_idx, row_data in enumerate(table['data']):
                         for col_idx, cell_value in enumerate(row_data):
                             ws.cell(row=row_idx + 1, column=col_idx + 1, value=cell_value)
                     
-                    # Apply styling to header row
                     if table['data']:
                         ncols = len(table['data'][0]) if table['data'] else 0
                         for col_idx in range(1, ncols + 1):
@@ -587,7 +532,6 @@ class StructuredDOCXParser:
                             cell.alignment = HEADER_ALIGN
                         ws.freeze_panes = "A2"
                     
-                    # Auto-adjust column widths
                     for column in ws.columns:
                         max_length = 0
                         column_letter = column[0].column_letter
@@ -600,7 +544,6 @@ class StructuredDOCXParser:
                         adjusted_width = min(max_length + 2, 50)
                         ws.column_dimensions[column_letter].width = adjusted_width
                     
-                    # Add to TOC and sheet mapping
                     toc_data.append([
                         sheet_index,
                         table_title,
@@ -612,11 +555,9 @@ class StructuredDOCXParser:
                     sheet_mapping[table_title] = sheet_name
                     sheet_index += 1
             
-            # Create Table of Contents sheet
             if toc_data:
                 toc_ws = wb.create_sheet(title="Table_of_Contents", index=0)
                 
-                # Add headers with proper styling
                 toc_headers = ["Sheet #", "Table Name", "Description", "Rows", "Columns", "Source"]
                 for col_idx, header in enumerate(toc_headers):
                     cell = toc_ws.cell(row=1, column=col_idx + 1, value=header)
@@ -624,16 +565,13 @@ class StructuredDOCXParser:
                     cell.font = HEADER_FONT
                     cell.alignment = HEADER_ALIGN
                 
-                # Add data with hyperlinks
                 for row_idx, row_data in enumerate(toc_data):
                     for col_idx, cell_value in enumerate(row_data):
                         cell = toc_ws.cell(row=row_idx + 2, column=col_idx + 1, value=cell_value)
                         
-                        # Add hyperlink to table name (column B)
-                        if col_idx == 1 and cell_value in sheet_mapping:  # Table Name column
+                        if col_idx == 1 and cell_value in sheet_mapping:
                             sheet_name = sheet_mapping[cell_value]
                             
-                            # Create hyperlink to the sheet
                             if ' ' in sheet_name or any(char in sheet_name for char in ['[', ']', '*', '?', ':', '\\', '/']):
                                 hyperlink_ref = f"#'{sheet_name}'!A1"
                             else:
@@ -642,23 +580,19 @@ class StructuredDOCXParser:
                             cell.hyperlink = Hyperlink(ref=hyperlink_ref, target=hyperlink_ref)
                             cell.font = Font(color="0000FF", underline="single")
                         
-                        # Wrap text for description column (column C)
-                        if col_idx == 2:  # Description column
+                        if col_idx == 2:
                             cell.alignment = Alignment(wrap_text=True, vertical="top")
                 
-                # Set specific column widths for TOC
-                toc_ws.column_dimensions['A'].width = 10  # Sheet #
-                toc_ws.column_dimensions['B'].width = 30  # Table Name
-                toc_ws.column_dimensions['C'].width = 60  # Description
-                toc_ws.column_dimensions['D'].width = 10  # Rows
-                toc_ws.column_dimensions['E'].width = 10  # Columns
-                toc_ws.column_dimensions['F'].width = 15  # Source
+                toc_ws.column_dimensions['A'].width = 10
+                toc_ws.column_dimensions['B'].width = 30
+                toc_ws.column_dimensions['C'].width = 60
+                toc_ws.column_dimensions['D'].width = 10
+                toc_ws.column_dimensions['E'].width = 10
+                toc_ws.column_dimensions['F'].width = 15
                 
-                # Set row heights for better readability
                 for row_idx in range(2, len(toc_data) + 2):
                     toc_ws.row_dimensions[row_idx].height = 30
             
-            # Save the workbook
             excel_path = output_dir / "tables.xlsx"
             wb.save(excel_path)
             
@@ -686,25 +620,20 @@ class StructuredDOCXParser:
             HEADER_FONT = Font(color="FFFFFFFF", bold=True)
             HEADER_ALIGN = Alignment(horizontal="center", vertical="center", wrap_text=True)
 
-            # Create Table of Contents sheet
             toc_data = []
             sheet_index = 1
-            sheet_mapping = {}  # For hyperlinks
+            sheet_mapping = {}
 
-            # Add original tables
             for i, table in enumerate(tables_data):
                 if table['data']:
-                    # Use table title if available, otherwise fallback to generic name
                     table_title = table.get('title', f"Table {i+1}")
                     sheet_name = self._safe_sheet_name(table_title)
                     ws = wb.create_sheet(title=sheet_name)
                     
-                    # Add data to worksheet
                     for row_idx, row_data in enumerate(table['data']):
                         for col_idx, cell_value in enumerate(row_data):
                             ws.cell(row=row_idx + 1, column=col_idx + 1, value=cell_value)
 
-                    # Apply styling to header row
                     if table['data']:
                         ncols = len(table['data'][0]) if table['data'] else 0
                         for col_idx in range(1, ncols + 1):
@@ -714,7 +643,6 @@ class StructuredDOCXParser:
                             cell.alignment = HEADER_ALIGN
                         ws.freeze_panes = "A2"
 
-                    # Auto-adjust column widths
                     for column in ws.columns:
                         max_length = 0
                         column_letter = column[0].column_letter
@@ -727,7 +655,6 @@ class StructuredDOCXParser:
                         adjusted_width = min(max_length + 2, 50)
                         ws.column_dimensions[column_letter].width = adjusted_width
 
-                    # Add to TOC and sheet mapping
                     toc_data.append([
                         sheet_index,
                         table_title,
@@ -739,30 +666,24 @@ class StructuredDOCXParser:
                     sheet_mapping[table_title] = sheet_name
                     sheet_index += 1
 
-            # Add VLM extracted tables
             for i, vlm_table in enumerate(vlm_extracted_data):
                 if vlm_table['rows']:
-                    # Use VLM table title as sheet name
                     table_title = vlm_table['title']
                     sheet_name = self._safe_sheet_name(table_title)
                     ws = wb.create_sheet(title=sheet_name)
                     
-                    # Add headers with proper styling
                     for col_idx, header in enumerate(vlm_table['headers']):
                         cell = ws.cell(row=1, column=col_idx + 1, value=header)
                         cell.fill = HEADER_FILL
                         cell.font = HEADER_FONT
                         cell.alignment = HEADER_ALIGN
                     
-                    # Add data rows
                     for row_idx, row_data in enumerate(vlm_table['rows']):
                         for col_idx, cell_value in enumerate(row_data):
                             ws.cell(row=row_idx + 2, column=col_idx + 1, value=cell_value)
 
-                    # Freeze panes below header
                     ws.freeze_panes = "A2"
 
-                    # Auto-adjust column widths
                     for column in ws.columns:
                         max_length = 0
                         column_letter = column[0].column_letter
@@ -775,7 +696,6 @@ class StructuredDOCXParser:
                         adjusted_width = min(max_length + 2, 50)
                         ws.column_dimensions[column_letter].width = adjusted_width
 
-                    # Add to TOC and sheet mapping
                     toc_data.append([
                         sheet_index,
                         table_title,
@@ -787,11 +707,9 @@ class StructuredDOCXParser:
                     sheet_mapping[table_title] = sheet_name
                     sheet_index += 1
 
-            # Create Table of Contents sheet
             if toc_data:
                 toc_ws = wb.create_sheet(title="Table_of_Contents", index=0)
                 
-                # Add headers with proper styling
                 toc_headers = ["Sheet #", "Table Name", "Description", "Rows", "Columns", "Source"]
                 for col_idx, header in enumerate(toc_headers):
                     cell = toc_ws.cell(row=1, column=col_idx + 1, value=header)
@@ -799,16 +717,13 @@ class StructuredDOCXParser:
                     cell.font = HEADER_FONT
                     cell.alignment = HEADER_ALIGN
                 
-                # Add data with hyperlinks
                 for row_idx, row_data in enumerate(toc_data):
                     for col_idx, cell_value in enumerate(row_data):
                         cell = toc_ws.cell(row=row_idx + 2, column=col_idx + 1, value=cell_value)
                         
-                        # Add hyperlink to table name (column B)
-                        if col_idx == 1 and cell_value in sheet_mapping:  # Table Name column
+                        if col_idx == 1 and cell_value in sheet_mapping:
                             sheet_name = sheet_mapping[cell_value]
                             
-                            # Create hyperlink to the sheet
                             if ' ' in sheet_name or any(char in sheet_name for char in ['[', ']', '*', '?', ':', '\\', '/']):
                                 hyperlink_ref = f"#'{sheet_name}'!A1"
                             else:
@@ -817,23 +732,19 @@ class StructuredDOCXParser:
                             cell.hyperlink = Hyperlink(ref=hyperlink_ref, target=hyperlink_ref)
                             cell.font = Font(color="0000FF", underline="single")
                         
-                        # Wrap text for description column (column C)
-                        if col_idx == 2:  # Description column
+                        if col_idx == 2:
                             cell.alignment = Alignment(wrap_text=True, vertical="top")
                 
-                # Set specific column widths for TOC
-                toc_ws.column_dimensions['A'].width = 10  # Sheet #
-                toc_ws.column_dimensions['B'].width = 30  # Table Name
-                toc_ws.column_dimensions['C'].width = 60  # Description
-                toc_ws.column_dimensions['D'].width = 10  # Rows
-                toc_ws.column_dimensions['E'].width = 10  # Columns
-                toc_ws.column_dimensions['F'].width = 15  # Source
+                toc_ws.column_dimensions['A'].width = 10
+                toc_ws.column_dimensions['B'].width = 30
+                toc_ws.column_dimensions['C'].width = 60
+                toc_ws.column_dimensions['D'].width = 10
+                toc_ws.column_dimensions['E'].width = 10
+                toc_ws.column_dimensions['F'].width = 15
                 
-                # Set row heights for better readability
                 for row_idx in range(2, len(toc_data) + 2):
                     toc_ws.row_dimensions[row_idx].height = 30
 
-            # Save the workbook
             excel_path = output_dir / "tables.xlsx"
             wb.save(excel_path)
 

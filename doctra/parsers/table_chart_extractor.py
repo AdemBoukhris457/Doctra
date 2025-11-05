@@ -178,7 +178,6 @@ class ChartTablePDFParser:
                                 extracted_chart = self.vlm.extract_chart(chart_path)
                                 structured_item = to_structured_dict(extracted_chart)
                                 if structured_item:
-                                    # Add page and type information to structured item
                                     structured_item["page"] = page_num
                                     structured_item["type"] = "Chart"
                                     structured_items.append(structured_item)
@@ -224,7 +223,6 @@ class ChartTablePDFParser:
                                 extracted_table = self.vlm.extract_table(table_path)
                                 structured_item = to_structured_dict(extracted_table)
                                 if structured_item:
-                                    # Add page and type information to structured item
                                     structured_item["page"] = page_num
                                     structured_item["type"] = "Table"
                                     structured_items.append(structured_item)

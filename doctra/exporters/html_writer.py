@@ -19,21 +19,17 @@ def _process_image_paths(md_content: str, out_dir: str) -> str:
         caption = match.group(1)
         img_path = match.group(2)
         
-        # Convert relative path to absolute path
         if not os.path.isabs(img_path):
             abs_img_path = os.path.join(out_dir, img_path)
         else:
             abs_img_path = img_path
         
-        # Check if image exists
         if os.path.exists(abs_img_path):
             try:
-                # Read image and convert to base64
                 with open(abs_img_path, 'rb') as f:
                     img_data = f.read()
                     img_ext = os.path.splitext(abs_img_path)[1].lower()
                     
-                    # Determine MIME type
                     if img_ext in ['.jpg', '.jpeg']:
                         mime_type = 'image/jpeg'
                     elif img_ext == '.png':
@@ -43,12 +39,10 @@ def _process_image_paths(md_content: str, out_dir: str) -> str:
                     elif img_ext == '.webp':
                         mime_type = 'image/webp'
                     else:
-                        mime_type = 'image/jpeg'  # fallback
+                        mime_type = 'image/jpeg'
                     
-                    # Encode to base64
                     b64_data = base64.b64encode(img_data).decode('ascii')
                     
-                    # Return HTML img tag with base64 data
                     return f'<img src="data:{mime_type};base64,{b64_data}" alt="{caption}" />'
             except Exception as e:
                 print(f"Warning: Could not process image {abs_img_path}: {e}")
@@ -57,7 +51,6 @@ def _process_image_paths(md_content: str, out_dir: str) -> str:
             print(f"Warning: Image file not found: {abs_img_path}")
             return f'<div class="image-error">Image not found: {caption}</div>'
     
-    # Find all image references in markdown format ![caption](path)
     pattern = r'!\[([^\]]*)\]\(([^)]+)\)'
     processed_content = re.sub(pattern, replace_image, md_content)
     
@@ -78,17 +71,13 @@ def write_html_from_lines(html_lines: List[str], out_dir: str, filename: str = "
     """
     os.makedirs(out_dir, exist_ok=True)
 
-    # Join HTML lines and clean up excessive blank lines
     html_content = "\n".join(html_lines).strip() + "\n"
     html_content = re.sub(r"\n{3,}", "\n\n", html_content)
 
-    # Process image paths to convert relative paths to absolute paths or base64
     html_content = _process_image_paths(html_content, out_dir)
     
-    # Always apply table styling to ensure all tables are properly formatted
     html_content = _add_table_styling(html_content)
     
-    # Create complete HTML document with modern styling
     html_document = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -186,23 +175,17 @@ def write_html(md_lines: List[str], out_dir: str, filename: str = "result.html")
     """
     os.makedirs(out_dir, exist_ok=True)
 
-    # Join markdown lines and clean up excessive blank lines
     md_content = "\n".join(md_lines).strip() + "\n"
     md_content = re.sub(r"\n{3,}", "\n\n", md_content)
 
-    # Process image paths to convert relative paths to absolute paths or base64
     md_content = _process_image_paths(md_content, out_dir)
 
-    # Convert markdown to HTML with markdown-it-py
     md = MarkdownIt("commonmark", {"breaks": True, "html": True})
     
-    # Render markdown to HTML
     html_body = md.render(md_content)
     
-    # Always apply table styling to ensure all tables are properly formatted
     html_body = _add_table_styling(html_body)
     
-    # Create complete HTML document with modern styling
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -303,12 +286,10 @@ def write_structured_html(html_path: str, items: List[Dict[str, Any]]) -> str | 
     if not items:
         return None
 
-    # Filter out items that have no meaningful data
     valid_items = []
     for item in items:
         headers = item.get("headers") or []
         rows = item.get("rows") or []
-        # Keep items that have either headers or rows with data
         if headers or (rows and any(
                 row for row in rows if any(cell for cell in row if cell is not None and str(cell).strip()))):
             valid_items.append(item)
@@ -319,7 +300,6 @@ def write_structured_html(html_path: str, items: List[Dict[str, Any]]) -> str | 
 
     os.makedirs(os.path.dirname(html_path) or ".", exist_ok=True)
 
-    # Generate HTML content
     html_sections = []
     for item in valid_items:
         try:
@@ -327,14 +307,12 @@ def write_structured_html(html_path: str, items: List[Dict[str, Any]]) -> str | 
             headers = item.get("headers") or []
             rows = item.get("rows") or []
 
-            # Normalize data to handle mismatched dimensions
             normalized_headers, normalized_rows = _normalize_data(headers, rows)
 
             if not normalized_rows and not normalized_headers:
                 print(f"Skipping empty item: {title}")
                 continue
 
-            # Create HTML table
             table_html = _create_html_table(normalized_headers, normalized_rows)
             section_html = f"""
             <section class="data-section">
@@ -352,7 +330,6 @@ def write_structured_html(html_path: str, items: List[Dict[str, Any]]) -> str | 
         print("Warning: No valid sections to write to HTML")
         return None
 
-    # Create complete HTML document
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -460,23 +437,19 @@ def _normalize_data(headers: List[str], rows: List[List]) -> tuple[List[str], Li
     if not rows:
         return headers, []
 
-    # Find the maximum number of columns across all rows
     max_cols = max(len(row) for row in rows) if rows else 0
 
-    # If we have headers, use them as the basis, otherwise use max columns
     if headers:
         target_cols = max(len(headers), max_cols)
     else:
         target_cols = max_cols
         headers = [f"Column_{i + 1}" for i in range(target_cols)]
 
-    # Normalize headers: pad with generic names if too short, truncate if too long
     normalized_headers = list(headers)
     while len(normalized_headers) < target_cols:
         normalized_headers.append(f"Column_{len(normalized_headers) + 1}")
     normalized_headers = normalized_headers[:target_cols]
 
-    # Normalize rows: pad with None if too short, truncate if too long
     normalized_rows = []
     for row in rows:
         normalized_row = list(row)
@@ -498,13 +471,11 @@ def _create_html_table(headers: List[str], rows: List[List]) -> str:
     if not headers and not rows:
         return "<p class='no-data'>No data available</p>"
 
-    # Create table header
     header_html = ""
     if headers:
         header_cells = "".join(f"<th>{_escape_html(str(header))}</th>" for header in headers)
         header_html = f"<thead><tr>{header_cells}</tr></thead>"
 
-    # Create table body
     body_rows = []
     for row in rows:
         cells = "".join(f"<td>{_escape_html(str(cell) if cell is not None else '')}</td>" for cell in row)
@@ -545,20 +516,15 @@ def render_html_table(
     if not headers and not rows:
         return "<p class='no-data'>No data available</p>"
 
-    # Determine width
     width = len(headers) if headers else (max((len(r) for r in rows), default=1))
 
-    # Generate headers if not provided
     if not headers:
         headers = [f"Column {i+1}" for i in range(width)]
 
-    # Normalize data to handle mismatched dimensions
     normalized_headers, normalized_rows = _normalize_data(headers, rows)
 
-    # Create HTML table
     table_html = _create_html_table(normalized_headers, normalized_rows)
     
-    # Add title if provided
     if title:
         return f"""
         <div class="table-section">
@@ -577,7 +543,6 @@ def _add_table_styling(html_content: str) -> str:
     :param html_content: HTML content that may contain tables
     :return: HTML content with table styling
     """
-    # Wrap tables in a styled container - handle both <table> and <table class="...">
     html_content = re.sub(
         r'<table(?:\s+[^>]*)?>',
         '<div class="table-container"><table class="markdown-table">',

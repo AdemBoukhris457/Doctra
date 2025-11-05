@@ -67,7 +67,6 @@ def extract_paragraph_structure(paragraph: Paragraph) -> Dict[str, Any]:
         'formatting': {}
     }
     
-    # Check if it's a heading
     if paragraph.style and paragraph.style.name.startswith('Heading'):
         structure['is_heading'] = True
         try:
@@ -75,7 +74,6 @@ def extract_paragraph_structure(paragraph: Paragraph) -> Dict[str, Any]:
         except:
             structure['heading_level'] = 1
     
-    # Extract run-level formatting
     for run in paragraph.runs:
         run_data = {
             'text': run.text,
@@ -88,7 +86,6 @@ def extract_paragraph_structure(paragraph: Paragraph) -> Dict[str, Any]:
         }
         structure['runs'].append(run_data)
     
-    # Extract overall formatting
     structure['formatting'] = {
         'bold': any(run.bold for run in paragraph.runs),
         'italic': any(run.italic for run in paragraph.runs),
@@ -115,7 +112,6 @@ def extract_table_structure(table: Table) -> Dict[str, Any]:
         'table_style': table.style.name if table.style else 'Table Grid'
     }
     
-    # Extract table data
     for row_idx, row in enumerate(table.rows):
         row_data = []
         for col_idx, cell in enumerate(row.cells):
@@ -126,15 +122,12 @@ def extract_table_structure(table: Table) -> Dict[str, Any]:
                 'is_merged': False
             }
             
-            # Check for merged cells (simplified detection)
             if cell._tc in [tc for tc in row._tr.tc_lst]:
-                # This is a basic check - more sophisticated merging detection would be needed
                 pass
             
             row_data.append(cell_data)
         table_data['data'].append(row_data)
     
-    # Detect header row (first row with different formatting or content)
     if table_data['data']:
         table_data['headers'] = table_data['data'][0]
         table_data['has_header_row'] = True
@@ -160,7 +153,6 @@ def extract_list_structure(paragraph: Paragraph) -> Optional[Dict[str, Any]]:
         'is_bulleted': 'Bullet' in paragraph.style.name,
     }
     
-    # Extract list level from style name
     level_match = re.search(r'(\d+)', paragraph.style.name)
     if level_match:
         list_data['level'] = int(level_match.group(1))
@@ -175,13 +167,10 @@ def clean_text(text: str) -> str:
     :param text: Raw text to clean
     :return: Cleaned text
     """
-    # Remove extra whitespace
     text = re.sub(r'\s+', ' ', text)
     
-    # Remove control characters
     text = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]', '', text)
     
-    # Normalize line endings
     text = text.replace('\r\n', '\n').replace('\r', '\n')
     
     return text.strip()
@@ -241,7 +230,6 @@ def detect_document_sections(doc: DocumentType) -> List[Dict[str, Any]]:
         elif current_section and para.text.strip():
             current_section['content'].append(para.text)
     
-    # Add final section
     if current_section:
         sections.append(current_section)
     
@@ -264,7 +252,6 @@ def extract_hyperlinks(doc: DocumentType) -> List[Dict[str, str]]:
                 hyperlink_match = re.search(r'<w:hyperlink[^>]*r:id="([^"]*)"', run._element.xml)
                 if hyperlink_match:
                     rel_id = hyperlink_match.group(1)
-                    # Get the actual URL from relationships
                     try:
                         rel = doc.part.rels[rel_id]
                         hyperlinks.append({
@@ -347,7 +334,6 @@ def get_document_statistics(doc: DocumentType) -> Dict[str, int]:
         'words': 0
     }
     
-    # Count headings and lists
     for para in doc.paragraphs:
         if para.style:
             if para.style.name.startswith('Heading'):
@@ -355,11 +341,9 @@ def get_document_statistics(doc: DocumentType) -> Dict[str, int]:
             elif para.style.name.startswith('List'):
                 stats['lists'] += 1
         
-        # Count characters and words
         stats['characters'] += len(para.text)
         stats['words'] += len(para.text.split())
     
-    # Count images
     try:
         stats['images'] = len([rel for rel in doc.part.rels.values() if "image" in rel.target_ref])
     except:
