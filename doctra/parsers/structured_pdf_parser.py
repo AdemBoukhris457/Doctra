@@ -122,7 +122,6 @@ class StructuredPDFParser:
         self.dpi = dpi
         self.min_score = min_score
         
-        # Initialize OCR engine based on user choice
         if ocr_engine.lower() == "paddleocr":
             self.ocr_engine = PaddleOCREngine(
                 use_doc_orientation_classify=paddleocr_use_doc_orientation_classify,
@@ -150,7 +149,6 @@ class StructuredPDFParser:
             except Exception as e:
                 self.vlm = None
         
-        # Initialize split table detector
         self.merge_split_tables = merge_split_tables
         if self.merge_split_tables:
             self.split_table_detector = SplitTableDetector(
@@ -185,14 +183,12 @@ class StructuredPDFParser:
         )
         pil_pages = [im for (im, _, _) in render_pdf_to_images(pdf_path, dpi=self.dpi)]
 
-        # Detect split tables before processing
         split_table_matches: List[SplitTableMatch] = []
-        merged_table_segments = []  # Track TableSegment objects that are merged
+        merged_table_segments = []
         
         if self.merge_split_tables and self.split_table_detector:
             try:
                 split_table_matches = self.split_table_detector.detect_split_tables(pages, pil_pages)
-                # Track which segments are part of merges
                 for match in split_table_matches:
                     merged_table_segments.append(match.segment1)
                     merged_table_segments.append(match.segment2)
@@ -206,7 +202,7 @@ class StructuredPDFParser:
         table_count = sum(sum(1 for b in p.boxes if b.label == "table") for p in pages)
 
         md_lines: List[str] = ["# Extracted Content\n"]
-        html_lines: List[str] = ["<h1>Extracted Content</h1>"]  # For direct HTML generation
+        html_lines: List[str] = ["<h1>Extracted Content</h1>"]
         structured_items: List[Dict[str, Any]] = []
 
         charts_desc = "Charts (VLM → table)" if self.use_vlm else "Charts (cropped)"
@@ -257,12 +253,10 @@ class StructuredPDFParser:
                                     chart = self.vlm.extract_chart(abs_img_path)
                                     item = to_structured_dict(chart)
                                     if item:
-                                        # Add page and type information to structured item
                                         item["page"] = page_num
                                         item["type"] = "Chart"
                                         structured_items.append(item)
                                         
-                                        # Generate both markdown and HTML tables
                                         table_md = render_markdown_table(item.get("headers"), item.get("rows"),
                                                                          title=item.get("title"))
                                         table_html = render_html_table(item.get("headers"), item.get("rows"),
@@ -286,7 +280,6 @@ class StructuredPDFParser:
                             if charts_bar: charts_bar.update(1)
 
                         elif box.label == "table":
-                            # Skip tables that are part of merged split tables
                             is_merged = any(seg.match_box(box, page_num) for seg in merged_table_segments)
                             if is_merged:
                                 continue
@@ -297,12 +290,10 @@ class StructuredPDFParser:
                                     table = self.vlm.extract_table(abs_img_path)
                                     item = to_structured_dict(table)
                                     if item:
-                                        # Add page and type information to structured item
                                         item["page"] = page_num
                                         item["type"] = "Table"
                                         structured_items.append(item)
                                         
-                                        # Generate both markdown and HTML tables
                                         table_md = render_markdown_table(item.get("headers"), item.get("rows"),
                                                                          title=item.get("title"))
                                         table_html = render_html_table(item.get("headers"), item.get("rows"),
@@ -329,20 +320,16 @@ class StructuredPDFParser:
                         if text:
                             md_lines.append(text)
                             md_lines.append(self.box_separator if self.box_separator else "")
-                            # Convert text to HTML (basic conversion)
                             html_text = text.replace('\n', '<br>')
                             html_lines.append(f"<p>{html_text}</p>")
                             if self.box_separator:
                                 html_lines.append("<br>")
 
-            # Process merged split tables
             if split_table_matches and self.split_table_detector:
                 for match_idx, match in enumerate(split_table_matches):
                     try:
-                        # Merge the table images
                         merged_img = self.split_table_detector.merge_table_images(match)
                         
-                        # Save merged image
                         tables_dir = os.path.join(out_dir, "tables")
                         os.makedirs(tables_dir, exist_ok=True)
                         merged_filename = f"merged_table_{match.segment1.page_index}_{match.segment2.page_index}.png"
@@ -352,7 +339,6 @@ class StructuredPDFParser:
                         abs_merged_path = os.path.abspath(merged_path)
                         rel_merged = os.path.relpath(abs_merged_path, out_dir)
                         
-                        # Add to markdown/HTML at the page where first segment appears
                         pages_str = f"pages {match.segment1.page_index}-{match.segment2.page_index}"
                         
                         if self.use_vlm and self.vlm:
@@ -361,14 +347,12 @@ class StructuredPDFParser:
                                 table = self.vlm.extract_table(abs_merged_path)
                                 item = to_structured_dict(table)
                                 if item:
-                                    # Add page and type information to structured item
                                     item["page"] = f"{match.segment1.page_index}-{match.segment2.page_index}"
                                     item["type"] = "Table (Merged)"
                                     item["split_merge"] = True
                                     item["merge_confidence"] = match.confidence
                                     structured_items.append(item)
                                     
-                                    # Generate both markdown and HTML tables
                                     table_md = render_markdown_table(
                                         item.get("headers"), 
                                         item.get("rows"),
@@ -380,7 +364,6 @@ class StructuredPDFParser:
                                         title=item.get("title") or f"Merged Table ({pages_str})"
                                     )
                                     
-                                    # Insert before the next page section or at end
                                     md_lines.append(f"\n### Merged Table ({pages_str})\n")
                                     md_lines.append(table_md)
                                     html_lines.append(f'<h3>Merged Table ({pages_str})</h3>')
@@ -411,7 +394,6 @@ class StructuredPDFParser:
 
         md_path = write_markdown(md_lines, out_dir)
         
-        # Use HTML lines if VLM is enabled for better table formatting
         if self.use_vlm and html_lines:
             html_path = write_html_from_lines(html_lines, out_dir)
         else:

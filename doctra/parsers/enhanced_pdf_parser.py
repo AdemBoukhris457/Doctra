@@ -112,13 +112,11 @@ class EnhancedPDFParser(StructuredPDFParser):
             box_separator=box_separator,
         )
         
-        # Image restoration settings
         self.use_image_restoration = use_image_restoration
         self.restoration_task = restoration_task
         self.restoration_device = restoration_device
         self.restoration_dpi = restoration_dpi
         
-        # Initialize DocRes engine if needed
         self.docres_engine = None
         if self.use_image_restoration:
             try:
@@ -143,7 +141,6 @@ class EnhancedPDFParser(StructuredPDFParser):
         """
         pdf_filename = os.path.splitext(os.path.basename(pdf_path))[0]
         
-        # Set up output directories
         if enhanced_output_dir is None:
             out_dir = f"outputs/{pdf_filename}/enhanced_parse"
         else:
@@ -152,12 +149,10 @@ class EnhancedPDFParser(StructuredPDFParser):
         os.makedirs(out_dir, exist_ok=True)
         ensure_output_dirs(out_dir, IMAGE_SUBDIRS)
         
-        # Process PDF pages with optional restoration
         if self.use_image_restoration and self.docres_engine:
             print(f"🔄 Processing PDF with image restoration: {os.path.basename(pdf_path)}")
             enhanced_pages = self._process_pages_with_restoration(pdf_path, out_dir)
             
-            # Create enhanced PDF file using the already processed enhanced pages
             enhanced_pdf_path = os.path.join(out_dir, f"{pdf_filename}_enhanced.pdf")
             try:
                 self._create_enhanced_pdf_from_pages(enhanced_pages, enhanced_pdf_path)
@@ -167,16 +162,13 @@ class EnhancedPDFParser(StructuredPDFParser):
             print(f"🔄 Processing PDF without image restoration: {os.path.basename(pdf_path)}")
             enhanced_pages = [im for (im, _, _) in render_pdf_to_images(pdf_path, dpi=self.dpi)]
         
-        # Run layout detection on enhanced pages
         print("🔍 Running layout detection on enhanced pages...")
         pages = self.layout_engine.predict_pdf(
             pdf_path, batch_size=1, layout_nms=True, dpi=self.dpi, min_score=self.min_score
         )
         
-        # Use enhanced pages for processing
         pil_pages = enhanced_pages
         
-        # Continue with standard parsing logic
         self._process_parsing_logic(pages, pil_pages, out_dir, pdf_filename, pdf_path)
 
     def _process_pages_with_restoration(self, pdf_path: str, out_dir: str) -> List[Image.Image]:
@@ -187,14 +179,12 @@ class EnhancedPDFParser(StructuredPDFParser):
         :param out_dir: Output directory for enhanced images
         :return: List of enhanced PIL images
         """
-        # Render original pages
         original_pages = [im for (im, _, _) in render_pdf_to_images(pdf_path, dpi=self.restoration_dpi)]
         
         if not original_pages:
             print("❌ No pages found in PDF")
             return []
         
-        # Create progress bar
         is_notebook = "ipykernel" in sys.modules or "jupyter" in sys.modules
         if is_notebook:
             progress_bar = create_notebook_friendly_bar(
@@ -216,20 +206,16 @@ class EnhancedPDFParser(StructuredPDFParser):
             with progress_bar:
                 for i, page_img in enumerate(original_pages):
                     try:
-                        # Convert PIL to numpy array
                         img_array = np.array(page_img)
                         
-                        # Apply DocRes restoration
                         restored_img, metadata = self.docres_engine.restore_image(
                             img_array, 
                             task=self.restoration_task
                         )
                         
-                        # Convert back to PIL Image
                         enhanced_page = Image.fromarray(restored_img)
                         enhanced_pages.append(enhanced_page)
                         
-                        # Save enhanced page for reference
                         enhanced_path = os.path.join(enhanced_dir, f"page_{i+1:03d}_enhanced.jpg")
                         enhanced_page.save(enhanced_path, "JPEG", quality=95)
                         
@@ -282,9 +268,8 @@ class EnhancedPDFParser(StructuredPDFParser):
                 tables_bar = stack.enter_context(
                     create_beautiful_progress_bar(total=table_count, desc=tables_desc, leave=True)) if table_count else None
                 figures_bar = stack.enter_context(
-                    create_beautiful_progress_bar(total=fig_count, desc=figures_desc, leave=True)) if fig_count else None
+                    create_beautiful_progress_bar(total=fig_count,                     desc=figures_desc, leave=True)) if fig_count else None
 
-            # Initialize page content for all pages first
             for page_num in range(1, len(pil_pages) + 1):
                 page_content[page_num] = [f"# Page {page_num} Content\n"]
             
@@ -315,12 +300,10 @@ class EnhancedPDFParser(StructuredPDFParser):
                                     chart = self.vlm.extract_chart(abs_img_path)
                                     item = to_structured_dict(chart)
                                     if item:
-                                        # Add page and type information to structured item
                                         item["page"] = page_num
                                         item["type"] = "Chart"
                                         structured_items.append(item)
                                         
-                                        # Generate both markdown and HTML tables
                                         table_md = render_markdown_table(item.get("headers"), item.get("rows"),
                                                                          title=item.get("title"))
                                         table_html = render_html_table(item.get("headers"), item.get("rows"),
@@ -353,12 +336,10 @@ class EnhancedPDFParser(StructuredPDFParser):
                                     table = self.vlm.extract_table(abs_img_path)
                                     item = to_structured_dict(table)
                                     if item:
-                                        # Add page and type information to structured item
                                         item["page"] = page_num
                                         item["type"] = "Table"
                                         structured_items.append(item)
                                         
-                                        # Generate both markdown and HTML tables
                                         table_md = render_markdown_table(item.get("headers"), item.get("rows"),
                                                                          title=item.get("title"))
                                         table_html = render_html_table(item.get("headers"), item.get("rows"),
@@ -388,7 +369,6 @@ class EnhancedPDFParser(StructuredPDFParser):
                         if text:
                             md_lines.append(text)
                             md_lines.append(self.box_separator if self.box_separator else "")
-                            # Convert text to HTML (basic conversion)
                             html_text = text.replace('\n', '<br>')
                             html_lines.append(f"<p>{html_text}</p>")
                             if self.box_separator:
@@ -398,13 +378,11 @@ class EnhancedPDFParser(StructuredPDFParser):
 
         md_path = write_markdown(md_lines, out_dir)
         
-        # Use HTML lines if VLM is enabled for better table formatting
         if self.use_vlm and html_lines:
             html_path = write_html_from_lines(html_lines, out_dir)
         else:
             html_path = write_html(md_lines, out_dir)
         
-        # Create pages folder and save individual page markdown files
         pages_dir = os.path.join(out_dir, "pages")
         os.makedirs(pages_dir, exist_ok=True)
         
@@ -434,7 +412,6 @@ class EnhancedPDFParser(StructuredPDFParser):
             raise ValueError("No enhanced pages provided")
         
         try:
-            # Create enhanced PDF from the processed pages
             enhanced_pages[0].save(
                 output_path,
                 "PDF",

@@ -54,7 +54,6 @@ def _style_header(ws, ncols: int) -> None:
     :param ncols: Number of columns in the worksheet
     :return: None
     """
-    # Style first row (header) and freeze panes below it
     if ncols > 0:
         ws.freeze_panes = "A2"
         for idx in range(1, ncols + 1):
@@ -96,47 +95,33 @@ def _style_summary_sheet(ws, df: pd.DataFrame, sheet_mapping: dict = None) -> No
     :param sheet_mapping: Dictionary mapping table titles to their sheet names
     :return: None
     """
-    # Style header row
     _style_header(ws, ncols=df.shape[1])
     
-    # Apply text wrapping to all data cells
     wrap_alignment = Alignment(wrap_text=True, vertical="top")
     
-    # Apply wrapping to all data rows (skip header row)
-    for row_idx in range(2, len(df) + 2):  # Start from row 2 (after header)
+    for row_idx in range(2, len(df) + 2):
         for col_idx in range(1, df.shape[1] + 1):
             cell = ws.cell(row=row_idx, column=col_idx)
             cell.alignment = wrap_alignment
             
-            # Add hyperlink to table title column (column A)
-            if col_idx == 1 and sheet_mapping:  # Table Title column
+            if col_idx == 1 and sheet_mapping:
                 table_title = cell.value
                 if table_title and table_title in sheet_mapping:
                     sheet_name = sheet_mapping[table_title]
                     
-                    # Create hyperlink to the sheet using proper Excel format
-                    # Escape sheet name if it contains spaces or special characters
                     if ' ' in sheet_name or any(char in sheet_name for char in ['[', ']', '*', '?', ':', '\\', '/']):
                         hyperlink_ref = f"#'{sheet_name}'!A1"
                     else:
                         hyperlink_ref = f"#{sheet_name}!A1"
                     
-                    # Use Hyperlink class with proper parameters
                     cell.hyperlink = Hyperlink(ref=hyperlink_ref, target=hyperlink_ref)
-                    # Style the hyperlink
                     cell.font = Font(color="0000FF", underline="single")
     
-    # Set specific column widths for summary sheet
-    # Table Title column - narrower
     ws.column_dimensions['A'].width = 30
-    # Description column - wider to accommodate wrapped text
     ws.column_dimensions['B'].width = 60
-    # Page column - narrow for page numbers
     ws.column_dimensions['C'].width = 10
-    # Type column - narrow for Table/Chart
     ws.column_dimensions['D'].width = 12
     
-    # Set row heights to accommodate wrapped text
     for row_idx in range(2, len(df) + 2):
         ws.row_dimensions[row_idx].height = 60  # Allow for multiple lines
 
@@ -152,23 +137,19 @@ def _normalize_data(headers: List[str], rows: List[List]) -> tuple[List[str], Li
     if not rows:
         return headers, []
 
-    # Find the maximum number of columns across all rows
     max_cols = max(len(row) for row in rows) if rows else 0
 
-    # If we have headers, use them as the basis, otherwise use max columns
     if headers:
         target_cols = max(len(headers), max_cols)
     else:
         target_cols = max_cols
         headers = [f"Column_{i + 1}" for i in range(target_cols)]
 
-    # Normalize headers: pad with generic names if too short, truncate if too long
     normalized_headers = list(headers)
     while len(normalized_headers) < target_cols:
         normalized_headers.append(f"Column_{len(normalized_headers) + 1}")
     normalized_headers = normalized_headers[:target_cols]
 
-    # Normalize rows: pad with None if too short, truncate if too long
     normalized_rows = []
     for row in rows:
         normalized_row = list(row)
@@ -197,12 +178,10 @@ def write_structured_excel(excel_path: str, items: List[Dict[str, Any]]) -> str 
     if not items:
         return None
 
-    # Filter out items that have no meaningful data
     valid_items = []
     for item in items:
         headers = item.get("headers") or []
         rows = item.get("rows") or []
-        # Keep items that have either headers or rows with data
         if headers or (rows and any(
                 row for row in rows if any(cell for cell in row if cell is not None and str(cell).strip()))):
             valid_items.append(item)
@@ -215,9 +194,8 @@ def write_structured_excel(excel_path: str, items: List[Dict[str, Any]]) -> str 
     taken: Set[str] = set()
 
     with pd.ExcelWriter(excel_path, engine="openpyxl", mode="w") as writer:
-        # Create summary sheet first
         summary_data = []
-        sheet_mapping = {}  # Map table titles to their sheet names
+        sheet_mapping = {}
         
         for item in valid_items:
             title = item.get("title") or "Untitled"
@@ -233,13 +211,11 @@ def write_structured_excel(excel_path: str, items: List[Dict[str, Any]]) -> str 
                 "Type": item_type
             })
         
-        # Create summary sheet first (but without hyperlinks initially)
         if summary_data:
             summary_df = pd.DataFrame(summary_data)
             summary_df.to_excel(writer, sheet_name="Table Summary", index=False)
             taken.add("Table Summary")
 
-        # Process individual table sheets to build sheet mapping
         for item in valid_items:
             try:
                 title = item.get("title") or "Untitled"
@@ -248,28 +224,22 @@ def write_structured_excel(excel_path: str, items: List[Dict[str, Any]]) -> str 
 
                 sheet_name = _safe_sheet_name(title, taken)
                 
-                # Add to sheet mapping for hyperlinks
                 sheet_mapping[title] = sheet_name
 
-                # Normalize data to handle mismatched dimensions
                 normalized_headers, normalized_rows = _normalize_data(headers, rows)
 
                 if not normalized_rows and not normalized_headers:
                     print(f"Skipping empty item: {title}")
                     continue
 
-                # Create DataFrame with normalized data
                 try:
                     df = pd.DataFrame(normalized_rows, columns=normalized_headers)
                 except Exception as e:
                     print(f"Error creating DataFrame for '{title}': {e}")
-                    # Fallback: create a simple DataFrame
                     df = pd.DataFrame([["Error processing data"]], columns=["Message"])
 
-                # Write to Excel
                 df.to_excel(writer, sheet_name=sheet_name, index=False)
 
-                # Style header + autosize
                 ws = writer.sheets[sheet_name]
                 _style_header(ws, ncols=df.shape[1])
                 _autosize_columns(ws, df)
@@ -278,7 +248,6 @@ def write_structured_excel(excel_path: str, items: List[Dict[str, Any]]) -> str 
                 print(f"Error processing item '{item.get('title', 'Unknown')}': {e}")
                 continue
 
-        # Now add hyperlinks to the summary sheet (after all sheets are created)
         if summary_data and sheet_mapping:
             summary_ws = writer.sheets["Table Summary"]
             _style_summary_sheet(summary_ws, summary_df, sheet_mapping)

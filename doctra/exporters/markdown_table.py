@@ -38,16 +38,13 @@ def render_markdown_table(
     lines: List[str] = []
     if title:
         lines.append(f"**{title}**")
-    # determine width
     width = len(headers) if headers else (max((len(r) for r in rows), default=1))
 
-    # header row
     if not headers:
         headers = [f"col{i+1}" for i in range(width)]
     lines.append("| " + " | ".join(_esc(h) for h in headers[:width]) + " |")
     lines.append("| " + " | ".join(["---"] * width) + " |")
 
-    # data rows (pad/truncate to width)
     for r in rows:
         row = (r + [""] * width)[:width]
         lines.append("| " + " | ".join(_esc(c) for c in row) + " |")

@@ -170,17 +170,14 @@ def print_processing_summary(
     click.echo("📊 Processing Summary")
     click.echo("=" * 50)
 
-    # Input file info
     file_info = get_file_info(input_file)
     if file_info:
         click.echo(f"Input file: {file_info['name']}")
         click.echo(f"File size:  {file_info['size_formatted']}")
 
-    # Output info
     if output_dir.exists():
         click.echo(f"Output:     {output_dir}")
 
-    # Processing details
     if elements_processed is not None:
         click.echo(f"Elements:   {elements_processed} processed")
 
@@ -247,13 +244,10 @@ def estimate_processing_time(
     :param use_vlm: Whether VLM processing will be used
     :return: Estimated processing time in seconds
     """
-    # Base time per page (layout detection + OCR)
     base_time = num_pages * 2
 
-    # Additional time for charts and tables
     visual_elements_time = (num_charts + num_tables) * 1
 
-    # VLM processing time
     vlm_time = 0
     if use_vlm:
         vlm_time = (num_charts + num_tables) * 3
@@ -274,11 +268,9 @@ def create_progress_callback(description: str, total: int):
              representing the number of completed items
     """
 
-    # Enhanced environment detection
     is_notebook = "ipykernel" in sys.modules or "jupyter" in sys.modules
     is_terminal = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
     
-    # Choose appropriate progress bar based on environment
     if is_notebook:
         pbar = create_notebook_friendly_bar(total=total, desc=description)
     else:
