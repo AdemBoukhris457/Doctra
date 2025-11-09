@@ -73,7 +73,14 @@ import json
 
 def store_results_in_db(pdf_path, db_path="documents.db"):
     # Parse document
-    parser = StructuredPDFParser(use_vlm=True)
+    from doctra.engines.vlm.service import VLMStructuredExtractor
+    
+    vlm_engine = VLMStructuredExtractor(
+        vlm_provider="openai",
+        api_key="your-api-key"
+    )
+    
+    parser = StructuredPDFParser(vlm=vlm_engine)
     parser.parse(pdf_path)
     
     # Connect to database

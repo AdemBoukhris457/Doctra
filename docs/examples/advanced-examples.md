@@ -16,11 +16,14 @@ enhanced_pdf = engine.restore_pdf(
 )
 
 # Stage 2: Parse enhanced document
-parser = StructuredPDFParser(
-    use_vlm=True,
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="openai",
-    vlm_api_key="your-key"
+    api_key="your-key"
 )
+
+parser = StructuredPDFParser(vlm=vlm_engine)
 parser.parse(enhanced_pdf)
 ```
 
@@ -28,27 +31,40 @@ parser.parse(enhanced_pdf)
 
 ```python
 from doctra import ChartTablePDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
 
 # Using OpenAI
-parser_openai = ChartTablePDFParser(
-    use_vlm=True,
+vlm_openai = VLMStructuredExtractor(
     vlm_provider="openai",
-    vlm_api_key="sk-xxx"
+    api_key="sk-xxx"
+)
+parser_openai = ChartTablePDFParser(
+    extract_charts=True,
+    extract_tables=True,
+    vlm=vlm_openai
 )
 
 # Using Gemini (cost-effective)
-parser_gemini = ChartTablePDFParser(
-    use_vlm=True,
+vlm_gemini = VLMStructuredExtractor(
     vlm_provider="gemini",
-    vlm_api_key="gemini-key"
+    api_key="gemini-key"
+)
+parser_gemini = ChartTablePDFParser(
+    extract_charts=True,
+    extract_tables=True,
+    vlm=vlm_gemini
 )
 
 # Using Qianfan ERNIE (Baidu AI Cloud)
-parser_qianfan = ChartTablePDFParser(
-    use_vlm=True,
+vlm_qianfan = VLMStructuredExtractor(
     vlm_provider="qianfan",
-    vlm_api_key="qianfan-key",
-    vlm_model="ernie-4.5-turbo-vl-32k"
+    vlm_model="ernie-4.5-turbo-vl-32k",
+    api_key="qianfan-key"
+)
+parser_qianfan = ChartTablePDFParser(
+    extract_charts=True,
+    extract_tables=True,
+    vlm=vlm_qianfan
 )
 
 # Parse with different providers
@@ -112,11 +128,16 @@ from doctra import ChartTablePDFParser
 import pandas as pd
 
 # Extract tables
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    api_key="your-key"
+)
+
 parser = ChartTablePDFParser(
     extract_tables=True,
-    use_vlm=True,
-    vlm_provider="openai",
-    vlm_api_key="your-key"
+    vlm=vlm_engine
 )
 
 parser.parse("financial_report.pdf")

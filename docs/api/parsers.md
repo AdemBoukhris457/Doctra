@@ -57,9 +57,17 @@ Comprehensive parser for Microsoft Word documents (.docx files).
 ```python
 from doctra import StructuredPDFParser
 from doctra.engines.ocr import PytesseractOCREngine, PaddleOCREngine
+from doctra.engines.vlm.service import VLMStructuredExtractor
 
 # Initialize OCR engine (optional - defaults to PyTesseract if None)
 ocr_engine = PytesseractOCREngine(lang="eng", psm=4, oem=3)
+
+# Initialize VLM engine (optional - None to disable VLM)
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    vlm_model="gpt-4o",  # Optional
+    api_key="your-api-key"
+)
 
 parser = StructuredPDFParser(
     # Layout Detection
@@ -70,11 +78,8 @@ parser = StructuredPDFParser(
     # OCR Engine (pass initialized engine instance)
     ocr_engine: Optional[Union[PytesseractOCREngine, PaddleOCREngine]] = None,
     
-    # VLM Settings
-    use_vlm: bool = False,
-    vlm_provider: str = None,
-    vlm_api_key: str = None,
-    vlm_model: str = None,
+    # VLM Engine (pass initialized engine instance)
+    vlm: Optional[VLMStructuredExtractor] = None,
     
     # Split Table Merging
     merge_split_tables: bool = False,
@@ -109,6 +114,13 @@ parser.display_pages_with_boxes(
 
 ```python
 from doctra import EnhancedPDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+# Initialize VLM engine (optional)
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    api_key="your-api-key"
+)
 
 parser = EnhancedPDFParser(
     # Image Restoration
@@ -116,6 +128,9 @@ parser = EnhancedPDFParser(
     restoration_task: str = "appearance",
     restoration_device: str = None,
     restoration_dpi: int = 200,
+    
+    # VLM Engine (pass initialized engine instance)
+    vlm: Optional[VLMStructuredExtractor] = None,
     
     # All StructuredPDFParser parameters...
 )
@@ -131,17 +146,21 @@ parser.parse(
 
 ```python
 from doctra import ChartTablePDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+# Initialize VLM engine (optional)
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    api_key="your-api-key"
+)
 
 parser = ChartTablePDFParser(
     # Extraction Settings
     extract_charts: bool = True,
     extract_tables: bool = True,
     
-    # VLM Settings
-    use_vlm: bool = False,
-    vlm_provider: str = None,
-    vlm_api_key: str = None,
-    vlm_model: str = None,
+    # VLM Engine (pass initialized engine instance)
+    vlm: Optional[VLMStructuredExtractor] = None,
     
     # Layout Detection
     layout_model_name: str = "PP-DocLayout_plus-L",
@@ -160,13 +179,17 @@ parser.parse(
 
 ```python
 from doctra import StructuredDOCXParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+# Initialize VLM engine (optional)
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    api_key="your-api-key"
+)
 
 parser = StructuredDOCXParser(
-    # VLM Settings
-    use_vlm: bool = False,
-    vlm_provider: str = None,
-    vlm_api_key: str = None,
-    vlm_model: str = None,
+    # VLM Engine (pass initialized engine instance)
+    vlm: Optional[VLMStructuredExtractor] = None,
     
     # Processing Options
     extract_images: bool = True,
@@ -232,10 +255,31 @@ parser = StructuredPDFParser(ocr_engine=paddle_ocr)
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `use_vlm` | bool | False | Enable VLM processing |
-| `vlm_provider` | str | None | Provider: "openai", "gemini", "anthropic", "openrouter" |
-| `vlm_api_key` | str | None | API key for the VLM provider |
-| `vlm_model` | str | None | Specific model to use (provider-dependent) |
+| `vlm` | `Optional[VLMStructuredExtractor]` | `None` | VLM engine instance. If `None`, VLM processing is disabled. |
+
+**VLM Engine Configuration:**
+
+VLM engines must be initialized externally and passed to the parser. This uses a dependency injection pattern for clearer API design.
+
+**VLMStructuredExtractor Parameters:**
+- `vlm_provider` (str, required): VLM provider to use ("openai", "gemini", "anthropic", "openrouter", "qianfan", "ollama")
+- `vlm_model` (str, optional): Model name to use (defaults to provider-specific defaults)
+- `api_key` (str, optional): API key for the VLM provider (required for all providers except Ollama)
+
+**Example:**
+```python
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+# Initialize VLM engine
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    vlm_model="gpt-4o",  # Optional
+    api_key="your-api-key"
+)
+
+# Pass to parser
+parser = StructuredPDFParser(vlm=vlm_engine)
+```
 
 ### Image Restoration Parameters
 

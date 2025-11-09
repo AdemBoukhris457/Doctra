@@ -86,12 +86,16 @@ To convert charts and tables to structured data, add VLM support:
 
 ```python
 from doctra import StructuredPDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
 
-parser = StructuredPDFParser(
-    use_vlm=True,
+# Initialize VLM engine
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="openai",
-    vlm_api_key="your-api-key-here"
+    api_key="your-api-key-here"
 )
+
+# Pass VLM engine to parser
+parser = StructuredPDFParser(vlm=vlm_engine)
 
 parser.parse("document.pdf")
 ```
@@ -241,6 +245,14 @@ parser = StructuredPDFParser(
 ```python
 from doctra import EnhancedPDFParser
 
+# Initialize VLM engine (optional)
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    api_key="your-key"
+)
+
 parser = EnhancedPDFParser(
     # Image Restoration
     use_image_restoration=True,
@@ -248,10 +260,10 @@ parser = EnhancedPDFParser(
     restoration_device="cuda",  # or "cpu"
     restoration_dpi=300,
     
+    # VLM Engine (pass initialized engine instance)
+    vlm=vlm_engine,
+    
     # All StructuredPDFParser options also available
-    use_vlm=True,
-    vlm_provider="openai",
-    vlm_api_key="your-key"
 )
 ```
 

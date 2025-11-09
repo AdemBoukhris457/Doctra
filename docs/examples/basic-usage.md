@@ -52,13 +52,15 @@ parser.parse("scanned_document.pdf")
 
 ```python
 from doctra import StructuredPDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
 
-parser = StructuredPDFParser(
-    use_vlm=True,
+# Initialize VLM engine
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="openai",
-    vlm_api_key="your-api-key-here"
+    api_key="your-api-key-here"
 )
 
+parser = StructuredPDFParser(vlm=vlm_engine)
 parser.parse("data_report.pdf")
 
 # Output includes:

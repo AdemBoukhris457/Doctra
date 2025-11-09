@@ -344,13 +344,21 @@ Vision Language Models convert visual elements to structured data.
 
 ### Configuration
 
+Doctra uses a **dependency injection pattern** for VLM engines. You initialize the VLM engine externally and pass it to the parser.
+
 ```python
-parser = StructuredPDFParser(
-    use_vlm=True,
+from doctra import StructuredPDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+# Initialize VLM engine
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="openai",
-    vlm_api_key="your-api-key",
-    vlm_model="gpt-4o"  # Optional, uses default if not specified
+    vlm_model="gpt-4o",  # Optional, uses default if None
+    api_key="your-api-key"
 )
+
+# Pass VLM engine to parser
+parser = StructuredPDFParser(vlm=vlm_engine)
 ```
 
 ### What Gets Processed

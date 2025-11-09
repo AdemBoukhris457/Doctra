@@ -17,14 +17,20 @@ Doctra integrates with Vision Language Models (VLMs) to convert visual elements 
 
 ## Basic Configuration
 
+Doctra uses a **dependency injection pattern** for VLM engines. You initialize the VLM engine externally and pass it to the parser. This provides a clearer API, avoids mixed configurations, and allows reusing VLM engines across multiple parsers.
+
 ```python
 from doctra import StructuredPDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
 
-parser = StructuredPDFParser(
-    use_vlm=True,
+# Initialize VLM engine
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="openai",
-    vlm_api_key="your-api-key"
+    api_key="your-api-key"
 )
+
+# Pass VLM engine to parser
+parser = StructuredPDFParser(vlm=vlm_engine)
 
 parser.parse("document.pdf")
 ```
@@ -34,43 +40,59 @@ parser.parse("document.pdf")
 ### OpenAI
 
 ```python
-parser = StructuredPDFParser(
-    use_vlm=True,
+from doctra import StructuredPDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="openai",
-    vlm_api_key="sk-xxx",
-    vlm_model="gpt-4o"  # Optional
+    vlm_model="gpt-4o",  # Optional, uses default if None
+    api_key="sk-xxx"
 )
+
+parser = StructuredPDFParser(vlm=vlm_engine)
 ```
 
 ### Gemini
 
 ```python
-parser = StructuredPDFParser(
-    use_vlm=True,
+from doctra import StructuredPDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="gemini",
-    vlm_api_key="your-gemini-key"
+    api_key="your-gemini-key"
 )
+
+parser = StructuredPDFParser(vlm=vlm_engine)
 ```
 
 ### Anthropic
 
 ```python
-parser = StructuredPDFParser(
-    use_vlm=True,
+from doctra import StructuredPDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="anthropic",
-    vlm_api_key="your-anthropic-key"
+    api_key="your-anthropic-key"
 )
+
+parser = StructuredPDFParser(vlm=vlm_engine)
 ```
 
 ### OpenRouter
 
 ```python
-parser = StructuredPDFParser(
-    use_vlm=True,
+from doctra import StructuredPDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="openrouter",
-    vlm_api_key="your-openrouter-key",
-    vlm_model="x-ai/grok-4"  # Optional, defaults to x-ai/grok-4
+    vlm_model="x-ai/grok-4",  # Optional, defaults to x-ai/grok-4
+    api_key="your-openrouter-key"
 )
+
+parser = StructuredPDFParser(vlm=vlm_engine)
 ```
 
 **Available Models:**
@@ -82,12 +104,16 @@ parser = StructuredPDFParser(
 ### Qianfan (Baidu AI Cloud)
 
 ```python
-parser = StructuredPDFParser(
-    use_vlm=True,
+from doctra import StructuredPDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="qianfan",
-    vlm_api_key="your-qianfan-key",
-    vlm_model="ernie-4.5-turbo-vl-32k"  # Optional, defaults to ernie-4.5-turbo-vl-32k
+    vlm_model="ernie-4.5-turbo-vl-32k",  # Optional, defaults to ernie-4.5-turbo-vl-32k
+    api_key="your-qianfan-key"
 )
+
+parser = StructuredPDFParser(vlm=vlm_engine)
 ```
 
 **Available ERNIE Models:**
@@ -96,11 +122,16 @@ parser = StructuredPDFParser(
 ### Ollama (Local Models)
 
 ```python
-parser = StructuredPDFParser(
-    use_vlm=True,
+from doctra import StructuredPDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="ollama",
-    vlm_model="llava:latest"  # Optional, defaults to llava:latest
+    vlm_model="llava:latest",  # Optional, defaults to llava:latest
+    api_key=None  # No API key required for Ollama
 )
+
+parser = StructuredPDFParser(vlm=vlm_engine)
 ```
 
 **Available Models:**

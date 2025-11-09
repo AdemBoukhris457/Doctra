@@ -45,12 +45,19 @@ parser = ChartTablePDFParser(
 ## With VLM for Structured Data
 
 ```python
+from doctra import ChartTablePDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+# Initialize VLM engine
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    api_key="your-key"
+)
+
 parser = ChartTablePDFParser(
     extract_charts=True,
     extract_tables=True,
-    use_vlm=True,
-    vlm_provider="openai",
-    vlm_api_key="your-key"
+    vlm=vlm_engine  # Pass VLM engine instance
 )
 
 parser.parse("report.pdf")
