@@ -13,27 +13,26 @@ You can choose between these engines based on your needs. PyTesseract is the def
 
 ## Choosing an OCR Engine
 
+Doctra uses a **dependency injection pattern** for OCR engines. You initialize the OCR engine externally and pass it to the parser. This provides a clearer API, avoids mixed configurations, and allows reusing OCR engines across multiple parsers.
+
 ### PyTesseract (Default)
 
 PyTesseract is the default OCR engine and works well for most documents. It offers extensive language support and fine-grained control.
 
 ```python
 from doctra import StructuredPDFParser
+from doctra.engines.ocr import PytesseractOCREngine
 
-# PyTesseract is the default - no need to specify
-parser = StructuredPDFParser(
-    ocr_lang="eng",
-    ocr_psm=6,
-    ocr_oem=3
-)
+# Option 1: Use default PyTesseract (automatic if ocr_engine=None)
+parser = StructuredPDFParser()  # Creates default PytesseractOCREngine internally
 
-# Or explicitly specify it
-parser = StructuredPDFParser(
-    ocr_engine="pytesseract",
-    ocr_lang="eng",
-    ocr_psm=6,
-    ocr_oem=3
+# Option 2: Explicitly configure PyTesseract
+tesseract_ocr = PytesseractOCREngine(
+    lang="eng",
+    psm=6,
+    oem=3
 )
+parser = StructuredPDFParser(ocr_engine=tesseract_ocr)
 ```
 
 ### PaddleOCR with PP-OCRv5_server
@@ -47,21 +46,42 @@ PaddleOCR provides the advanced **PP-OCRv5_server** model (default in PaddleOCR 
 
 ```python
 from doctra import StructuredPDFParser
+from doctra.engines.ocr import PaddleOCREngine
 
-parser = StructuredPDFParser(
-    ocr_engine="paddleocr",
-    paddleocr_device="gpu",  # Use "cpu" if no GPU available
-    paddleocr_use_doc_orientation_classify=False,
-    paddleocr_use_doc_unwarping=False,
-    paddleocr_use_textline_orientation=False
+# Initialize PaddleOCR engine
+paddle_ocr = PaddleOCREngine(
+    device="gpu",  # Use "cpu" if no GPU available
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False,
+    use_textline_orientation=False
 )
+
+# Pass to parser
+parser = StructuredPDFParser(ocr_engine=paddle_ocr)
+```
+
+### Reusing OCR Engines
+
+One of the benefits of the dependency injection pattern is that you can create an OCR engine once and reuse it across multiple parsers:
+
+```python
+from doctra.engines.ocr import PytesseractOCREngine
+from doctra import StructuredPDFParser, EnhancedPDFParser
+
+# Create OCR engine once
+shared_ocr = PytesseractOCREngine(lang="eng", psm=6, oem=3)
+
+# Reuse across multiple parsers
+parser1 = StructuredPDFParser(ocr_engine=shared_ocr)
+parser2 = EnhancedPDFParser(ocr_engine=shared_ocr)
+parser3 = StructuredPDFParser(ocr_engine=shared_ocr)
 ```
 
 ## PyTesseract Parameters
 
-These parameters are only used when `ocr_engine="pytesseract"` (or when using the default):
+These parameters are configured when initializing `PytesseractOCREngine`:
 
-**ocr_lang**
+**lang**
 :   Tesseract language code
     - `eng`: English
     - `fra`: French
@@ -69,42 +89,67 @@ These parameters are only used when `ocr_engine="pytesseract"` (or when using th
     - `deu`: German
     - Multiple: `eng+fra`
 
-**ocr_psm**
+**psm**
 :   Page segmentation mode
     - `3`: Automatic
-    - `6`: Uniform block (default)
+    - `4`: Assume a single column of text (default)
+    - `6`: Uniform block of text
     - `11`: Sparse text
-    - `12`: Sparse with OSD
+    - `12`: Sparse text with OSD
 
-**ocr_oem**
+**oem**
 :   OCR engine mode
     - `0`: Legacy
     - `1`: Neural nets LSTM
     - `3`: Default (both)
 
-**ocr_extra_config**
+**extra_config**
 :   Additional Tesseract configuration string
+
+**Example:**
+```python
+from doctra.engines.ocr import PytesseractOCREngine
+
+ocr = PytesseractOCREngine(
+    lang="eng",
+    psm=6,
+    oem=3,
+    extra_config=""
+)
+```
 
 ## PaddleOCR Parameters
 
-These parameters are only used when `ocr_engine="paddleocr"`:
+These parameters are configured when initializing `PaddleOCREngine`:
 
-**paddleocr_device**
+**device**
 :   Device to use for OCR processing
     - `"gpu"`: Use GPU acceleration (default, recommended if available)
     - `"cpu"`: Use CPU processing
 
-**paddleocr_use_doc_orientation_classify**
+**use_doc_orientation_classify**
 :   Enable document orientation classification model (default: `False`)
     - Automatically detects and corrects document orientation
 
-**paddleocr_use_doc_unwarping**
+**use_doc_unwarping**
 :   Enable text image rectification model (default: `False`)
     - Corrects perspective distortion in scanned documents
 
-**paddleocr_use_textline_orientation**
+**use_textline_orientation**
 :   Enable text line orientation classification model (default: `False`)
     - Handles rotated text lines
+
+**Example:**
+```python
+from doctra.engines.ocr import PaddleOCREngine
+
+ocr = PaddleOCREngine(
+    device="gpu",
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False,
+    use_textline_orientation=False
+)
+```
 
 **Note**: The PP-OCRv5_server model is automatically used by default in PaddleOCR 3.0. Models are automatically downloaded on first use and cached for future use.
 
@@ -115,10 +160,11 @@ These parameters are only used when `ocr_engine="paddleocr"`:
 For complex documents or when accuracy is critical, consider using PaddleOCR:
 
 ```python
-parser = StructuredPDFParser(
-    ocr_engine="paddleocr",
-    paddleocr_device="gpu"  # Use GPU for better performance
-)
+from doctra import StructuredPDFParser
+from doctra.engines.ocr import PaddleOCREngine
+
+paddle_ocr = PaddleOCREngine(device="gpu")
+parser = StructuredPDFParser(ocr_engine=paddle_ocr)
 ```
 
 ### 2. Increase DPI
@@ -135,33 +181,37 @@ Enhance document quality before OCR:
 
 ```python
 from doctra import EnhancedPDFParser
+from doctra.engines.ocr import PaddleOCREngine
 
+paddle_ocr = PaddleOCREngine(device="gpu")
 parser = EnhancedPDFParser(
     use_image_restoration=True,
-    ocr_engine="paddleocr"  # Combine with PaddleOCR for best results
+    ocr_engine=paddle_ocr  # Combine with PaddleOCR for best results
 )
 ```
 
 ### 4. Correct Language (PyTesseract)
 
-For PyTesseract, specify the document language:
+For PyTesseract, specify the document language when initializing the engine:
 
 ```python
-parser = StructuredPDFParser(
-    ocr_engine="pytesseract",
-    ocr_lang="fra"  # For French documents
-)
+from doctra import StructuredPDFParser
+from doctra.engines.ocr import PytesseractOCREngine
+
+tesseract_ocr = PytesseractOCREngine(lang="fra")  # For French documents
+parser = StructuredPDFParser(ocr_engine=tesseract_ocr)
 ```
 
 ## Multi-language Documents (PyTesseract)
 
-PyTesseract supports multiple languages:
+PyTesseract supports multiple languages. Configure this when initializing the engine:
 
 ```python
-parser = StructuredPDFParser(
-    ocr_engine="pytesseract",
-    ocr_lang="eng+fra+deu"  # Multiple languages
-)
+from doctra import StructuredPDFParser
+from doctra.engines.ocr import PytesseractOCREngine
+
+tesseract_ocr = PytesseractOCREngine(lang="eng+fra+deu")  # Multiple languages
+parser = StructuredPDFParser(ocr_engine=tesseract_ocr)
 ```
 
 ## When to Use Each Engine

@@ -183,43 +183,58 @@ OCR (Optical Character Recognition) extracts text from images. Doctra supports t
 
 ### Configuration
 
+Doctra uses a **dependency injection pattern** for OCR engines. You initialize the OCR engine externally and pass it to the parser.
+
 **Using PyTesseract (default):**
 
 ```python
-parser = StructuredPDFParser(
-    ocr_engine="pytesseract",  # Optional, this is the default
-    ocr_lang="eng",  # Language
-    ocr_psm=6,  # Page segmentation mode
-    ocr_oem=3  # OCR Engine mode
+from doctra import StructuredPDFParser
+from doctra.engines.ocr import PytesseractOCREngine
+
+# Option 1: Use default (automatic)
+parser = StructuredPDFParser()  # Creates default PytesseractOCREngine
+
+# Option 2: Explicitly configure
+tesseract_ocr = PytesseractOCREngine(
+    lang="eng",  # Language
+    psm=6,       # Page segmentation mode
+    oem=3        # OCR Engine mode
 )
+parser = StructuredPDFParser(ocr_engine=tesseract_ocr)
 ```
 
 **Using PaddleOCR:**
 
 ```python
-parser = StructuredPDFParser(
-    ocr_engine="paddleocr",
-    paddleocr_device="gpu",  # Use "cpu" if no GPU available
-    paddleocr_use_doc_orientation_classify=False,
-    paddleocr_use_doc_unwarping=False,
-    paddleocr_use_textline_orientation=False
+from doctra import StructuredPDFParser
+from doctra.engines.ocr import PaddleOCREngine
+
+paddle_ocr = PaddleOCREngine(
+    device="gpu",  # Use "cpu" if no GPU available
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False,
+    use_textline_orientation=False
 )
+parser = StructuredPDFParser(ocr_engine=paddle_ocr)
 ```
 
 ### PyTesseract Parameters
 
-**ocr_lang**
+Configure these when initializing `PytesseractOCREngine`:
+
+**lang**
 :   Tesseract language code. Examples: `eng`, `fra`, `spa`, `deu`
 
-**ocr_psm**
+**psm**
 :   Page segmentation mode. Common values:
     
     - `3`: Automatic page segmentation
-    - `6`: Uniform block of text (default)
+    - `4`: Single column of text (default)
+    - `6`: Uniform block of text
     - `11`: Sparse text
     - `12`: Sparse text with OSD
 
-**ocr_oem**
+**oem**
 :   OCR Engine mode:
     
     - `0`: Legacy engine
@@ -228,26 +243,29 @@ parser = StructuredPDFParser(
 
 ### PaddleOCR Parameters
 
-**paddleocr_device**
+Configure these when initializing `PaddleOCREngine`:
+
+**device**
 :   Processing device: `"gpu"` (default, recommended) or `"cpu"`
 
-**paddleocr_use_doc_orientation_classify**
+**use_doc_orientation_classify**
 :   Enable automatic document orientation detection (default: `False`)
 
-**paddleocr_use_doc_unwarping**
+**use_doc_unwarping**
 :   Enable perspective correction for scanned documents (default: `False`)
 
-**paddleocr_use_textline_orientation**
+**use_textline_orientation**
 :   Enable text line orientation classification (default: `False`)
 
 ### Improving OCR Accuracy
 
 1. **Choose PaddleOCR for complex documents**: Better accuracy on degraded or complex documents
    ```python
-   parser = StructuredPDFParser(
-       ocr_engine="paddleocr",
-       paddleocr_device="gpu"
-   )
+   from doctra import StructuredPDFParser
+   from doctra.engines.ocr import PaddleOCREngine
+   
+   paddle_ocr = PaddleOCREngine(device="gpu")
+   parser = StructuredPDFParser(ocr_engine=paddle_ocr)
    ```
 
 2. **Increase DPI**: Higher resolution = better text recognition
@@ -258,18 +276,22 @@ parser = StructuredPDFParser(
 3. **Use Image Restoration**: Enhance document quality first
    ```python
    from doctra import EnhancedPDFParser
+   from doctra.engines.ocr import PaddleOCREngine
+   
+   paddle_ocr = PaddleOCREngine(device="gpu")
    parser = EnhancedPDFParser(
        use_image_restoration=True,
-       ocr_engine="paddleocr"  # Combine for best results
+       ocr_engine=paddle_ocr  # Combine for best results
    )
    ```
 
-4. **Correct Language** (PyTesseract): Specify document language
+4. **Correct Language** (PyTesseract): Specify document language when initializing engine
    ```python
-   parser = StructuredPDFParser(
-       ocr_engine="pytesseract",
-       ocr_lang="fra"  # French
-   )
+   from doctra import StructuredPDFParser
+   from doctra.engines.ocr import PytesseractOCREngine
+   
+   tesseract_ocr = PytesseractOCREngine(lang="fra")  # French
+   parser = StructuredPDFParser(ocr_engine=tesseract_ocr)
    ```
 
 ## Image Restoration

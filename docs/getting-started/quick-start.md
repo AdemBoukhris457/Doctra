@@ -216,15 +216,20 @@ This creates a visual representation showing:
 ### Parser Configuration
 
 ```python
+from doctra import StructuredPDFParser
+from doctra.engines.ocr import PytesseractOCREngine
+
+# Initialize OCR engine
+tesseract_ocr = PytesseractOCREngine(lang="eng", psm=6, oem=3)
+
 parser = StructuredPDFParser(
     # Layout Detection
     layout_model_name="PP-DocLayout_plus-L",  # Model choice
     dpi=200,  # Image resolution
     min_score=0.5,  # Confidence threshold
     
-    # OCR Settings
-    ocr_lang="eng",  # Language code
-    ocr_psm=6,  # Page segmentation mode
+    # OCR Engine
+    ocr_engine=tesseract_ocr,
     
     # Output
     box_separator="\n"  # Separator between elements
