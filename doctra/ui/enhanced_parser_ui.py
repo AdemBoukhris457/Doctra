@@ -14,6 +14,7 @@ from typing import Tuple, List, Optional
 import gradio as gr
 
 from doctra.parsers.enhanced_pdf_parser import EnhancedPDFParser
+from doctra.engines.ocr import PytesseractOCREngine, PaddleOCREngine
 from doctra.utils.pdf_io import render_pdf_to_images
 from doctra.ui.ui_helpers import gather_outputs, validate_vlm_config, create_page_html_content
 
@@ -78,6 +79,14 @@ def run_enhanced_parse(
     shutil.copy2(pdf_file, input_pdf)
 
     try:
+        # Create OCR engine instance (default to PyTesseract)
+        ocr_engine = PytesseractOCREngine(
+            lang=ocr_lang,
+            psm=int(ocr_psm),
+            oem=int(ocr_oem),
+            extra_config=ocr_extra_config or ""
+        )
+        
         # Initialize enhanced parser with configuration
         parser = EnhancedPDFParser(
             use_image_restoration=use_image_restoration,
@@ -90,10 +99,7 @@ def run_enhanced_parse(
             layout_model_name=layout_model_name,
             dpi=int(dpi),
             min_score=float(min_score),
-            ocr_lang=ocr_lang,
-            ocr_psm=int(ocr_psm),
-            ocr_oem=int(ocr_oem),
-            ocr_extra_config=ocr_extra_config or "",
+            ocr_engine=ocr_engine,
             box_separator=box_separator or "\n",
         )
 

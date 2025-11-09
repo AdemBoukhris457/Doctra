@@ -56,6 +56,10 @@ Comprehensive parser for Microsoft Word documents (.docx files).
 
 ```python
 from doctra import StructuredPDFParser
+from doctra.engines.ocr import PytesseractOCREngine, PaddleOCREngine
+
+# Initialize OCR engine (optional - defaults to PyTesseract if None)
+ocr_engine = PytesseractOCREngine(lang="eng", psm=4, oem=3)
 
 parser = StructuredPDFParser(
     # Layout Detection
@@ -63,11 +67,8 @@ parser = StructuredPDFParser(
     dpi: int = 200,
     min_score: float = 0.0,
     
-    # OCR Settings
-    ocr_lang: str = "eng",
-    ocr_psm: int = 4,
-    ocr_oem: int = 3,
-    ocr_extra_config: str = "",
+    # OCR Engine (pass initialized engine instance)
+    ocr_engine: Optional[Union[PytesseractOCREngine, PaddleOCREngine]] = None,
     
     # VLM Settings
     use_vlm: bool = False,
@@ -194,17 +195,38 @@ parser.parse(
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `ocr_engine` | str | "pytesseract" | OCR engine to use: "pytesseract" or "paddleocr" |
-| `ocr_lang` | str | "eng" | Tesseract language code (PyTesseract only) |
-| `ocr_psm` | int | 4 | Page segmentation mode (PyTesseract only) |
-| `ocr_oem` | int | 3 | OCR engine mode (PyTesseract only) |
-| `ocr_extra_config` | str | "" | Additional Tesseract configuration (PyTesseract only) |
-| `paddleocr_use_doc_orientation_classify` | bool | False | Enable document orientation classification (PaddleOCR only) |
-| `paddleocr_use_doc_unwarping` | bool | False | Enable text image rectification (PaddleOCR only) |
-| `paddleocr_use_textline_orientation` | bool | False | Enable text line orientation classification (PaddleOCR only) |
-| `paddleocr_device` | str | "gpu" | Device for PaddleOCR: "cpu" or "gpu" (PaddleOCR only) |
+| `ocr_engine` | `Optional[Union[PytesseractOCREngine, PaddleOCREngine]]` | `None` | OCR engine instance. If `None`, creates a default `PytesseractOCREngine` with lang="eng", psm=4, oem=3 |
 
-**Note**: When using `ocr_engine="paddleocr"`, PaddleOCR 3.0's PP-OCRv5_server model is used by default. Models are automatically downloaded on first use.
+**OCR Engine Configuration:**
+
+OCR engines must be initialized externally and passed to the parser. This uses a dependency injection pattern for clearer API design.
+
+**PytesseractOCREngine Parameters:**
+- `lang` (str, default: "eng"): Tesseract language code (e.g., "eng", "fra", "spa", "deu", or multiple: "eng+fra")
+- `psm` (int, default: 4): Page segmentation mode (3=Automatic, 4=Single column, 6=Uniform block, 11=Sparse text, 12=Sparse with OSD)
+- `oem` (int, default: 3): OCR engine mode (0=Legacy, 1=Neural nets LSTM, 3=Default both)
+- `extra_config` (str, default: ""): Additional Tesseract configuration string
+
+**PaddleOCREngine Parameters:**
+- `device` (str, default: "gpu"): Device for OCR processing ("cpu" or "gpu")
+- `use_doc_orientation_classify` (bool, default: False): Enable document orientation classification
+- `use_doc_unwarping` (bool, default: False): Enable text image rectification
+- `use_textline_orientation` (bool, default: False): Enable text line orientation classification
+
+**Example:**
+```python
+from doctra.engines.ocr import PytesseractOCREngine, PaddleOCREngine
+
+# PyTesseract
+tesseract_ocr = PytesseractOCREngine(lang="eng", psm=4, oem=3)
+parser = StructuredPDFParser(ocr_engine=tesseract_ocr)
+
+# PaddleOCR
+paddle_ocr = PaddleOCREngine(device="gpu")
+parser = StructuredPDFParser(ocr_engine=paddle_ocr)
+```
+
+**Note**: When using PaddleOCR, PaddleOCR 3.0's PP-OCRv5_server model is used by default. Models are automatically downloaded on first use.
 
 ### VLM Parameters
 

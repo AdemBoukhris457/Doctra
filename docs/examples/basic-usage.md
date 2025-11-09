@@ -20,11 +20,15 @@ parser.parse("document.pdf")
 
 ```python
 from doctra import StructuredPDFParser
+from doctra.engines.ocr import PytesseractOCREngine
+
+# Initialize OCR engine
+tesseract_ocr = PytesseractOCREngine(lang="eng", psm=4, oem=3)
 
 parser = StructuredPDFParser(
     dpi=250,  # Higher quality
     min_score=0.7,  # More confident detections
-    ocr_lang="eng"  # English language
+    ocr_engine=tesseract_ocr
 )
 
 parser.parse("document.pdf", output_base_dir="my_results")
