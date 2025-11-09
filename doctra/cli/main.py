@@ -31,6 +31,7 @@ from doctra.engines.layout.paddle_layout import PaddleLayoutEngine
 from doctra.cli.utils import validate_vlm_config, handle_keyboard_interrupt
 from doctra.engines.image_restoration import DocResEngine
 from doctra.engines.ocr import PytesseractOCREngine, PaddleOCREngine
+from doctra.engines.vlm.service import VLMStructuredExtractor
 
 
 @click.group(invoke_without_command=True)
@@ -254,11 +255,22 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
                 lang=ocr_lang, psm=ocr_psm, oem=ocr_oem, extra_config=ocr_config
             )
 
+        # Create VLM engine instance if needed
+        vlm_engine = None
+        if use_vlm:
+            try:
+                vlm_engine = VLMStructuredExtractor(
+                    vlm_provider=vlm_provider,
+                    vlm_model=vlm_model,
+                    api_key=vlm_api_key,
+                )
+            except Exception as e:
+                click.echo(f"⚠️  Warning: VLM initialization failed: {e}", err=True)
+                click.echo("   Continuing without VLM processing...", err=True)
+                vlm_engine = None
+
         parser = StructuredPDFParser(
-            use_vlm=use_vlm,
-            vlm_provider=vlm_provider,
-            vlm_model=vlm_model,
-            vlm_api_key=vlm_api_key,
+            vlm=vlm_engine,
             layout_model_name=layout_model,
             dpi=dpi,
             min_score=min_score,
@@ -370,11 +382,22 @@ def parse_docx(docx_path: Path, output_dir: Optional[Path], use_vlm: bool,
     try:
         from doctra.parsers.structured_docx_parser import StructuredDOCXParser
         
+        # Create VLM engine instance if needed
+        vlm_engine = None
+        if use_vlm:
+            try:
+                vlm_engine = VLMStructuredExtractor(
+                    vlm_provider=vlm_provider,
+                    vlm_model=vlm_model,
+                    api_key=vlm_api_key,
+                )
+            except Exception as e:
+                click.echo(f"⚠️  Warning: VLM initialization failed: {e}", err=True)
+                click.echo("   Continuing without VLM processing...", err=True)
+                vlm_engine = None
+
         parser = StructuredDOCXParser(
-            use_vlm=use_vlm,
-            vlm_provider=vlm_provider,
-            vlm_model=vlm_model,
-            vlm_api_key=vlm_api_key,
+            vlm=vlm_engine,
             extract_images=extract_images,
             preserve_formatting=preserve_formatting,
             table_detection=table_detection,
@@ -528,15 +551,26 @@ def enhance(pdf_path: Path, output_dir: Optional[Path], restoration_task: str,
                 lang=ocr_lang, psm=ocr_psm, oem=ocr_oem, extra_config=ocr_config
             )
 
+        # Create VLM engine instance if needed
+        vlm_engine = None
+        if use_vlm:
+            try:
+                vlm_engine = VLMStructuredExtractor(
+                    vlm_provider=vlm_provider,
+                    vlm_model=vlm_model,
+                    api_key=vlm_api_key,
+                )
+            except Exception as e:
+                click.echo(f"⚠️  Warning: VLM initialization failed: {e}", err=True)
+                click.echo("   Continuing without VLM processing...", err=True)
+                vlm_engine = None
+
         parser = EnhancedPDFParser(
             use_image_restoration=True,
             restoration_task=restoration_task,
             restoration_device=restoration_device,
             restoration_dpi=restoration_dpi,
-            use_vlm=use_vlm,
-            vlm_provider=vlm_provider,
-            vlm_model=vlm_model,
-            vlm_api_key=vlm_api_key,
+            vlm=vlm_engine,
             layout_model_name=layout_model,
             dpi=dpi,
             min_score=min_score,
@@ -654,13 +688,24 @@ def charts(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
             if use_vlm:
                 click.echo(f"   Using VLM: {vlm_provider}")
 
+        # Create VLM engine instance if needed
+        vlm_engine = None
+        if use_vlm:
+            try:
+                vlm_engine = VLMStructuredExtractor(
+                    vlm_provider=vlm_provider,
+                    vlm_model=vlm_model,
+                    api_key=vlm_api_key,
+                )
+            except Exception as e:
+                click.echo(f"⚠️  Warning: VLM initialization failed: {e}", err=True)
+                click.echo("   Continuing without VLM processing...", err=True)
+                vlm_engine = None
+
         parser = ChartTablePDFParser(
             extract_charts=True,
             extract_tables=False,
-            use_vlm=use_vlm,
-            vlm_provider=vlm_provider,
-            vlm_model=vlm_model,
-            vlm_api_key=vlm_api_key,
+            vlm=vlm_engine,
             layout_model_name=layout_model,
             dpi=dpi,
             min_score=min_score
@@ -730,13 +775,24 @@ def tables(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
             if use_vlm:
                 click.echo(f"   Using VLM: {vlm_provider}")
 
+        # Create VLM engine instance if needed
+        vlm_engine = None
+        if use_vlm:
+            try:
+                vlm_engine = VLMStructuredExtractor(
+                    vlm_provider=vlm_provider,
+                    vlm_model=vlm_model,
+                    api_key=vlm_api_key,
+                )
+            except Exception as e:
+                click.echo(f"⚠️  Warning: VLM initialization failed: {e}", err=True)
+                click.echo("   Continuing without VLM processing...", err=True)
+                vlm_engine = None
+
         parser = ChartTablePDFParser(
             extract_charts=False,
             extract_tables=True,
-            use_vlm=use_vlm,
-            vlm_provider=vlm_provider,
-            vlm_model=vlm_model,
-            vlm_api_key=vlm_api_key,
+            vlm=vlm_engine,
             layout_model_name=layout_model,
             dpi=dpi,
             min_score=min_score
@@ -808,13 +864,24 @@ def both(pdf_path: Path, output_dir: Path, use_vlm: bool, vlm_provider: str,
             if use_vlm:
                 click.echo(f"   Using VLM: {vlm_provider}")
 
+        # Create VLM engine instance if needed
+        vlm_engine = None
+        if use_vlm:
+            try:
+                vlm_engine = VLMStructuredExtractor(
+                    vlm_provider=vlm_provider,
+                    vlm_model=vlm_model,
+                    api_key=vlm_api_key,
+                )
+            except Exception as e:
+                click.echo(f"⚠️  Warning: VLM initialization failed: {e}", err=True)
+                click.echo("   Continuing without VLM processing...", err=True)
+                vlm_engine = None
+
         parser = ChartTablePDFParser(
             extract_charts=True,
             extract_tables=True,
-            use_vlm=use_vlm,
-            vlm_provider=vlm_provider,
-            vlm_model=vlm_model,
-            vlm_api_key=vlm_api_key,
+            vlm=vlm_engine,
             layout_model_name=layout_model,
             dpi=dpi,
             min_score=min_score

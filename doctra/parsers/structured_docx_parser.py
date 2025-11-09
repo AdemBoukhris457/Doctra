@@ -52,6 +52,7 @@ from doctra.exporters.html_writer import write_html
 from doctra.exporters.markdown_table import render_markdown_table
 from doctra.exporters.image_saver import save_box_image
 from doctra.engines.vlm.outlines_types import TabularArtifact
+from doctra.engines.vlm.service import VLMStructuredExtractor
 
 
 class StructuredDOCXParser:
@@ -62,10 +63,7 @@ class StructuredDOCXParser:
     Supports structured data extraction and optional VLM processing for
     enhanced content analysis.
 
-    :param use_vlm: Whether to use VLM for structured data extraction (default: False)
-    :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
-    :param vlm_model: Model name to use (defaults to provider-specific defaults)
-    :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
+    :param vlm: VLM engine instance (VLMStructuredExtractor). If None, VLM processing is disabled.
     :param extract_images: Whether to extract embedded images (default: True)
     :param preserve_formatting: Whether to preserve text formatting in output (default: True)
     :param table_detection: Whether to detect and extract tables (default: True)
@@ -74,10 +72,7 @@ class StructuredDOCXParser:
     def __init__(
         self,
         *,
-        use_vlm: bool = False,
-        vlm_provider: str = "gemini",
-        vlm_model: str | None = None,
-        vlm_api_key: str | None = None,
+        vlm: Optional[VLMStructuredExtractor] = None,
         extract_images: bool = True,
         preserve_formatting: bool = True,
         table_detection: bool = True,
@@ -86,10 +81,7 @@ class StructuredDOCXParser:
         """
         Initialize the StructuredDOCXParser with processing configuration.
 
-        :param use_vlm: Whether to use VLM for structured data extraction (default: False)
-        :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
-        :param vlm_model: Model name to use (defaults to provider-specific defaults)
-        :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
+        :param vlm: VLM engine instance (VLMStructuredExtractor). If None, VLM processing is disabled.
         :param extract_images: Whether to extract embedded images (default: True)
         :param preserve_formatting: Whether to preserve text formatting in output (default: True)
         :param table_detection: Whether to detect and extract tables (default: True)
@@ -98,24 +90,21 @@ class StructuredDOCXParser:
         if Document is None:
             raise ImportError("python-docx is required for DOCX parsing. Install with: pip install python-docx")
         
-        self.use_vlm = use_vlm
         self.extract_images = extract_images
         self.preserve_formatting = preserve_formatting
         self.table_detection = table_detection
         self.export_excel = export_excel
-        self.vlm = None
         
-        if self.use_vlm:
-            try:
-                from doctra.engines.vlm.service import VLMStructuredExtractor
-                self.vlm = VLMStructuredExtractor(
-                    vlm_provider=vlm_provider,
-                    vlm_model=vlm_model,
-                    api_key=vlm_api_key,
-                )
-            except Exception as e:
-                print(f"Warning: VLM initialization failed: {e}")
-                self.vlm = None
+        # Initialize VLM engine - use provided instance or None
+        if vlm is None:
+            self.vlm = None
+        elif isinstance(vlm, VLMStructuredExtractor):
+            self.vlm = vlm
+        else:
+            raise TypeError(
+                f"vlm must be an instance of VLMStructuredExtractor or None, "
+                f"got {type(vlm).__name__}"
+            )
 
     def parse(self, docx_path: str) -> None:
         """
@@ -143,7 +132,7 @@ class StructuredDOCXParser:
             
             tables_data = [elem for elem in document_data['elements'] if elem['type'] == 'table']
             
-            if self.use_vlm and self.vlm and images_data:
+            if self.vlm is not None and images_data:
                 total_steps = len(images_data)
             else:
                 total_steps = 1
@@ -151,7 +140,7 @@ class StructuredDOCXParser:
             progress_bar = tqdm(total=total_steps, desc="Processing DOCX", unit="image")
             
             vlm_extracted_data = []
-            if self.use_vlm and self.vlm and images_data:
+            if self.vlm is not None and images_data:
                 vlm_extracted_data = self._process_vlm_data(images_data, output_dir, progress_bar)
             else:
                 progress_bar.update(1)
