@@ -99,7 +99,7 @@ The `StructuredPDFParser` is a comprehensive PDF parser that extracts all types 
 ```python
 from doctra.parsers.structured_pdf_parser import StructuredPDFParser
 
-# Basic parser without VLM
+# Basic parser without VLM (uses default PyTesseract OCR engine)
 parser = StructuredPDFParser()
 
 # Parser with VLM for structured data extraction
@@ -113,9 +113,49 @@ parser = StructuredPDFParser(
 parser.parse("document.pdf")
 ```
 
+#### OCR Engine Configuration:
+
+Doctra uses a dependency injection pattern for OCR engines. You initialize the OCR engine externally and pass it to the parser:
+
+```python
+from doctra.parsers.structured_pdf_parser import StructuredPDFParser
+from doctra.engines.ocr import PytesseractOCREngine, PaddleOCREngine
+
+# Option 1: Use default PyTesseract (automatic if ocr_engine=None)
+parser = StructuredPDFParser()  # Creates default PyTesseractOCREngine internally
+
+# Option 2: Explicitly configure PyTesseract
+tesseract_ocr = PytesseractOCREngine(
+    lang="eng",      # Language code
+    psm=4,           # Page segmentation mode
+    oem=3,           # OCR engine mode
+    extra_config=""  # Additional Tesseract config
+)
+parser = StructuredPDFParser(ocr_engine=tesseract_ocr)
+
+# Option 3: Use PaddleOCR for better accuracy
+paddle_ocr = PaddleOCREngine(
+    device="gpu",                          # "gpu" or "cpu"
+    use_doc_orientation_classify=False,    # Document orientation detection
+    use_doc_unwarping=False,              # Text image rectification
+    use_textline_orientation=False        # Text line orientation
+)
+parser = StructuredPDFParser(ocr_engine=paddle_ocr)
+```
+
 #### Advanced Configuration:
 
 ```python
+from doctra.engines.ocr import PytesseractOCREngine, PaddleOCREngine
+
+# Option 1: Using PyTesseract (default)
+ocr_engine = PytesseractOCREngine(
+    lang="eng",
+    psm=4,
+    oem=3,
+    extra_config=""
+)
+
 parser = StructuredPDFParser(
     # VLM Settings
     use_vlm=True,
@@ -128,21 +168,24 @@ parser = StructuredPDFParser(
     dpi=200,
     min_score=0.0,
     
-    # OCR Settings (PyTesseract - default)
-    ocr_engine="pytesseract",  # or "paddleocr" for PaddleOCR PP-OCRv5_server
-    ocr_lang="eng",
-    ocr_psm=4,
-    ocr_oem=3,
-    ocr_extra_config="",
-    
-    # PaddleOCR Settings (when ocr_engine="paddleocr")
-    # paddleocr_device="gpu",  # Use "cpu" if no GPU available
-    # paddleocr_use_doc_orientation_classify=False,
-    # paddleocr_use_doc_unwarping=False,
-    # paddleocr_use_textline_orientation=False,
+    # OCR Engine (pass the initialized engine)
+    ocr_engine=ocr_engine,  # or None for default PyTesseract
     
     # Output Settings
     box_separator="\n"
+)
+
+# Option 2: Using PaddleOCR for better accuracy
+paddle_ocr = PaddleOCREngine(
+    device="gpu",  # Use "cpu" if no GPU available
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False,
+    use_textline_orientation=False
+)
+
+parser = StructuredPDFParser(
+    ocr_engine=paddle_ocr,
+    # ... other settings
 )
 ```
 
@@ -175,6 +218,15 @@ parser.parse("scanned_document.pdf")
 #### Advanced Configuration:
 
 ```python
+from doctra.engines.ocr import PytesseractOCREngine, PaddleOCREngine
+
+# Initialize OCR engine (PyTesseract or PaddleOCR)
+ocr_engine = PytesseractOCREngine(
+    lang="eng",
+    psm=6,
+    oem=3
+)
+
 parser = EnhancedPDFParser(
     # Image Restoration Settings
     use_image_restoration=True,
@@ -193,13 +245,8 @@ parser = EnhancedPDFParser(
     dpi=200,
     min_score=0.5,
     
-    # OCR Settings
-    ocr_engine="pytesseract",  # or "paddleocr" for PaddleOCR PP-OCRv5_server
-    ocr_lang="eng",
-    ocr_psm=6,
-    
-    # PaddleOCR Settings (when ocr_engine="paddleocr")
-    # paddleocr_device="gpu",
+    # OCR Engine (pass the initialized engine)
+    ocr_engine=ocr_engine,  # or None for default PyTesseract
 )
 ```
 
@@ -542,7 +589,7 @@ The `StructuredPDFParser` includes a built-in visualization method that displays
 ```python
 from doctra.parsers.structured_pdf_parser import StructuredPDFParser
 
-# Initialize parser
+# Initialize parser (OCR engine is optional for visualization)
 parser = StructuredPDFParser()
 
 # Display visualization (opens in default image viewer)
@@ -614,7 +661,7 @@ The visualization shows:
 ```python
 from doctra.parsers.structured_pdf_parser import StructuredPDFParser
 
-# Initialize parser
+# Initialize parser (uses default PyTesseract OCR engine)
 parser = StructuredPDFParser()
 
 # Process document
@@ -630,12 +677,17 @@ parser.parse("financial_report.pdf")
 
 ```python
 from doctra.parsers.enhanced_pdf_parser import EnhancedPDFParser
+from doctra.engines.ocr import PytesseractOCREngine
+
+# Initialize OCR engine (optional - defaults to PyTesseract if not provided)
+ocr_engine = PytesseractOCREngine(lang="eng", psm=4, oem=3)
 
 # Initialize enhanced parser with image restoration
 parser = EnhancedPDFParser(
     use_image_restoration=True,
     restoration_task="dewarping",  # Correct perspective distortion
     restoration_device="cuda",    # Use GPU for faster processing
+    ocr_engine=ocr_engine,        # Pass OCR engine instance
     use_vlm=True,
     vlm_provider="openai",
     vlm_api_key="your_api_key"
@@ -654,14 +706,19 @@ parser.parse("scanned_document.pdf")
 
 ```python
 from doctra.parsers.structured_pdf_parser import StructuredPDFParser
+from doctra.engines.ocr import PaddleOCREngine
 
-# Use PaddleOCR PP-OCRv5_server for superior accuracy
+# Initialize PaddleOCR engine with custom settings
+paddle_ocr = PaddleOCREngine(
+    device="gpu",  # Use "cpu" if no GPU available
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False,
+    use_textline_orientation=False
+)
+
+# Create parser with PaddleOCR engine
 parser = StructuredPDFParser(
-    ocr_engine="paddleocr",
-    paddleocr_device="gpu",  # Use GPU for faster processing
-    paddleocr_use_doc_orientation_classify=False,
-    paddleocr_use_doc_unwarping=False,
-    paddleocr_use_textline_orientation=False
+    ocr_engine=paddle_ocr
 )
 
 # Process document with PaddleOCR
@@ -816,7 +873,7 @@ doctra parse *.pdf --output-dir results/
 ```python
 from doctra.parsers.structured_pdf_parser import StructuredPDFParser
 
-# Initialize parser
+# Initialize parser (OCR engine not needed for visualization)
 parser = StructuredPDFParser()
 
 # Create a comprehensive visualization
@@ -842,8 +899,10 @@ parser.display_pages_with_boxes("document.pdf")
 
 ### 📝 OCR Processing
 - **Dual OCR Engine Support**: Choose between PyTesseract (default) or PaddleOCR PP-OCRv5_server
+- **Dependency Injection Pattern**: Initialize OCR engines externally and pass them to parsers for clearer API
 - **PaddleOCR PP-OCRv5_server**: Advanced model from PaddleOCR 3.0 with superior accuracy
 - **PyTesseract**: Traditional OCR with extensive language support and fine-grained control
+- **Reusable Engines**: Create OCR engine instances once and reuse across multiple parsers
 - Support for multiple languages (PyTesseract)
 - GPU acceleration for PaddleOCR
 - Configurable OCR parameters for both engines
