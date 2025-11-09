@@ -1069,6 +1069,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#reusing-ocr-engines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reusing OCR Engines
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1925,6 +1934,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#reusing-ocr-engines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reusing OCR Engines
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2092,24 +2110,22 @@
 </ol>
 <p>You can choose between these engines based on your needs. PyTesseract is the default and works well for most use cases, while PaddleOCR provides enhanced accuracy for complex documents.</p>
 <h2 id="choosing-an-ocr-engine">Choosing an OCR Engine<a class="headerlink" href="#choosing-an-ocr-engine" title="Permanent link">&para;</a></h2>
+<p>Doctra uses a <strong>dependency injection pattern</strong> for OCR engines. You initialize the OCR engine externally and pass it to the parser. This provides a clearer API, avoids mixed configurations, and allows reusing OCR engines across multiple parsers.</p>
 <h3 id="pytesseract-default">PyTesseract (Default)<a class="headerlink" href="#pytesseract-default" title="Permanent link">&para;</a></h3>
 <p>PyTesseract is the default OCR engine and works well for most documents. It offers extensive language support and fine-grained control.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredPDFParser</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># PyTesseract is the default - no need to specify</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">ocr_lang</span><span class="o">=</span><span class="s2">&quot;eng&quot;</span><span class="p">,</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">ocr_psm</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">ocr_oem</span><span class="o">=</span><span class="mi">3</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">)</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Or explicitly specify it</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">ocr_engine</span><span class="o">=</span><span class="s2">&quot;pytesseract&quot;</span><span class="p">,</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">ocr_lang</span><span class="o">=</span><span class="s2">&quot;eng&quot;</span><span class="p">,</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">ocr_psm</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">ocr_oem</span><span class="o">=</span><span class="mi">3</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra.engines.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PytesseractOCREngine</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Option 1: Use default PyTesseract (automatic if ocr_engine=None)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">()</span>  <span class="c1"># Creates default PytesseractOCREngine internally</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Option 2: Explicitly configure PyTesseract</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">tesseract_ocr</span> <span class="o">=</span> <span class="n">PytesseractOCREngine</span><span class="p">(</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;eng&quot;</span><span class="p">,</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">psm</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">oem</span><span class="o">=</span><span class="mi">3</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">)</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span><span class="n">ocr_engine</span><span class="o">=</span><span class="n">tesseract_ocr</span><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="paddleocr-with-pp-ocrv5_server">PaddleOCR with PP-OCRv5_server<a class="headerlink" href="#paddleocr-with-pp-ocrv5_server" title="Permanent link">&para;</a></h3>
 <p>PaddleOCR provides the advanced <strong>PP-OCRv5_server</strong> model (default in PaddleOCR 3.0), which offers:</p>
@@ -2120,91 +2136,134 @@
 <li><strong>Automatic model management</strong> (models downloaded automatically)</li>
 </ul>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredPDFParser</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">ocr_engine</span><span class="o">=</span><span class="s2">&quot;paddleocr&quot;</span><span class="p">,</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">paddleocr_device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">,</span>  <span class="c1"># Use &quot;cpu&quot; if no GPU available</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">paddleocr_use_doc_orientation_classify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">paddleocr_use_doc_unwarping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">paddleocr_use_textline_orientation</span><span class="o">=</span><span class="kc">False</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra.engines.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCREngine</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Initialize PaddleOCR engine</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">paddle_ocr</span> <span class="o">=</span> <span class="n">PaddleOCREngine</span><span class="p">(</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">,</span>  <span class="c1"># Use &quot;cpu&quot; if no GPU available</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">use_doc_orientation_classify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">use_doc_unwarping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">use_textline_orientation</span><span class="o">=</span><span class="kc">False</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">)</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1"># Pass to parser</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span><span class="n">ocr_engine</span><span class="o">=</span><span class="n">paddle_ocr</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="reusing-ocr-engines">Reusing OCR Engines<a class="headerlink" href="#reusing-ocr-engines" title="Permanent link">&para;</a></h3>
+<p>One of the benefits of the dependency injection pattern is that you can create an OCR engine once and reuse it across multiple parsers:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra.engines.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PytesseractOCREngine</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredPDFParser</span><span class="p">,</span> <span class="n">EnhancedPDFParser</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Create OCR engine once</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">shared_ocr</span> <span class="o">=</span> <span class="n">PytesseractOCREngine</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s2">&quot;eng&quot;</span><span class="p">,</span> <span class="n">psm</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">oem</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Reuse across multiple parsers</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">parser1</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span><span class="n">ocr_engine</span><span class="o">=</span><span class="n">shared_ocr</span><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="n">parser2</span> <span class="o">=</span> <span class="n">EnhancedPDFParser</span><span class="p">(</span><span class="n">ocr_engine</span><span class="o">=</span><span class="n">shared_ocr</span><span class="p">)</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="n">parser3</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span><span class="n">ocr_engine</span><span class="o">=</span><span class="n">shared_ocr</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="pytesseract-parameters">PyTesseract Parameters<a class="headerlink" href="#pytesseract-parameters" title="Permanent link">&para;</a></h2>
-<p>These parameters are only used when <code>ocr_engine="pytesseract"</code> (or when using the default):</p>
+<p>These parameters are configured when initializing <code>PytesseractOCREngine</code>:</p>
 <dl>
-<dt><strong>ocr_lang</strong></dt>
+<dt><strong>lang</strong></dt>
 <dd>Tesseract language code
 - <code>eng</code>: English
 - <code>fra</code>: French
 - <code>spa</code>: Spanish
 - <code>deu</code>: German
 - Multiple: <code>eng+fra</code></dd>
-<dt><strong>ocr_psm</strong></dt>
+<dt><strong>psm</strong></dt>
 <dd>Page segmentation mode
 - <code>3</code>: Automatic
-- <code>6</code>: Uniform block (default)
+- <code>4</code>: Assume a single column of text (default)
+- <code>6</code>: Uniform block of text
 - <code>11</code>: Sparse text
-- <code>12</code>: Sparse with OSD</dd>
-<dt><strong>ocr_oem</strong></dt>
+- <code>12</code>: Sparse text with OSD</dd>
+<dt><strong>oem</strong></dt>
 <dd>OCR engine mode
 - <code>0</code>: Legacy
 - <code>1</code>: Neural nets LSTM
 - <code>3</code>: Default (both)</dd>
-<dt><strong>ocr_extra_config</strong></dt>
+<dt><strong>extra_config</strong></dt>
 <dd>Additional Tesseract configuration string</dd>
 </dl>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra.engines.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PytesseractOCREngine</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PytesseractOCREngine</span><span class="p">(</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;eng&quot;</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">psm</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">oem</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">extra_config</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">)</span>
+</span></code></pre></div></p>
 <h2 id="paddleocr-parameters">PaddleOCR Parameters<a class="headerlink" href="#paddleocr-parameters" title="Permanent link">&para;</a></h2>
-<p>These parameters are only used when <code>ocr_engine="paddleocr"</code>:</p>
+<p>These parameters are configured when initializing <code>PaddleOCREngine</code>:</p>
 <dl>
-<dt><strong>paddleocr_device</strong></dt>
+<dt><strong>device</strong></dt>
 <dd>Device to use for OCR processing
 - <code>"gpu"</code>: Use GPU acceleration (default, recommended if available)
 - <code>"cpu"</code>: Use CPU processing</dd>
-<dt><strong>paddleocr_use_doc_orientation_classify</strong></dt>
+<dt><strong>use_doc_orientation_classify</strong></dt>
 <dd>Enable document orientation classification model (default: <code>False</code>)
 - Automatically detects and corrects document orientation</dd>
-<dt><strong>paddleocr_use_doc_unwarping</strong></dt>
+<dt><strong>use_doc_unwarping</strong></dt>
 <dd>Enable text image rectification model (default: <code>False</code>)
 - Corrects perspective distortion in scanned documents</dd>
-<dt><strong>paddleocr_use_textline_orientation</strong></dt>
+<dt><strong>use_textline_orientation</strong></dt>
 <dd>Enable text line orientation classification model (default: <code>False</code>)
 - Handles rotated text lines</dd>
 </dl>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra.engines.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCREngine</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCREngine</span><span class="p">(</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">use_doc_orientation_classify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">use_doc_unwarping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">use_textline_orientation</span><span class="o">=</span><span class="kc">False</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">)</span>
+</span></code></pre></div></p>
 <p><strong>Note</strong>: The PP-OCRv5_server model is automatically used by default in PaddleOCR 3.0. Models are automatically downloaded on first use and cached for future use.</p>
 <h2 id="improving-accuracy">Improving Accuracy<a class="headerlink" href="#improving-accuracy" title="Permanent link">&para;</a></h2>
 <h3 id="1-choose-the-right-ocr-engine">1. Choose the Right OCR Engine<a class="headerlink" href="#1-choose-the-right-ocr-engine" title="Permanent link">&para;</a></h3>
 <p>For complex documents or when accuracy is critical, consider using PaddleOCR:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">ocr_engine</span><span class="o">=</span><span class="s2">&quot;paddleocr&quot;</span><span class="p">,</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">paddleocr_device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span>  <span class="c1"># Use GPU for better performance</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredPDFParser</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra.engines.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCREngine</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">paddle_ocr</span> <span class="o">=</span> <span class="n">PaddleOCREngine</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span><span class="n">ocr_engine</span><span class="o">=</span><span class="n">paddle_ocr</span><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="2-increase-dpi">2. Increase DPI<a class="headerlink" href="#2-increase-dpi" title="Permanent link">&para;</a></h3>
 <p>Higher resolution improves text recognition for both engines:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span><span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span><span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="3-use-image-restoration">3. Use Image Restoration<a class="headerlink" href="#3-use-image-restoration" title="Permanent link">&para;</a></h3>
 <p>Enhance document quality before OCR:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnhancedPDFParser</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">EnhancedPDFParser</span><span class="p">(</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">ocr_engine</span><span class="o">=</span><span class="s2">&quot;paddleocr&quot;</span>  <span class="c1"># Combine with PaddleOCR for best results</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnhancedPDFParser</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra.engines.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCREngine</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">paddle_ocr</span> <span class="o">=</span> <span class="n">PaddleOCREngine</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">)</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">EnhancedPDFParser</span><span class="p">(</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">ocr_engine</span><span class="o">=</span><span class="n">paddle_ocr</span>  <span class="c1"># Combine with PaddleOCR for best results</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="4-correct-language-pytesseract">4. Correct Language (PyTesseract)<a class="headerlink" href="#4-correct-language-pytesseract" title="Permanent link">&para;</a></h3>
-<p>For PyTesseract, specify the document language:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">ocr_engine</span><span class="o">=</span><span class="s2">&quot;pytesseract&quot;</span><span class="p">,</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">ocr_lang</span><span class="o">=</span><span class="s2">&quot;fra&quot;</span>  <span class="c1"># For French documents</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="p">)</span>
+<p>For PyTesseract, specify the document language when initializing the engine:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredPDFParser</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra.engines.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PytesseractOCREngine</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">tesseract_ocr</span> <span class="o">=</span> <span class="n">PytesseractOCREngine</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s2">&quot;fra&quot;</span><span class="p">)</span>  <span class="c1"># For French documents</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span><span class="n">ocr_engine</span><span class="o">=</span><span class="n">tesseract_ocr</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="multi-language-documents-pytesseract">Multi-language Documents (PyTesseract)<a class="headerlink" href="#multi-language-documents-pytesseract" title="Permanent link">&para;</a></h2>
-<p>PyTesseract supports multiple languages:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">ocr_engine</span><span class="o">=</span><span class="s2">&quot;pytesseract&quot;</span><span class="p">,</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">ocr_lang</span><span class="o">=</span><span class="s2">&quot;eng+fra+deu&quot;</span>  <span class="c1"># Multiple languages</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">)</span>
+<p>PyTesseract supports multiple languages. Configure this when initializing the engine:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredPDFParser</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra.engines.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PytesseractOCREngine</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">tesseract_ocr</span> <span class="o">=</span> <span class="n">PytesseractOCREngine</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s2">&quot;eng+fra+deu&quot;</span><span class="p">)</span>  <span class="c1"># Multiple languages</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span><span class="n">ocr_engine</span><span class="o">=</span><span class="n">tesseract_ocr</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="when-to-use-each-engine">When to Use Each Engine<a class="headerlink" href="#when-to-use-each-engine" title="Permanent link">&para;</a></h2>
 <h3 id="use-pytesseract-when">Use PyTesseract when:<a class="headerlink" href="#use-pytesseract-when" title="Permanent link">&para;</a></h3>
