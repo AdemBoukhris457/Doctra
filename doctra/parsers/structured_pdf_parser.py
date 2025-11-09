@@ -37,10 +37,7 @@ class StructuredPDFParser:
     Features automatic detection and merging of tables split across pages
     using proximity detection and LSD-based structure analysis.
 
-    :param use_vlm: Whether to use VLM for structured data extraction (default: False)
-    :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
-    :param vlm_model: Model name to use (defaults to provider-specific defaults)
-    :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
+    :param vlm: VLM engine instance (VLMStructuredExtractor). If None, VLM processing is disabled.
     :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
     :param dpi: DPI for PDF rendering (default: 200)
     :param min_score: Minimum confidence score for layout detection (default: 0.0)
@@ -58,10 +55,7 @@ class StructuredPDFParser:
     def __init__(
             self,
             *,
-            use_vlm: bool = False,
-            vlm_provider: str = "gemini",
-            vlm_model: str | None = None,
-            vlm_api_key: str | None = None,
+            vlm: Optional[VLMStructuredExtractor] = None,
             layout_model_name: str = "PP-DocLayout_plus-L",
             dpi: int = 200,
             min_score: float = 0.0,
@@ -79,10 +73,7 @@ class StructuredPDFParser:
         
         Also suppresses noisy DEBUG logs from external libraries.
 
-        :param use_vlm: Whether to use VLM for structured data extraction (default: False)
-        :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
-        :param vlm_model: Model name to use (defaults to provider-specific defaults)
-        :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
+        :param vlm: VLM engine instance (VLMStructuredExtractor). If None, VLM processing is disabled.
         :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
         :param dpi: DPI for PDF rendering (default: 200)
         :param min_score: Minimum confidence score for layout detection (default: 0.0)
@@ -112,17 +103,17 @@ class StructuredPDFParser:
             )
         
         self.box_separator = box_separator
-        self.use_vlm = use_vlm
-        self.vlm = None
-        if self.use_vlm:
-            try:
-                self.vlm = VLMStructuredExtractor(
-                    vlm_provider=vlm_provider,
-                    vlm_model=vlm_model,
-                    api_key=vlm_api_key,
-                )
-            except Exception as e:
-                self.vlm = None
+        
+        # Initialize VLM engine - use provided instance or None
+        if vlm is None:
+            self.vlm = None
+        elif isinstance(vlm, VLMStructuredExtractor):
+            self.vlm = vlm
+        else:
+            raise TypeError(
+                f"vlm must be an instance of VLMStructuredExtractor or None, "
+                f"got {type(vlm).__name__}"
+            )
         
         self.merge_split_tables = merge_split_tables
         if self.merge_split_tables:
@@ -180,8 +171,8 @@ class StructuredPDFParser:
         html_lines: List[str] = ["<h1>Extracted Content</h1>"]
         structured_items: List[Dict[str, Any]] = []
 
-        charts_desc = "Charts (VLM → table)" if self.use_vlm else "Charts (cropped)"
-        tables_desc = "Tables (VLM → table)" if self.use_vlm else "Tables (cropped)"
+        charts_desc = "Charts (VLM → table)" if self.vlm is not None else "Charts (cropped)"
+        tables_desc = "Tables (VLM → table)" if self.vlm is not None else "Tables (cropped)"
         figures_desc = "Figures (cropped)"
 
         with ExitStack() as stack:
@@ -222,7 +213,7 @@ class StructuredPDFParser:
                             if figures_bar: figures_bar.update(1)
 
                         elif box.label == "chart":
-                            if self.use_vlm and self.vlm:
+                            if self.vlm is not None:
                                 wrote_table = False
                                 try:
                                     chart = self.vlm.extract_chart(abs_img_path)
@@ -259,7 +250,7 @@ class StructuredPDFParser:
                             if is_merged:
                                 continue
                             
-                            if self.use_vlm and self.vlm:
+                            if self.vlm is not None:
                                 wrote_table = False
                                 try:
                                     table = self.vlm.extract_table(abs_img_path)
@@ -369,14 +360,14 @@ class StructuredPDFParser:
 
         md_path = write_markdown(md_lines, out_dir)
         
-        if self.use_vlm and html_lines:
+        if self.vlm is not None and html_lines:
             html_path = write_html_from_lines(html_lines, out_dir)
         else:
             html_path = write_html(md_lines, out_dir)
         
         excel_path = None
         html_structured_path = None
-        if self.use_vlm and structured_items:
+        if self.vlm is not None and structured_items:
             excel_path = os.path.join(out_dir, "tables.xlsx")
             write_structured_excel(excel_path, structured_items)
             html_structured_path = os.path.join(out_dir, "tables.html")

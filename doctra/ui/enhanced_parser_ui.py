@@ -15,6 +15,7 @@ import gradio as gr
 
 from doctra.parsers.enhanced_pdf_parser import EnhancedPDFParser
 from doctra.engines.ocr import PytesseractOCREngine, PaddleOCREngine
+from doctra.engines.vlm.service import VLMStructuredExtractor
 from doctra.utils.pdf_io import render_pdf_to_images
 from doctra.ui.ui_helpers import gather_outputs, validate_vlm_config, create_page_html_content
 
@@ -87,15 +88,25 @@ def run_enhanced_parse(
             extra_config=ocr_extra_config or ""
         )
         
+        # Create VLM engine instance if needed
+        vlm_engine = None
+        if use_vlm:
+            try:
+                vlm_engine = VLMStructuredExtractor(
+                    vlm_provider=vlm_provider,
+                    vlm_model=None,  # Use default model
+                    api_key=vlm_api_key or None,
+                )
+            except Exception as e:
+                return (f"❌ VLM initialization failed: {str(e)}", None, [], "", None, None, "")
+        
         # Initialize enhanced parser with configuration
         parser = EnhancedPDFParser(
             use_image_restoration=use_image_restoration,
             restoration_task=restoration_task,
             restoration_device=restoration_device if restoration_device != "auto" else None,
             restoration_dpi=int(restoration_dpi),
-            use_vlm=use_vlm,
-            vlm_provider=vlm_provider,
-            vlm_api_key=vlm_api_key or None,
+            vlm=vlm_engine,
             layout_model_name=layout_model_name,
             dpi=int(dpi),
             min_score=float(min_score),

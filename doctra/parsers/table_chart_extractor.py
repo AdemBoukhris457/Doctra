@@ -19,6 +19,7 @@ from doctra.exporters.image_saver import save_box_image
 from doctra.utils.file_ops import ensure_output_dirs
 
 from doctra.engines.vlm.service import VLMStructuredExtractor
+from typing import Optional
 from doctra.exporters.excel_writer import write_structured_excel
 from doctra.utils.structured_utils import to_structured_dict
 from doctra.exporters.markdown_table import render_markdown_table
@@ -37,10 +38,7 @@ class ChartTablePDFParser:
 
     :param extract_charts: Whether to extract charts from the document (default: True)
     :param extract_tables: Whether to extract tables from the document (default: True)
-    :param use_vlm: Whether to use VLM for structured data extraction (default: False)
-    :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
-    :param vlm_model: Model name to use (defaults to provider-specific defaults)
-    :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
+    :param vlm: VLM engine instance (VLMStructuredExtractor). If None, VLM processing is disabled.
     :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
     :param dpi: DPI for PDF rendering (default: 200)
     :param min_score: Minimum confidence score for layout detection (default: 0.0)
@@ -51,10 +49,7 @@ class ChartTablePDFParser:
             *,
             extract_charts: bool = True,
             extract_tables: bool = True,
-            use_vlm: bool = False,
-            vlm_provider: str = "gemini",
-            vlm_model: str | None = None,
-            vlm_api_key: str | None = None,
+            vlm: Optional[VLMStructuredExtractor] = None,
             layout_model_name: str = "PP-DocLayout_plus-L",
             dpi: int = 200,
             min_score: float = 0.0,
@@ -64,10 +59,7 @@ class ChartTablePDFParser:
 
         :param extract_charts: Whether to extract charts from the document (default: True)
         :param extract_tables: Whether to extract tables from the document (default: True)
-        :param use_vlm: Whether to use VLM for structured data extraction (default: False)
-        :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
-        :param vlm_model: Model name to use (defaults to provider-specific defaults)
-        :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
+        :param vlm: VLM engine instance (VLMStructuredExtractor). If None, VLM processing is disabled.
         :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
         :param dpi: DPI for PDF rendering (default: 200)
         :param min_score: Minimum confidence score for layout detection (default: 0.0)
@@ -81,13 +73,15 @@ class ChartTablePDFParser:
         self.dpi = dpi
         self.min_score = min_score
 
-        self.use_vlm = use_vlm
-        self.vlm = None
-        if self.use_vlm:
-            self.vlm = VLMStructuredExtractor(
-                vlm_provider=vlm_provider,
-                vlm_model=vlm_model,
-                api_key=vlm_api_key,
+        # Initialize VLM engine - use provided instance or None
+        if vlm is None:
+            self.vlm = None
+        elif isinstance(vlm, VLMStructuredExtractor):
+            self.vlm = vlm
+        else:
+            raise TypeError(
+                f"vlm must be an instance of VLMStructuredExtractor or None, "
+                f"got {type(vlm).__name__}"
             )
 
     def parse(self, pdf_path: str, output_base_dir: str = "outputs") -> None:
@@ -127,13 +121,13 @@ class ChartTablePDFParser:
         chart_count = sum(sum(1 for b in p.boxes if b.label == "chart") for p in pages) if self.extract_charts else 0
         table_count = sum(sum(1 for b in p.boxes if b.label == "table") for p in pages) if self.extract_tables else 0
 
-        if self.use_vlm:
+        if self.vlm is not None:
             md_lines: List[str] = ["# Extracted Charts and Tables\n"]
             structured_items: List[Dict[str, Any]] = []
             vlm_items: List[Dict[str, Any]] = []
 
-        charts_desc = "Charts (VLM → table)" if self.use_vlm else "Charts (cropped)"
-        tables_desc = "Tables (VLM → table)" if self.use_vlm else "Tables (cropped)"
+        charts_desc = "Charts (VLM → table)" if self.vlm is not None else "Charts (cropped)"
+        tables_desc = "Tables (VLM → table)" if self.vlm is not None else "Tables (cropped)"
 
         chart_counter = 1
         table_counter = 1
@@ -159,7 +153,7 @@ class ChartTablePDFParser:
 
                 target_items = [box for box in p.boxes if box.label in target_labels]
 
-                if target_items and self.use_vlm:
+                if target_items and self.vlm is not None:
                     md_lines.append(f"\n## Page {page_num}\n")
 
                 for box in sorted(target_items, key=reading_order_key):
@@ -170,7 +164,7 @@ class ChartTablePDFParser:
                         cropped_img = page_img.crop((box.x1, box.y1, box.x2, box.y2))
                         cropped_img.save(chart_path)
 
-                        if self.use_vlm and self.vlm:
+                        if self.vlm is not None:
                             rel_path = os.path.join("charts", chart_filename)
                             wrote_table = False
 
@@ -215,7 +209,7 @@ class ChartTablePDFParser:
                         cropped_img = page_img.crop((box.x1, box.y1, box.x2, box.y2))
                         cropped_img.save(table_path)
 
-                        if self.use_vlm and self.vlm:
+                        if self.vlm is not None:
                             rel_path = os.path.join("tables", table_filename)
                             wrote_table = False
 
@@ -255,7 +249,7 @@ class ChartTablePDFParser:
 
         excel_path = None
 
-        if self.use_vlm:
+        if self.vlm is not None:
 
             if structured_items:
                 if self.extract_charts and self.extract_tables:

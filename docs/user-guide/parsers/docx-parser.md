@@ -36,12 +36,19 @@ parser.parse("document.docx")
 ### With VLM Enhancement
 
 ```python
+from doctra import StructuredDOCXParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+# Initialize VLM engine
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",  # or "gemini", "anthropic", "openrouter", "qianfan", "ollama"
+    vlm_model="gpt-4-vision",  # Optional, uses default if None
+    api_key="your_api_key"
+)
+
 parser = StructuredDOCXParser(
-    # VLM Settings
-    use_vlm=True,
-    vlm_provider="openai",  # or "gemini", "anthropic", "openrouter"
-    vlm_model="gpt-4-vision",
-    vlm_api_key="your_api_key",
+    # VLM Engine (pass initialized engine instance)
+    vlm=vlm_engine,
     
     # Processing Options
     extract_images=True,
@@ -152,10 +159,29 @@ The DOCX parser is available in the Gradio web interface:
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `use_vlm` | bool | False | Enable VLM processing |
-| `vlm_provider` | str | None | Provider: "openai", "gemini", "anthropic", "openrouter" |
-| `vlm_api_key` | str | None | API key for the VLM provider |
-| `vlm_model` | str | None | Specific model to use (provider-dependent) |
+| `vlm` | `Optional[VLMStructuredExtractor]` | `None` | VLM engine instance. If `None`, VLM processing is disabled. |
+
+**VLM Engine Configuration:**
+
+VLM engines must be initialized externally and passed to the parser. This uses a dependency injection pattern for clearer API design.
+
+**VLMStructuredExtractor Parameters:**
+- `vlm_provider` (str, required): VLM provider to use ("openai", "gemini", "anthropic", "openrouter", "qianfan", "ollama")
+- `vlm_model` (str, optional): Model name to use (defaults to provider-specific defaults)
+- `api_key` (str, optional): API key for the VLM provider (required for all providers except Ollama)
+
+**Example:**
+```python
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    vlm_model="gpt-4-vision",  # Optional
+    api_key="your-api-key"
+)
+
+parser = StructuredDOCXParser(vlm=vlm_engine)
+```
 
 ### Processing Options
 
@@ -223,11 +249,16 @@ parser.parse("report.docx")
 ### Example 2: VLM-Enhanced Processing
 
 ```python
-parser = StructuredDOCXParser(
-    use_vlm=True,
+from doctra import StructuredDOCXParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+# Initialize VLM engine
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="openai",
-    vlm_api_key="your_api_key"
+    api_key="your_api_key"
 )
+
+parser = StructuredDOCXParser(vlm=vlm_engine)
 
 # Process with AI enhancement
 parser.parse("financial_report.docx")

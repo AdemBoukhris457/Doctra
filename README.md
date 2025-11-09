@@ -103,11 +103,16 @@ from doctra.parsers.structured_pdf_parser import StructuredPDFParser
 parser = StructuredPDFParser()
 
 # Parser with VLM for structured data extraction
-parser = StructuredPDFParser(
-    use_vlm=True,
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+# Initialize VLM engine
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="openai",  # or "gemini", "anthropic", "openrouter", "qianfan", "ollama"
-    vlm_api_key="your_api_key_here"
+    api_key="your_api_key_here"
 )
+
+# Pass VLM engine to parser
+parser = StructuredPDFParser(vlm=vlm_engine)
 
 # Parse document
 parser.parse("document.pdf")
@@ -141,6 +146,40 @@ paddle_ocr = PaddleOCREngine(
     use_textline_orientation=False        # Text line orientation
 )
 parser = StructuredPDFParser(ocr_engine=paddle_ocr)
+
+# Option 4: Reuse OCR engine across multiple parsers
+shared_ocr = PytesseractOCREngine(lang="eng", psm=6, oem=3)
+parser1 = StructuredPDFParser(ocr_engine=shared_ocr)
+parser2 = EnhancedPDFParser(ocr_engine=shared_ocr)  # Reuse same instance
+```
+
+#### VLM Engine Configuration:
+
+Doctra uses the same dependency injection pattern for VLM engines. You initialize the VLM engine externally and pass it to the parser:
+
+```python
+from doctra.parsers.structured_pdf_parser import StructuredPDFParser
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+# Option 1: No VLM (default)
+parser = StructuredPDFParser()  # VLM processing disabled
+
+# Option 2: Initialize VLM engine and pass to parser
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",  # or "gemini", "anthropic", "openrouter", "qianfan", "ollama"
+    vlm_model="gpt-5",      # Optional, uses default if None
+    api_key="your_api_key"
+)
+parser = StructuredPDFParser(vlm=vlm_engine)
+
+# Option 3: Reuse VLM engine across multiple parsers
+shared_vlm = VLMStructuredExtractor(
+    vlm_provider="gemini",
+    api_key="your_api_key"
+)
+parser1 = StructuredPDFParser(vlm=shared_vlm)
+parser2 = EnhancedPDFParser(vlm=shared_vlm)  # Reuse same instance
+parser3 = ChartTablePDFParser(vlm=shared_vlm)  # Reuse same instance
 ```
 
 #### Advanced Configuration:
@@ -156,12 +195,18 @@ ocr_engine = PytesseractOCREngine(
     extra_config=""
 )
 
-parser = StructuredPDFParser(
-    # VLM Settings
-    use_vlm=True,
+# Initialize VLM engine
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
     vlm_provider="openai",
-    vlm_model="gpt-5",
-    vlm_api_key="your_api_key",
+    vlm_model="gpt-5",  # Optional, uses default if None
+    api_key="your_api_key"
+)
+
+parser = StructuredPDFParser(
+    # VLM Engine (pass the initialized engine)
+    vlm=vlm_engine,  # or None to disable VLM
     
     # Layout Detection Settings
     layout_model_name="PP-DocLayout_plus-L",
@@ -227,6 +272,15 @@ ocr_engine = PytesseractOCREngine(
     oem=3
 )
 
+# Initialize VLM engine
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    vlm_model="gpt-4-vision",  # Optional, uses default if None
+    api_key="your_api_key"
+)
+
 parser = EnhancedPDFParser(
     # Image Restoration Settings
     use_image_restoration=True,
@@ -234,11 +288,8 @@ parser = EnhancedPDFParser(
     restoration_device="cuda",         # Use GPU for faster processing
     restoration_dpi=300,               # Higher DPI for better quality
     
-    # VLM Settings
-    use_vlm=True,
-    vlm_provider="openai",
-    vlm_model="gpt-4-vision",
-    vlm_api_key="your_api_key",
+    # VLM Engine (pass the initialized engine)
+    vlm=vlm_engine,  # or None to disable VLM
     
     # Layout Detection Settings
     layout_model_name="PP-DocLayout_plus-L",
@@ -296,16 +347,22 @@ parser.parse("document.pdf", output_base_dir="my_outputs")
 #### Advanced Configuration:
 
 ```python
+# Initialize VLM engine
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    vlm_model="gpt-5",  # Optional, uses default if None
+    api_key="your_api_key"
+)
+
 parser = ChartTablePDFParser(
     # Extraction Settings
     extract_charts=True,
     extract_tables=True,
     
-    # VLM Settings
-    use_vlm=True,
-    vlm_provider="openai",
-    vlm_model="gpt-5",
-    vlm_api_key="your_api_key",
+    # VLM Engine (pass the initialized engine)
+    vlm=vlm_engine,  # or None to disable VLM
     
     # Layout Detection Settings
     layout_model_name="PP-DocLayout_plus-L",
@@ -347,12 +404,18 @@ parser.parse("document.docx")
 #### Advanced Configuration with VLM:
 
 ```python
+# Initialize VLM engine
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",  # or "gemini", "anthropic", "openrouter", "qianfan", "ollama"
+    vlm_model="gpt-4-vision",  # Optional, uses default if None
+    api_key="your_api_key"
+)
+
 parser = StructuredDOCXParser(
-    # VLM Settings
-    use_vlm=True,
-    vlm_provider="openai",  # or "gemini", "anthropic", "openrouter"
-    vlm_model="gpt-4-vision",
-    vlm_api_key="your_api_key",
+    # VLM Engine (pass the initialized engine)
+    vlm=vlm_engine,  # or None to disable VLM
     
     # Processing Options
     extract_images=True,
@@ -682,15 +745,21 @@ from doctra.engines.ocr import PytesseractOCREngine
 # Initialize OCR engine (optional - defaults to PyTesseract if not provided)
 ocr_engine = PytesseractOCREngine(lang="eng", psm=4, oem=3)
 
+# Initialize VLM engine
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    api_key="your_api_key"
+)
+
 # Initialize enhanced parser with image restoration
 parser = EnhancedPDFParser(
     use_image_restoration=True,
     restoration_task="dewarping",  # Correct perspective distortion
     restoration_device="cuda",    # Use GPU for faster processing
     ocr_engine=ocr_engine,        # Pass OCR engine instance
-    use_vlm=True,
-    vlm_provider="openai",
-    vlm_api_key="your_api_key"
+    vlm=vlm_engine                # Pass VLM engine instance
 )
 
 # Process scanned document with enhancement
@@ -780,12 +849,18 @@ parser.parse("report.docx")
 ```python
 from doctra.parsers.structured_docx_parser import StructuredDOCXParser
 
+# Initialize VLM engine
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    vlm_model="gpt-4-vision",  # Optional, uses default if None
+    api_key="your_api_key"
+)
+
 # DOCX parsing with VLM for enhanced analysis
 parser = StructuredDOCXParser(
-    use_vlm=True,
-    vlm_provider="openai",
-    vlm_model="gpt-4-vision",
-    vlm_api_key="your_api_key",
+    vlm=vlm_engine,  # Pass VLM engine instance
     extract_images=True,
     preserve_formatting=True,
     table_detection=True,
@@ -807,13 +882,19 @@ parser.parse("financial_report.docx")
 ```python
 from doctra.parsers.table_chart_extractor import ChartTablePDFParser
 
+# Initialize VLM engine
+from doctra.engines.vlm.service import VLMStructuredExtractor
+
+vlm_engine = VLMStructuredExtractor(
+    vlm_provider="openai",
+    api_key="your_api_key"
+)
+
 # Initialize parser with VLM
 parser = ChartTablePDFParser(
     extract_charts=True,
     extract_tables=True,
-    use_vlm=True,
-    vlm_provider="openai",
-    vlm_api_key="your_api_key"
+    vlm=vlm_engine  # Pass VLM engine instance
 )
 
 # Process document
@@ -919,9 +1000,11 @@ parser.display_pages_with_boxes("document.pdf")
 - **Flexible Processing**: Standalone image restoration or integrated with parsing
 
 ### 🤖 VLM Integration
-- Vision Language Model support for structured data extraction
-- Multiple provider options (OpenAI, Gemini, Anthropic, OpenRouter, Qianfan, Ollama)
-- Automatic conversion of charts and tables to structured formats
+- **Dependency Injection Pattern**: Initialize VLM engines externally and pass them to parsers for clearer API
+- **Vision Language Model Support**: Structured data extraction from visual elements
+- **Multiple Provider Options**: OpenAI, Gemini, Anthropic, OpenRouter, Qianfan, Ollama
+- **Reusable Engines**: Create VLM engine instances once and reuse across multiple parsers
+- **Automatic Conversion**: Charts and tables converted to structured formats (Excel, HTML, JSON)
 
 ### 📊 Multiple Output Formats
 - **Markdown**: Human-readable document with embedded images and tables

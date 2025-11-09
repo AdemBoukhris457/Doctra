@@ -17,6 +17,7 @@ from tqdm import tqdm
 
 from doctra.parsers.structured_pdf_parser import StructuredPDFParser
 from doctra.engines.image_restoration import DocResEngine
+from doctra.engines.vlm.service import VLMStructuredExtractor
 from doctra.utils.pdf_io import render_pdf_to_images
 from doctra.utils.constants import IMAGE_SUBDIRS, EXCLUDE_LABELS
 from doctra.utils.file_ops import ensure_output_dirs
@@ -45,10 +46,7 @@ class EnhancedPDFParser(StructuredPDFParser):
     :param restoration_task: DocRes task to use ("dewarping", "deshadowing", "appearance", "deblurring", "binarization", "end2end", default: "appearance")
     :param restoration_device: Device for DocRes processing ("cuda", "cpu", or None for auto-detect, default: None)
     :param restoration_dpi: DPI for restoration processing (default: 200)
-    :param use_vlm: Whether to use VLM for structured data extraction (default: False)
-    :param vlm_provider: VLM provider to use ("gemini", "openai", "anthropic", or "openrouter", default: "gemini")
-    :param vlm_model: Model name to use (defaults to provider-specific defaults)
-    :param vlm_api_key: API key for VLM provider (required if use_vlm is True)
+    :param vlm: VLM engine instance (VLMStructuredExtractor). If None, VLM processing is disabled.
     :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
     :param dpi: DPI for PDF rendering (default: 200)
     :param min_score: Minimum confidence score for layout detection (default: 0.0)
@@ -64,10 +62,7 @@ class EnhancedPDFParser(StructuredPDFParser):
         restoration_task: str = "appearance",
         restoration_device: Optional[str] = None,
         restoration_dpi: int = 200,
-        use_vlm: bool = False,
-        vlm_provider: str = "gemini",
-        vlm_model: str | None = None,
-        vlm_api_key: str | None = None,
+        vlm: Optional[VLMStructuredExtractor] = None,
         layout_model_name: str = "PP-DocLayout_plus-L",
         dpi: int = 200,
         min_score: float = 0.0,
@@ -79,10 +74,7 @@ class EnhancedPDFParser(StructuredPDFParser):
         """
         # Initialize parent class
         super().__init__(
-            use_vlm=use_vlm,
-            vlm_provider=vlm_provider,
-            vlm_model=vlm_model,
-            vlm_api_key=vlm_api_key,
+            vlm=vlm,
             layout_model_name=layout_model_name,
             dpi=dpi,
             min_score=min_score,
@@ -227,8 +219,8 @@ class EnhancedPDFParser(StructuredPDFParser):
         structured_items: List[Dict[str, Any]] = []
         page_content: Dict[int, List[str]] = {}  # Store content by page
 
-        charts_desc = "Charts (VLM → table)" if self.use_vlm else "Charts (cropped)"
-        tables_desc = "Tables (VLM → table)" if self.use_vlm else "Tables (cropped)"
+        charts_desc = "Charts (VLM → table)" if self.vlm is not None else "Charts (cropped)"
+        tables_desc = "Tables (VLM → table)" if self.vlm is not None else "Tables (cropped)"
         figures_desc = "Figures (cropped)"
 
         with ExitStack() as stack:
@@ -272,7 +264,7 @@ class EnhancedPDFParser(StructuredPDFParser):
                             if figures_bar: figures_bar.update(1)
 
                         elif box.label == "chart":
-                            if self.use_vlm and self.vlm:
+                            if self.vlm is not None:
                                 wrote_table = False
                                 try:
                                     chart = self.vlm.extract_chart(abs_img_path)
@@ -308,7 +300,7 @@ class EnhancedPDFParser(StructuredPDFParser):
                             if charts_bar: charts_bar.update(1)
 
                         elif box.label == "table":
-                            if self.use_vlm and self.vlm:
+                            if self.vlm is not None:
                                 wrote_table = False
                                 try:
                                     table = self.vlm.extract_table(abs_img_path)
@@ -356,7 +348,7 @@ class EnhancedPDFParser(StructuredPDFParser):
 
         md_path = write_markdown(md_lines, out_dir)
         
-        if self.use_vlm and html_lines:
+        if self.vlm is not None and html_lines:
             html_path = write_html_from_lines(html_lines, out_dir)
         else:
             html_path = write_html(md_lines, out_dir)
@@ -370,7 +362,7 @@ class EnhancedPDFParser(StructuredPDFParser):
         
         excel_path = None
         html_structured_path = None
-        if self.use_vlm and structured_items:
+        if self.vlm is not None and structured_items:
             excel_path = os.path.join(out_dir, "tables.xlsx")
             write_structured_excel(excel_path, structured_items)
             html_structured_path = os.path.join(out_dir, "tables.html")
