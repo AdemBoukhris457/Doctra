@@ -10,6 +10,7 @@ import os
 import sys
 import numpy as np
 from typing import List, Dict, Any, Optional, Union
+from doctra.engines.ocr import PytesseractOCREngine, PaddleOCREngine
 from contextlib import ExitStack
 from PIL import Image
 from tqdm import tqdm
@@ -51,15 +52,8 @@ class EnhancedPDFParser(StructuredPDFParser):
     :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
     :param dpi: DPI for PDF rendering (default: 200)
     :param min_score: Minimum confidence score for layout detection (default: 0.0)
-    :param ocr_engine: OCR engine to use ("pytesseract" or "paddleocr", default: "pytesseract")
-    :param ocr_lang: OCR language code (default: "eng") - only used with pytesseract
-    :param ocr_psm: Tesseract page segmentation mode (default: 4) - only used with pytesseract
-    :param ocr_oem: Tesseract OCR engine mode (default: 3) - only used with pytesseract
-    :param ocr_extra_config: Additional Tesseract configuration (default: "") - only used with pytesseract
-    :param paddleocr_use_doc_orientation_classify: Enable document orientation classification for PaddleOCR (default: False)
-    :param paddleocr_use_doc_unwarping: Enable text image rectification for PaddleOCR (default: False)
-    :param paddleocr_use_textline_orientation: Enable text line orientation classification for PaddleOCR (default: False)
-    :param paddleocr_device: Device to use for PaddleOCR ("cpu" or "gpu", default: "gpu")
+    :param ocr_engine: OCR engine instance (PytesseractOCREngine or PaddleOCREngine). 
+                       If None, creates a default PytesseractOCREngine with lang="eng", psm=4, oem=3.
     :param box_separator: Separator between text boxes in output (default: "\n")
     """
 
@@ -77,15 +71,7 @@ class EnhancedPDFParser(StructuredPDFParser):
         layout_model_name: str = "PP-DocLayout_plus-L",
         dpi: int = 200,
         min_score: float = 0.0,
-        ocr_engine: str = "pytesseract",
-        ocr_lang: str = "eng",
-        ocr_psm: int = 4,
-        ocr_oem: int = 3,
-        ocr_extra_config: str = "",
-        paddleocr_use_doc_orientation_classify: bool = False,
-        paddleocr_use_doc_unwarping: bool = False,
-        paddleocr_use_textline_orientation: bool = False,
-        paddleocr_device: str = "gpu",
+        ocr_engine: Optional[Union[PytesseractOCREngine, PaddleOCREngine]] = None,
         box_separator: str = "\n",
     ):
         """
@@ -101,14 +87,6 @@ class EnhancedPDFParser(StructuredPDFParser):
             dpi=dpi,
             min_score=min_score,
             ocr_engine=ocr_engine,
-            ocr_lang=ocr_lang,
-            ocr_psm=ocr_psm,
-            ocr_oem=ocr_oem,
-            ocr_extra_config=ocr_extra_config,
-            paddleocr_use_doc_orientation_classify=paddleocr_use_doc_orientation_classify,
-            paddleocr_use_doc_unwarping=paddleocr_use_doc_unwarping,
-            paddleocr_use_textline_orientation=paddleocr_use_textline_orientation,
-            paddleocr_device=paddleocr_device,
             box_separator=box_separator,
         )
         

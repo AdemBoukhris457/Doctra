@@ -30,6 +30,7 @@ except ImportError:
 from doctra.engines.layout.paddle_layout import PaddleLayoutEngine
 from doctra.cli.utils import validate_vlm_config, handle_keyboard_interrupt
 from doctra.engines.image_restoration import DocResEngine
+from doctra.engines.ocr import PytesseractOCREngine, PaddleOCREngine
 
 
 @click.group(invoke_without_command=True)
@@ -125,22 +126,37 @@ def ocr_options(func):
     Decorator to add common OCR options to commands.
     
     Adds the following options to a Click command:
-    - --ocr-lang: OCR language code
-    - --ocr-psm: Tesseract page segmentation mode
-    - --ocr-oem: Tesseract OCR engine mode
-    - --ocr-config: Additional Tesseract configuration
+    - --ocr-engine: OCR engine to use ("pytesseract" or "paddleocr", default: "pytesseract")
+    - --ocr-lang: OCR language code (for PyTesseract)
+    - --ocr-psm: Tesseract page segmentation mode (for PyTesseract)
+    - --ocr-oem: Tesseract OCR engine mode (for PyTesseract)
+    - --ocr-config: Additional Tesseract configuration (for PyTesseract)
+    - --paddleocr-device: Device for PaddleOCR ("cpu" or "gpu", default: "gpu")
+    - --paddleocr-use-doc-orientation-classify: Enable document orientation classification for PaddleOCR
+    - --paddleocr-use-doc-unwarping: Enable text image rectification for PaddleOCR
+    - --paddleocr-use-textline-orientation: Enable text line orientation classification for PaddleOCR
 
     :param func: The Click command function to decorate
     :return: Decorated function with OCR options
     """
+    func = click.option('--ocr-engine', type=click.Choice(['pytesseract', 'paddleocr']), default='pytesseract',
+                        help='OCR engine to use (default: pytesseract)')(func)
     func = click.option('--ocr-lang', default='eng',
-                        help='OCR language code (default: eng)')(func)
+                        help='OCR language code for PyTesseract (default: eng)')(func)
     func = click.option('--ocr-psm', type=int, default=4,
-                        help='Tesseract page segmentation mode (default: 4)')(func)
+                        help='Tesseract page segmentation mode for PyTesseract (default: 4)')(func)
     func = click.option('--ocr-oem', type=int, default=3,
-                        help='Tesseract OCR engine mode (default: 3)')(func)
+                        help='Tesseract OCR engine mode for PyTesseract (default: 3)')(func)
     func = click.option('--ocr-config', default='',
-                        help='Additional Tesseract configuration string')(func)
+                        help='Additional Tesseract configuration string for PyTesseract')(func)
+    func = click.option('--paddleocr-device', type=click.Choice(['cpu', 'gpu']), default='gpu',
+                        help='Device for PaddleOCR (default: gpu)')(func)
+    func = click.option('--paddleocr-use-doc-orientation-classify', is_flag=True, default=False,
+                        help='Enable document orientation classification for PaddleOCR')(func)
+    func = click.option('--paddleocr-use-doc-unwarping', is_flag=True, default=False,
+                        help='Enable text image rectification for PaddleOCR')(func)
+    func = click.option('--paddleocr-use-textline-orientation', is_flag=True, default=False,
+                        help='Enable text line orientation classification for PaddleOCR')(func)
     return func
 
 
@@ -160,7 +176,9 @@ def ocr_options(func):
 def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
           vlm_provider: str, vlm_model: Optional[str], vlm_api_key: Optional[str],
           layout_model: str, dpi: int, min_score: float,
-          ocr_lang: str, ocr_psm: int, ocr_oem: int, ocr_config: str,
+          ocr_engine: str, ocr_lang: str, ocr_psm: int, ocr_oem: int, ocr_config: str,
+          paddleocr_device: str, paddleocr_use_doc_orientation_classify: bool,
+          paddleocr_use_doc_unwarping: bool, paddleocr_use_textline_orientation: bool,
           box_separator: str, verbose: bool):
     """
     Parse a PDF document and extract all structured content.
@@ -215,11 +233,26 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
                 click.echo(f"   VLM Model: {vlm_model or 'default'}")
             click.echo(f"   Layout Model: {layout_model}")
             click.echo(f"   DPI: {dpi}")
-            click.echo(f"   OCR Language: {ocr_lang}")
+            click.echo(f"   OCR Engine: {ocr_engine}")
+            if ocr_engine == "pytesseract":
+                click.echo(f"   OCR Language: {ocr_lang}")
         else:
             click.echo(f"🔍 Initializing full document parser...")
             if use_vlm:
                 click.echo(f"   Using VLM: {vlm_provider}")
+
+        # Create OCR engine instance
+        if ocr_engine == "paddleocr":
+            ocr_engine_instance = PaddleOCREngine(
+                use_doc_orientation_classify=paddleocr_use_doc_orientation_classify,
+                use_doc_unwarping=paddleocr_use_doc_unwarping,
+                use_textline_orientation=paddleocr_use_textline_orientation,
+                device=paddleocr_device
+            )
+        else:  # pytesseract
+            ocr_engine_instance = PytesseractOCREngine(
+                lang=ocr_lang, psm=ocr_psm, oem=ocr_oem, extra_config=ocr_config
+            )
 
         parser = StructuredPDFParser(
             use_vlm=use_vlm,
@@ -229,10 +262,7 @@ def parse(pdf_path: Path, output_dir: Optional[Path], use_vlm: bool,
             layout_model_name=layout_model,
             dpi=dpi,
             min_score=min_score,
-            ocr_lang=ocr_lang,
-            ocr_psm=ocr_psm,
-            ocr_oem=ocr_oem,
-            ocr_extra_config=ocr_config,
+            ocr_engine=ocr_engine_instance,
             box_separator=box_separator
         )
     except Exception as e:
@@ -408,7 +438,9 @@ def enhance(pdf_path: Path, output_dir: Optional[Path], restoration_task: str,
            restoration_device: Optional[str], restoration_dpi: int,
            use_vlm: bool, vlm_provider: str, vlm_model: Optional[str], vlm_api_key: Optional[str],
            layout_model: str, dpi: int, min_score: float,
-           ocr_lang: str, ocr_psm: int, ocr_oem: int, ocr_config: str,
+           ocr_engine: str, ocr_lang: str, ocr_psm: int, ocr_oem: int, ocr_config: str,
+           paddleocr_device: str, paddleocr_use_doc_orientation_classify: bool,
+           paddleocr_use_doc_unwarping: bool, paddleocr_use_textline_orientation: bool,
            box_separator: str, verbose: bool):
     """
     Enhanced PDF parsing with DocRes image restoration.
@@ -475,11 +507,26 @@ def enhance(pdf_path: Path, output_dir: Optional[Path], restoration_task: str,
                 click.echo(f"   VLM Model: {vlm_model or 'default'}")
             click.echo(f"   Layout Model: {layout_model}")
             click.echo(f"   DPI: {dpi}")
-            click.echo(f"   OCR Language: {ocr_lang}")
+            click.echo(f"   OCR Engine: {ocr_engine}")
+            if ocr_engine == "pytesseract":
+                click.echo(f"   OCR Language: {ocr_lang}")
         else:
             click.echo(f"🔧 Initializing enhanced parser with DocRes...")
             if use_vlm:
                 click.echo(f"   Using VLM: {vlm_provider}")
+
+        # Create OCR engine instance
+        if ocr_engine == "paddleocr":
+            ocr_engine_instance = PaddleOCREngine(
+                use_doc_orientation_classify=paddleocr_use_doc_orientation_classify,
+                use_doc_unwarping=paddleocr_use_doc_unwarping,
+                use_textline_orientation=paddleocr_use_textline_orientation,
+                device=paddleocr_device
+            )
+        else:  # pytesseract
+            ocr_engine_instance = PytesseractOCREngine(
+                lang=ocr_lang, psm=ocr_psm, oem=ocr_oem, extra_config=ocr_config
+            )
 
         parser = EnhancedPDFParser(
             use_image_restoration=True,
@@ -493,10 +540,7 @@ def enhance(pdf_path: Path, output_dir: Optional[Path], restoration_task: str,
             layout_model_name=layout_model,
             dpi=dpi,
             min_score=min_score,
-            ocr_lang=ocr_lang,
-            ocr_psm=ocr_psm,
-            ocr_oem=ocr_oem,
-            ocr_extra_config=ocr_config,
+            ocr_engine=ocr_engine_instance,
             box_separator=box_separator
         )
     except Exception as e:
