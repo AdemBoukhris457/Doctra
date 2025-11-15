@@ -82,6 +82,30 @@ parser = ChartTablePDFParser(
 parser.parse("presentation.pdf")
 ```
 
+## Example 5b: PaddleOCRVL End-to-End Parsing
+
+```python
+from doctra import PaddleOCRVLPDFParser
+
+# Initialize parser with all features
+parser = PaddleOCRVLPDFParser(
+    use_image_restoration=True,      # Enable DocRes restoration
+    restoration_task="appearance",    # Use appearance enhancement
+    use_chart_recognition=True,       # Enable chart recognition
+    merge_split_tables=True,          # Enable split table merging
+    device="gpu"                      # Use GPU for processing
+)
+
+# Parse document - automatically handles all content types
+parser.parse("financial_report.pdf")
+
+# Output in: outputs/financial_report/paddleocr_vl_parse/
+# - result.md: All content in Markdown
+# - result.html: Formatted HTML output
+# - tables.xlsx: All tables and charts in Excel format
+# - tables.html: Structured tables and charts
+```
+
 ## Example 6: Visualize Layout Detection
 
 ```python

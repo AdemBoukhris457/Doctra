@@ -43,6 +43,9 @@ Parsers are the main entry point for document processing. They orchestrate the e
 **ChartTablePDFParser**
 :   Specialized parser focused on extracting only charts and tables.
 
+**PaddleOCRVLPDFParser**
+:   End-to-end document parser using PaddleOCRVL Vision-Language Model for comprehensive document understanding with chart recognition and split table merging.
+
 ### Engines
 
 Engines provide specific processing capabilities:
@@ -445,6 +448,14 @@ parser = EnhancedPDFParser(use_image_restoration=True)
 # Only need charts/tables
 from doctra import ChartTablePDFParser
 parser = ChartTablePDFParser(extract_charts=True, extract_tables=True)
+
+# Complex documents with charts and tables (end-to-end VLM parsing)
+from doctra import PaddleOCRVLPDFParser
+parser = PaddleOCRVLPDFParser(
+    use_image_restoration=True,
+    use_chart_recognition=True,
+    merge_split_tables=True
+)
 ```
 
 ### Optimizing Performance

@@ -136,6 +136,7 @@ nav:
           - Structured PDF Parser: user-guide/parsers/structured-parser.md
           - Enhanced PDF Parser: user-guide/parsers/enhanced-parser.md
           - Chart & Table Extractor: user-guide/parsers/chart-table-extractor.md
+          - PaddleOCRVL PDF Parser: user-guide/parsers/paddleocr-vl-parser.md
           - DOCX Parser: user-guide/parsers/docx-parser.md
           - Split Table Merging: user-guide/features/split-table-merging.md
       - Engines:
