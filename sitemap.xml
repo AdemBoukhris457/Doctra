@@ -2,114 +2,114 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/index.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/changelog.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/api/engines.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/api/exporters.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/api/parsers.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/api/utils.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/contributing/code-of-conduct.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/contributing/development.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/examples/advanced-examples.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/examples/basic-usage.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/examples/integration.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/getting-started/installation.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/getting-started/quick-start.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/getting-started/system-requirements.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/interfaces/cli.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/interfaces/web-ui.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/user-guide/core-concepts.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/user-guide/engines/docres-engine.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/user-guide/engines/layout-detection.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/user-guide/engines/ocr-engine.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/user-guide/engines/vlm-integration.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/user-guide/features/split-table-merging.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/user-guide/outputs/export-formats.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/user-guide/outputs/visualization.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/chart-table-extractor.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/docx-parser.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/enhanced-parser.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
     <url>
          <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/structured-parser.html</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-15</lastmod>
     </url>
 </urlset>
