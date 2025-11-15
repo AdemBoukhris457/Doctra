@@ -38,6 +38,18 @@ Specialized parser for extracting charts and tables.
 
 ---
 
+## PaddleOCRVLPDFParser
+
+End-to-end document parser using PaddleOCRVL Vision-Language Model.
+
+::: doctra.parsers.paddleocr_vl_parser.PaddleOCRVLPDFParser
+    options:
+      show_root_heading: true
+      show_source: true
+      heading_level: 3
+
+---
+
 ## StructuredDOCXParser
 
 Comprehensive parser for Microsoft Word documents (.docx files).

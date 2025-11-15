@@ -20,6 +20,7 @@
   - [StructuredPDFParser](#structuredpdfparser)
   - [EnhancedPDFParser](#enhancedpdfparser)
   - [ChartTablePDFParser](#charttablepdfparser)
+  - [PaddleOCRVLPDFParser](#paddleocrvlpdfparser)
   - [StructuredDOCXParser](#structureddocxparser)
   - [DocResEngine](#docresengine)
 - [Web UI (Gradio)](#🖥️-web-ui-gradio)
@@ -370,6 +371,87 @@ parser = ChartTablePDFParser(
     min_score=0.0
 )
 ```
+
+### PaddleOCRVLPDFParser
+
+The `PaddleOCRVLPDFParser` uses PaddleOCRVL (Vision-Language Model) for end-to-end document parsing. It combines PaddleOCRVL's advanced document understanding capabilities with DocRes image restoration and split table merging, providing a comprehensive solution for complex document processing.
+
+#### Key Features:
+- **End-to-End Parsing**: Uses PaddleOCRVL for complete document understanding in a single pass
+- **Chart Recognition**: Automatically extracts and converts charts to structured table format
+- **Document Restoration**: Optional DocRes integration for enhanced document quality
+- **Split Table Merging**: Automatically detects and merges tables split across pages
+- **Structured Output**: Generates Markdown, HTML, and Excel files with tables and charts
+- **Multiple Element Types**: Handles headers, text, tables, charts, footnotes, and more
+
+#### Basic Usage:
+
+```python
+from doctra import PaddleOCRVLPDFParser
+
+# Basic parser with default settings
+parser = PaddleOCRVLPDFParser(
+    use_image_restoration=True,      # Enable DocRes restoration
+    use_chart_recognition=True,       # Enable chart recognition
+    merge_split_tables=True,          # Enable split table merging
+    device="gpu"                      # Use GPU for processing
+)
+
+# Parse a PDF document
+parser.parse("document.pdf")
+```
+
+#### Advanced Configuration:
+
+```python
+from doctra import PaddleOCRVLPDFParser
+
+parser = PaddleOCRVLPDFParser(
+    # DocRes Image Restoration Settings
+    use_image_restoration=True,
+    restoration_task="appearance",    # Options: appearance, dewarping, deshadowing, deblurring, binarization, end2end
+    restoration_device="cuda",        # or "cpu" or None for auto-detect
+    restoration_dpi=300,              # DPI for restoration processing
+    
+    # PaddleOCRVL Settings
+    use_chart_recognition=True,       # Enable chart recognition and extraction
+    use_doc_orientation_classify=True, # Enable document orientation classification
+    use_doc_unwarping=True,           # Enable document unwarping
+    use_layout_detection=True,        # Enable layout detection
+    device="gpu",                     # "gpu" or "cpu"
+    
+    # Split Table Merging Settings
+    merge_split_tables=True,          # Enable split table detection and merging
+    bottom_threshold_ratio=0.20,      # Ratio for "too close to bottom" detection
+    top_threshold_ratio=0.15,         # Ratio for "too close to top" detection
+    max_gap_ratio=0.25,               # Maximum allowed gap between tables
+    column_alignment_tolerance=10.0,  # Pixel tolerance for column alignment
+    min_merge_confidence=0.65         # Minimum confidence score for merging
+)
+
+# Parse with custom output directory
+parser.parse("document.pdf", output_dir="custom_output")
+```
+
+#### Output Structure:
+
+The parser generates output in `outputs/{document_name}/paddleocr_vl_parse/` with:
+- **result.md**: Markdown file with all extracted content
+- **result.html**: HTML file with formatted output
+- **tables.xlsx**: Excel file containing all tables and charts as structured data
+- **tables.html**: HTML file with structured tables and charts
+- **enhanced_pages/**: Directory with DocRes-enhanced page images (if restoration enabled)
+- **tables/**: Directory with merged table images (if split tables detected)
+
+#### Example Output:
+
+The parser extracts various document elements:
+- **Headers**: Document titles and section headers
+- **Text**: Paragraphs and body text
+- **Tables**: Extracted as HTML and converted to Excel format
+- **Charts**: Converted from visual format to structured table data
+- **Footnotes**: Vision-based footnote detection
+- **Figure Titles**: Captions and figure descriptions
 
 ### StructuredDOCXParser
 
@@ -877,7 +959,31 @@ parser.parse("financial_report.docx")
 # - Smart content display (tables instead of images)
 ```
 
-### Example 6: Chart and Table Extraction with VLM
+### Example 6: PaddleOCRVL End-to-End Parsing
+
+```python
+from doctra import PaddleOCRVLPDFParser
+
+# Initialize PaddleOCRVL parser with all features enabled
+parser = PaddleOCRVLPDFParser(
+    use_image_restoration=True,      # Enable DocRes restoration
+    restoration_task="appearance",    # Use appearance enhancement
+    use_chart_recognition=True,       # Enable chart recognition
+    merge_split_tables=True,          # Enable split table merging
+    device="gpu"                      # Use GPU for faster processing
+)
+
+# Parse document - automatically handles all content types
+parser.parse("financial_report.pdf")
+
+# Output will be in: outputs/financial_report/paddleocr_vl_parse/
+# - result.md: All content in Markdown
+# - result.html: Formatted HTML output
+# - tables.xlsx: All tables and charts in Excel format
+# - tables.html: Structured tables and charts
+```
+
+### Example 7: Chart and Table Extraction with VLM
 
 ```python
 from doctra.parsers.table_chart_extractor import ChartTablePDFParser
@@ -906,7 +1012,7 @@ parser.parse("data_report.pdf", output_base_dir="extracted_data")
 # - Markdown tables with extracted data
 ```
 
-### Example 7: Web UI Usage
+### Example 8: Web UI Usage
 
 ```python
 from doctra.ui.app import launch_ui
@@ -920,7 +1026,7 @@ demo = build_demo()
 demo.launch(share=True)  # Share publicly
 ```
 
-### Example 8: Command Line Usage
+### Example 9: Command Line Usage
 
 ```bash
 # DOCX parsing with VLM
@@ -949,7 +1055,7 @@ doctra extract charts document.pdf \
 doctra parse *.pdf --output-dir results/
 ```
 
-### Example 9: Layout Visualization
+### Example 10: Layout Visualization
 
 ```python
 from doctra.parsers.structured_pdf_parser import StructuredPDFParser
@@ -987,6 +1093,15 @@ parser.display_pages_with_boxes("document.pdf")
 - Support for multiple languages (PyTesseract)
 - GPU acceleration for PaddleOCR
 - Configurable OCR parameters for both engines
+
+### 🧠 PaddleOCRVL End-to-End Parsing
+- **Vision-Language Model**: Advanced document understanding using PaddleOCRVL
+- **Complete Document Parsing**: Single-pass extraction of all content types
+- **Chart Recognition**: Automatic chart detection and conversion to structured tables
+- **Multi-Element Support**: Handles headers, text, tables, charts, footnotes, and figure titles
+- **Integrated Restoration**: Optional DocRes image restoration for enhanced quality
+- **Split Table Merging**: Automatic detection and merging of tables across pages
+- **Structured Output**: Generates Excel files with both tables and charts
 
 ### 🖼️ Visual Element Extraction
 - Automatic cropping and saving of figures, charts, and tables

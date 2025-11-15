@@ -77,6 +77,7 @@ parser.parse("document.pdf")
 | **StructuredPDFParser** | Complete document processing | General purpose parsing |
 | **EnhancedPDFParser** | Parsing with image restoration | Scanned or low-quality documents |
 | **ChartTablePDFParser** | Focused extraction | Only charts and tables needed |
+| **PaddleOCRVLPDFParser** | End-to-end VLM parsing | Complex documents with charts and tables |
 
 ### Engines
 

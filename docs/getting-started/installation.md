@@ -150,19 +150,32 @@ print(f"CUDA available: {torch.cuda.is_available()}")
 
 ### PaddlePaddle GPU Support
 
-For GPU-accelerated layout detection:
+For GPU-accelerated layout detection and PaddleOCRVL:
 
 ```bash
-pip uninstall paddlepaddle
-pip install paddlepaddle-gpu
+# Install PaddlePaddle GPU (CUDA 12.6)
+pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
+
+# Install PaddleOCR with doc-parser support
+pip install -U "paddleocr[doc-parser]"
+
+# Install platform-specific safetensors (required for PaddleOCRVL)
+# For Linux:
+pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
+
+# For Windows:
+pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 ```
 
 !!! note "GPU Requirements"
     GPU support requires:
     
     - NVIDIA GPU with CUDA Compute Capability 3.5+
-    - CUDA 11.8 or higher
+    - CUDA 12.6 (for PaddlePaddle 3.2.1) or see [PaddlePaddle installation guide](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html) for other CUDA versions
     - cuDNN 8.6 or higher
+
+!!! tip "Automatic Installation"
+    When installing Doctra from PyPI or source, PaddleOCR dependencies are automatically installed with platform-specific handling for safetensors. The installation will automatically select the correct safetensors wheel for your platform (Linux or Windows).
 
 ## Troubleshooting
 
