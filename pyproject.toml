@@ -54,9 +54,6 @@ dependencies = [
     "pymupdf>=1.23.0",
     "scikit-image>=0.19.3",
     "torchvision",
-    # Safetensors - platform-specific wheels for PaddleOCRVL
-    "safetensors @ https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl; sys_platform == 'linux'",
-    "safetensors @ https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl; sys_platform == 'win32'",
 ]
 
 [project.scripts]

@@ -1,6 +1,7 @@
 """Setup script for Doctra."""
 from setuptools import setup, find_packages
 import os
+import sys
 
 # Read the contents of README file
 this_directory = os.path.abspath(os.path.dirname(__file__))
@@ -11,6 +12,17 @@ with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 version = {}
 with open(os.path.join('doctra', 'version.py')) as f:
     exec(f.read(), version)
+
+# Platform-specific safetensors dependencies
+safetensors_deps = []
+if sys.platform == 'linux':
+    safetensors_deps.append(
+        "safetensors @ https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl"
+    )
+elif sys.platform == 'win32':
+    safetensors_deps.append(
+        "safetensors @ https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl"
+    )
 
 setup(
     name="doctra",
@@ -65,10 +77,7 @@ setup(
         "pymupdf>=1.23.0",
         "scikit-image>=0.19.3",
         "torchvision",
-        # Safetensors - platform-specific wheels for PaddleOCRVL
-        "safetensors @ https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl; sys_platform == 'linux'",
-        "safetensors @ https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl; sys_platform == 'win32'",
-    ],
+    ] + safetensors_deps,
     extras_require={
         "openai": ["openai>=1.0.0"],
         "gemini": ["google-genai"],
