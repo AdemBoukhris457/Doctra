@@ -1294,6 +1294,8 @@
       
         
       
+        
+      
     
     
     
@@ -1415,6 +1417,34 @@
     
   
     Chart & Table Extractor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="parsers/paddleocr-vl-parser.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PaddleOCRVL PDF Parser
   
 
     
@@ -3007,6 +3037,8 @@
 <dd>Extends StructuredPDFParser with image restoration capabilities for low-quality documents.</dd>
 <dt><strong>ChartTablePDFParser</strong></dt>
 <dd>Specialized parser focused on extracting only charts and tables.</dd>
+<dt><strong>PaddleOCRVLPDFParser</strong></dt>
+<dd>End-to-end document parser using PaddleOCRVL Vision-Language Model for comprehensive document understanding with chart recognition and split table merging.</dd>
 </dl>
 <h3 id="engines">Engines<a class="headerlink" href="#engines" title="Permanent link">&para;</a></h3>
 <p>Engines provide specific processing capabilities:</p>
@@ -3395,6 +3427,14 @@
 </span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="c1"># Only need charts/tables</span>
 </span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChartTablePDFParser</span>
 </span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">ChartTablePDFParser</span><span class="p">(</span><span class="n">extract_charts</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extract_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="c1"># Complex documents with charts and tables (end-to-end VLM parsing)</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCRVLPDFParser</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="optimizing-performance">Optimizing Performance<a class="headerlink" href="#optimizing-performance" title="Permanent link">&para;</a></h3>
 <ol>

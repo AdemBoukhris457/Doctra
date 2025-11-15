@@ -12,13 +12,13 @@
         <meta name="author" content="Adem Boukhris">
       
       
-        <link rel="canonical" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/structured-parser.html">
+        <link rel="canonical" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/paddleocr-vl-parser.html">
       
       
-        <link rel="prev" href="../core-concepts.html">
+        <link rel="prev" href="chart-table-extractor.html">
       
       
-        <link rel="next" href="enhanced-parser.html">
+        <link rel="next" href="docx-parser.html">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Structured PDF Parser - Doctra Documentation</title>
+        <title>PaddleOCRVL PDF Parser - Doctra Documentation</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#structured-pdf-parser" class="md-skip">
+        <a href="#paddleocrvl-pdf-parser" class="md-skip">
           Skip to content
         </a>
       
@@ -121,7 +121,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Structured PDF Parser
+              PaddleOCRVL PDF Parser
             
           </span>
         </div>
@@ -809,37 +809,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Structured PDF Parser
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="structured-parser.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="structured-parser.html" class="md-nav__link">
         
   
   
@@ -855,236 +828,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Overview
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Features
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#basic-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Basic Usage
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#split-table-merging" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Split Table Merging
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Split Table Merging">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How It Works
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How It Works">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#phase-1-proximity-detection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 1: Proximity Detection
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-2-structural-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 2: Structural Validation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fallback-mechanisms" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fallback Mechanisms
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enabling-split-table-merging" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Enabling Split Table Merging
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configuration-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration Options
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parameter-details" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Parameter Details
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Output
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#when-to-use" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When to Use
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#technical-details" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Technical Details
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#output-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Output Structure
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#when-to-use_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When to Use
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        See Also
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1150,10 +893,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="paddleocr-vl-parser.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PaddleOCRVL PDF Parser
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="paddleocr-vl-parser.html" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1169,6 +939,258 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Features
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration Options
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docres-image-restoration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DocRes Image Restoration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paddleocrvl-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PaddleOCRVL Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#split-table-merging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Split Table Merging
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extracted-content-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extracted Content Types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chart-recognition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chart Recognition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#split-table-merging_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Split Table Merging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docres-restoration-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DocRes Restoration Tasks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameter-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameter Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docres-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DocRes Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paddleocrvl-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PaddleOCRVL Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#split-table-merging-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Split Table Merging Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-financial-report-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Financial Report Processing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2228,90 +2250,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#split-table-merging" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Split Table Merging
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Split Table Merging">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How It Works
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How It Works">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#phase-1-proximity-detection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 1: Proximity Detection
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-2-structural-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 2: Structural Validation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fallback-mechanisms" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fallback Mechanisms
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enabling-split-table-merging" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Enabling Split Table Merging
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#configuration-options" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2320,13 +2258,14 @@
     </span>
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Configuration Options">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#parameter-details" class="md-nav__link">
+  <a href="#docres-image-restoration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parameter Details
+        DocRes Image Restoration
       
     </span>
   </a>
@@ -2334,10 +2273,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#output" class="md-nav__link">
+  <a href="#paddleocrvl-settings" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output
+        PaddleOCRVL Settings
       
     </span>
   </a>
@@ -2345,21 +2284,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#when-to-use" class="md-nav__link">
+  <a href="#split-table-merging" class="md-nav__link">
     <span class="md-ellipsis">
       
-        When to Use
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#technical-details" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Technical Details
+        Split Table Merging
       
     </span>
   </a>
@@ -2368,6 +2296,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Configuration
+      
+    </span>
+  </a>
   
 </li>
       
@@ -2383,10 +2322,115 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-to-use_1" class="md-nav__link">
+  <a href="#extracted-content-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extracted Content Types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chart-recognition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chart Recognition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#split-table-merging_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Split Table Merging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docres-restoration-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DocRes Restoration Tasks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameter-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameter Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docres-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DocRes Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paddleocrvl-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PaddleOCRVL Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#split-table-merging-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Split Table Merging Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
     <span class="md-ellipsis">
       
         When to Use
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-financial-report-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Financial Report Processing
       
     </span>
   </a>
@@ -2421,7 +2465,7 @@
 
 
   
-    <a href="https://github.com/AdemBoukhris457/Doctra/edit/main/docs/user-guide/parsers/structured-parser.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/AdemBoukhris457/Doctra/edit/main/docs/user-guide/parsers/paddleocr-vl-parser.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -2430,156 +2474,265 @@
     
       
     
-    <a href="https://github.com/AdemBoukhris457/Doctra/raw/main/docs/user-guide/parsers/structured-parser.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/AdemBoukhris457/Doctra/raw/main/docs/user-guide/parsers/paddleocr-vl-parser.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="structured-pdf-parser">Structured PDF Parser<a class="headerlink" href="#structured-pdf-parser" title="Permanent link">&para;</a></h1>
-<p>Comprehensive guide to using the <code>StructuredPDFParser</code>.</p>
+<h1 id="paddleocrvl-pdf-parser">PaddleOCRVL PDF Parser<a class="headerlink" href="#paddleocrvl-pdf-parser" title="Permanent link">&para;</a></h1>
+<p>Guide to using the <code>PaddleOCRVLPDFParser</code> for end-to-end document parsing with Vision-Language Model capabilities.</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>The <code>StructuredPDFParser</code> is the foundational parser in Doctra, designed for general-purpose PDF document processing. It combines layout detection, OCR, and optional VLM integration to extract all content from PDF documents.</p>
+<p>The <code>PaddleOCRVLPDFParser</code> uses PaddleOCRVL (Vision-Language Model) for comprehensive document understanding. It combines PaddleOCRVL's advanced document parsing capabilities with DocRes image restoration and split table merging, providing a complete solution for complex document processing tasks.</p>
 <h2 id="key-features">Key Features<a class="headerlink" href="#key-features" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Layout Detection</strong>: PaddleOCR-based document structure analysis</li>
-<li><strong>OCR Processing</strong>: Text extraction from all document elements</li>
-<li><strong>Visual Element Extraction</strong>: Automatic cropping of figures, charts, and tables</li>
-<li><strong>VLM Integration</strong>: Optional structured data extraction</li>
-<li><strong>Split Table Merging</strong>: Automatic detection and merging of tables split across pages</li>
-<li><strong>Multiple Output Formats</strong>: Markdown, HTML, Excel, JSON</li>
+<li><strong>End-to-End Parsing</strong>: Uses PaddleOCRVL for complete document understanding in a single pass</li>
+<li><strong>Chart Recognition</strong>: Automatically detects and converts charts to structured table format</li>
+<li><strong>Document Restoration</strong>: Optional DocRes integration for enhanced document quality</li>
+<li><strong>Split Table Merging</strong>: Automatically detects and merges tables split across pages</li>
+<li><strong>Structured Output</strong>: Generates Markdown, HTML, and Excel files with tables and charts</li>
+<li><strong>Multiple Element Types</strong>: Handles headers, text, tables, charts, footnotes, figure titles, and more</li>
 </ul>
 <h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredPDFParser</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCRVLPDFParser</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Initialize parser with defaults</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">()</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># Parse document</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;document.pdf&quot;</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Basic parser with default settings</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>      <span class="c1"># Enable DocRes restoration</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>       <span class="c1"># Enable chart recognition</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>          <span class="c1"># Enable split table merging</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span>                      <span class="c1"># Use GPU for processing</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># Parse a PDF document</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;document.pdf&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<p>See <a href="../../api/parsers.html#structuredpdfparser">API Reference</a> for detailed parameter documentation.</p>
-<h2 id="split-table-merging">Split Table Merging<a class="headerlink" href="#split-table-merging" title="Permanent link">&para;</a></h2>
-<p>The <code>StructuredPDFParser</code> includes an advanced feature to automatically detect and merge tables that are split across multiple pages. This is especially useful for processing financial reports, data tables, and other documents where large tables span page boundaries.</p>
-<h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
-<p>The split table detection uses a two-phase approach combining spatial heuristics with structural analysis:</p>
-<h4 id="phase-1-proximity-detection">Phase 1: Proximity Detection<a class="headerlink" href="#phase-1-proximity-detection" title="Permanent link">&para;</a></h4>
-<p>The system first identifies candidate table pairs using position-based heuristics:</p>
-<ol>
-<li><strong>Position Check</strong>: </li>
-<li>The first table segment must be close to the bottom of its page (within 20% by default)</li>
-<li>
-<p>The second table segment must be close to the top of the next page (within 15% by default)</p>
-</li>
-<li>
-<p><strong>Horizontal Alignment</strong>:</p>
-</li>
-<li>The tables must have significant horizontal overlap (at least 50%)</li>
-<li>
-<p>This ensures they're aligned vertically on the page</p>
-</li>
-<li>
-<p><strong>Gap Analysis</strong>:</p>
-</li>
-<li>The gap between the end of the first table and start of the second table is measured</li>
-<li>The gap accounts for page breaks, headers, and footers</li>
-<li>
-<p>Maximum allowed gap is 25% of page height by default</p>
-</li>
-<li>
-<p><strong>Width Similarity</strong>:</p>
-</li>
-<li>Both table segments must have similar widths (within 20% difference)</li>
-<li>This ensures they belong to the same table structure</li>
-</ol>
-<h4 id="phase-2-structural-validation">Phase 2: Structural Validation<a class="headerlink" href="#phase-2-structural-validation" title="Permanent link">&para;</a></h4>
-<p>Once proximity checks pass, the system performs deeper structural analysis using <strong>LSD (Line Segment Detector)</strong> from OpenCV:</p>
-<ol>
-<li><strong>Column Detection</strong>:</li>
-<li>LSD detects vertical lines in both table segments</li>
-<li>These lines represent column boundaries</li>
-<li>
-<p>The algorithm is adaptive and works across different table structures without parameter tuning</p>
-</li>
-<li>
-<p><strong>Column Count Matching</strong>:</p>
-</li>
-<li>The system compares the number of columns detected in both segments</li>
-<li>
-<p>Tolerance is adaptive based on table size:</p>
+<h2 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">&para;</a></h2>
+<h3 id="docres-image-restoration">DocRes Image Restoration<a class="headerlink" href="#docres-image-restoration" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="c1"># Image Restoration Settings</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">restoration_task</span><span class="o">=</span><span class="s2">&quot;appearance&quot;</span><span class="p">,</span>    <span class="c1"># Options: appearance, dewarping, deshadowing, deblurring, binarization, end2end</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">restoration_device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span>        <span class="c1"># or &quot;cpu&quot; or None for auto-detect</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">restoration_dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>              <span class="c1"># DPI for restoration processing</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="paddleocrvl-settings">PaddleOCRVL Settings<a class="headerlink" href="#paddleocrvl-settings" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="c1"># PaddleOCRVL Configuration</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>       <span class="c1"># Enable chart recognition and extraction</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">use_doc_orientation_classify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># Enable document orientation classification</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">use_doc_unwarping</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>           <span class="c1"># Enable document unwarping</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">use_layout_detection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>        <span class="c1"># Enable layout detection</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">,</span>                     <span class="c1"># &quot;gpu&quot; or &quot;cpu&quot;</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="split-table-merging">Split Table Merging<a class="headerlink" href="#split-table-merging" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="c1"># Split Table Merging Settings</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>          <span class="c1"># Enable split table detection and merging</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span>      <span class="c1"># Ratio for &quot;too close to bottom&quot; detection</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>         <span class="c1"># Ratio for &quot;too close to top&quot; detection</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>               <span class="c1"># Maximum allowed gap between tables</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">column_alignment_tolerance</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>  <span class="c1"># Pixel tolerance for column alignment</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.65</span>         <span class="c1"># Minimum confidence score for merging</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="advanced-configuration">Advanced Configuration<a class="headerlink" href="#advanced-configuration" title="Permanent link">&para;</a></h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCRVLPDFParser</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="c1"># DocRes Image Restoration Settings</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">restoration_task</span><span class="o">=</span><span class="s2">&quot;end2end&quot;</span><span class="p">,</span>       <span class="c1"># Full restoration pipeline</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">restoration_device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span>        <span class="c1"># Force GPU usage</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">restoration_dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>              <span class="c1"># Higher DPI for better quality</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="c1"># PaddleOCRVL Settings</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">use_doc_orientation_classify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Enable orientation detection</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">use_doc_unwarping</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>            <span class="c1"># Enable unwarping</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">use_layout_detection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">,</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>    <span class="c1"># Split Table Merging Settings</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    <span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    <span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    <span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>    <span class="n">column_alignment_tolerance</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>    <span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.65</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="p">)</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="c1"># Parse with custom output directory</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;document.pdf&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;custom_output&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="output-structure">Output Structure<a class="headerlink" href="#output-structure" title="Permanent link">&para;</a></h2>
+<p>The parser generates output in <code>outputs/{document_name}/paddleocr_vl_parse/</code> with:</p>
 <ul>
-<li>Small tables (≤5 columns): Allows 1 column difference</li>
-<li>Medium tables (6-10 columns): Allows 2 column differences</li>
-<li>Large tables (11-20 columns): Allows 15% difference or minimum 3</li>
+<li><strong>result.md</strong>: Markdown file with all extracted content</li>
+<li><strong>result.html</strong>: HTML file with formatted output</li>
+<li><strong>tables.xlsx</strong>: Excel file containing all tables and charts as structured data</li>
+<li><strong>tables.html</strong>: HTML file with structured tables and charts</li>
+<li><strong>enhanced_pages/</strong>: Directory with DocRes-enhanced page images (if restoration enabled)</li>
+<li><strong>tables/</strong>: Directory with merged table images (if split tables detected)</li>
 </ul>
-</li>
-<li>
-<p><strong>Column Alignment</strong>:</p>
-</li>
-<li>The relative positions of columns are compared between segments</li>
-<li>At least 60% of columns must align within a tolerance (10 pixels by default)</li>
-<li>
-<p>This ensures structural continuity</p>
-</li>
-<li>
-<p><strong>Confidence Scoring</strong>:</p>
-</li>
-<li>A confidence score (0-1) is calculated based on:<ul>
-<li>Column count match</li>
-<li>Column alignment quality</li>
-<li>Width similarity</li>
-<li>Overlap ratio</li>
-</ul>
-</li>
-<li>Only matches with confidence ≥ 0.65 (default) are merged</li>
-</ol>
-<h4 id="fallback-mechanisms">Fallback Mechanisms<a class="headerlink" href="#fallback-mechanisms" title="Permanent link">&para;</a></h4>
-<p>The system includes intelligent fallbacks for edge cases:</p>
+<h2 id="extracted-content-types">Extracted Content Types<a class="headerlink" href="#extracted-content-types" title="Permanent link">&para;</a></h2>
+<p>The parser extracts various document elements:</p>
 <ul>
-<li>
-<p><strong>Too Many Columns Detected</strong>: If LSD detects &gt;20 columns, it likely indicates noise (horizontal lines, text boundaries). The system falls back to proximity-based matching with lower confidence.</p>
-</li>
-<li>
-<p><strong>No Columns Detected</strong>: For borderless tables or poor image quality, if no columns are detected in either segment, the system uses proximity-based matching.</p>
-</li>
-<li>
-<p><strong>Noise Filtering</strong>: The system filters out edge columns that are too close to image boundaries (likely artifacts).</p>
-</li>
+<li><strong>Headers</strong>: Document titles and section headers</li>
+<li><strong>Text</strong>: Paragraphs and body text</li>
+<li><strong>Tables</strong>: Extracted as HTML and converted to Excel format</li>
+<li><strong>Charts</strong>: Converted from visual format to structured table data (pipe-delimited format)</li>
+<li><strong>Footnotes</strong>: Vision-based footnote detection (<code>vision_footnote</code>)</li>
+<li><strong>Figure Titles</strong>: Captions and figure descriptions</li>
+<li><strong>Numbers</strong>: Standalone numbers (like page numbers)</li>
 </ul>
-<h3 id="enabling-split-table-merging">Enabling Split Table Merging<a class="headerlink" href="#enabling-split-table-merging" title="Permanent link">&para;</a></h3>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredPDFParser</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Enable split table merging with default settings</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">)</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># Parse document - split tables will be automatically merged</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;document.pdf&quot;</span><span class="p">)</span>
-</span></code></pre></div>
-<h3 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">&para;</a></h3>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredPDFParser</span><span class="p">(</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="c1"># Position thresholds</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span>  <span class="c1"># 20% from bottom of page</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>     <span class="c1"># 15% from top of page</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="c1"># Gap tolerance</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>            <span class="c1"># 25% of page height max gap</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="c1"># Structural validation</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">column_alignment_tolerance</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>  <span class="c1"># Pixel tolerance for column alignment</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span>       <span class="c1"># Minimum confidence to merge (0-1)</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="p">)</span>
-</span></code></pre></div>
-<h3 id="parameter-details">Parameter Details<a class="headerlink" href="#parameter-details" title="Permanent link">&para;</a></h3>
+<h2 id="chart-recognition">Chart Recognition<a class="headerlink" href="#chart-recognition" title="Permanent link">&para;</a></h2>
+<p>PaddleOCRVL automatically recognizes charts and converts them to structured table format. Charts are extracted in a pipe-delimited format and then converted to Excel-compatible tables.</p>
+<p>Example chart output:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Category | Percentage
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>PCT system fees | 358.6%
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Madrid system fees | 76.2%
+</span></code></pre></div></p>
+<p>This is automatically converted to a structured table with headers and rows for inclusion in the Excel output.</p>
+<h2 id="split-table-merging_1">Split Table Merging<a class="headerlink" href="#split-table-merging_1" title="Permanent link">&para;</a></h2>
+<p>The parser includes automatic detection and merging of tables that are split across multiple pages. This feature uses the same two-phase approach as other parsers:</p>
+<ol>
+<li><strong>Phase 1: Proximity Detection</strong> - Fast spatial heuristics</li>
+<li><strong>Phase 2: Structural Validation</strong> - Deep structural analysis using LSD</li>
+</ol>
+<p>For detailed information, see the <a href="../features/split-table-merging.html">Split Table Merging Guide</a>.</p>
+<h2 id="docres-restoration-tasks">DocRes Restoration Tasks<a class="headerlink" href="#docres-restoration-tasks" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Description</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>appearance</code></td>
+<td>General appearance enhancement</td>
+<td>Most documents (default)</td>
+</tr>
+<tr>
+<td><code>dewarping</code></td>
+<td>Correct perspective distortion</td>
+<td>Scanned documents with perspective issues</td>
+</tr>
+<tr>
+<td><code>deshadowing</code></td>
+<td>Remove shadows and lighting artifacts</td>
+<td>Documents with shadow problems</td>
+</tr>
+<tr>
+<td><code>deblurring</code></td>
+<td>Reduce blur and improve sharpness</td>
+<td>Blurry or low-quality scans</td>
+</tr>
+<tr>
+<td><code>binarization</code></td>
+<td>Convert to black and white</td>
+<td>Documents needing clean binarization</td>
+</tr>
+<tr>
+<td><code>end2end</code></td>
+<td>Complete restoration pipeline</td>
+<td>Severely degraded documents</td>
+</tr>
+</tbody>
+</table>
+<h2 id="parameter-reference">Parameter Reference<a class="headerlink" href="#parameter-reference" title="Permanent link">&para;</a></h2>
+<h3 id="docres-parameters">DocRes Parameters<a class="headerlink" href="#docres-parameters" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
 <th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>use_image_restoration</code></td>
+<td>bool</td>
+<td><code>True</code></td>
+<td>Enable/disable DocRes image restoration</td>
+</tr>
+<tr>
+<td><code>restoration_task</code></td>
+<td>str</td>
+<td><code>"appearance"</code></td>
+<td>DocRes restoration task to use</td>
+</tr>
+<tr>
+<td><code>restoration_device</code></td>
+<td>str</td>
+<td><code>None</code></td>
+<td>Device for DocRes ("cuda", "cpu", or None for auto-detect)</td>
+</tr>
+<tr>
+<td><code>restoration_dpi</code></td>
+<td>int</td>
+<td><code>200</code></td>
+<td>DPI for restoration processing</td>
+</tr>
+</tbody>
+</table>
+<h3 id="paddleocrvl-parameters">PaddleOCRVL Parameters<a class="headerlink" href="#paddleocrvl-parameters" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>use_chart_recognition</code></td>
+<td>bool</td>
+<td><code>True</code></td>
+<td>Enable chart recognition and extraction</td>
+</tr>
+<tr>
+<td><code>use_doc_orientation_classify</code></td>
+<td>bool</td>
+<td><code>False</code></td>
+<td>Enable document orientation classification</td>
+</tr>
+<tr>
+<td><code>use_doc_unwarping</code></td>
+<td>bool</td>
+<td><code>False</code></td>
+<td>Enable document unwarping</td>
+</tr>
+<tr>
+<td><code>use_layout_detection</code></td>
+<td>bool</td>
+<td><code>True</code></td>
+<td>Enable layout detection</td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td>str</td>
+<td><code>"gpu"</code></td>
+<td>Device for PaddleOCRVL processing ("gpu" or "cpu")</td>
+</tr>
+</tbody>
+</table>
+<h3 id="split-table-merging-parameters">Split Table Merging Parameters<a class="headerlink" href="#split-table-merging-parameters" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
 <th>Default</th>
 <th>Description</th>
 </tr>
@@ -2587,94 +2740,84 @@
 <tbody>
 <tr>
 <td><code>merge_split_tables</code></td>
-<td><code>False</code></td>
+<td>bool</td>
+<td><code>True</code></td>
 <td>Enable/disable split table detection</td>
 </tr>
 <tr>
 <td><code>bottom_threshold_ratio</code></td>
+<td>float</td>
 <td><code>0.20</code></td>
 <td>Ratio for detecting tables near bottom of page (0-1)</td>
 </tr>
 <tr>
 <td><code>top_threshold_ratio</code></td>
+<td>float</td>
 <td><code>0.15</code></td>
 <td>Ratio for detecting tables near top of page (0-1)</td>
 </tr>
 <tr>
 <td><code>max_gap_ratio</code></td>
+<td>float</td>
 <td><code>0.25</code></td>
-<td>Maximum allowed gap between tables (accounts for headers/footers)</td>
+<td>Maximum allowed gap between tables</td>
 </tr>
 <tr>
 <td><code>column_alignment_tolerance</code></td>
+<td>float</td>
 <td><code>10.0</code></td>
 <td>Pixel tolerance for column alignment validation</td>
 </tr>
 <tr>
 <td><code>min_merge_confidence</code></td>
+<td>float</td>
 <td><code>0.65</code></td>
 <td>Minimum confidence score (0-1) required to merge tables</td>
 </tr>
 </tbody>
 </table>
-<h3 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h3>
-<p>When split tables are detected and merged:</p>
+<h2 id="when-to-use">When to Use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h2>
+<p>Use <code>PaddleOCRVLPDFParser</code> for:</p>
 <ul>
-<li><strong>Merged Image</strong>: A single composite image is created combining both table segments</li>
-<li><strong>Markdown Output</strong>: The merged table appears once in the markdown with a note indicating it spans multiple pages</li>
-<li><strong>HTML Output</strong>: Similar to markdown, the merged table appears as a single element</li>
-<li><strong>File Location</strong>: Merged tables are saved as <code>merged_table_{page1}_{page2}.png</code> in the <code>tables/</code> directory</li>
+<li><strong>Complex Documents</strong>: Documents with multiple content types (text, tables, charts, figures)</li>
+<li><strong>Chart Extraction</strong>: When you need charts converted to structured data</li>
+<li><strong>End-to-End Processing</strong>: When you want a single-pass solution for document understanding</li>
+<li><strong>Quality Enhancement</strong>: When documents need restoration before processing</li>
+<li><strong>Split Tables</strong>: Documents with tables spanning multiple pages</li>
+<li><strong>Comprehensive Output</strong>: When you need all content types in structured formats</li>
 </ul>
-<p>Example output note:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>📊 Table (merged from pages 1-2, confidence: 0.75)
-</span></code></pre></div></p>
-<h3 id="when-to-use">When to Use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h3>
-<p>Enable split table merging when:</p>
+<p>Consider other parsers when:</p>
 <ul>
-<li>Processing documents with large tables spanning multiple pages</li>
-<li>Working with financial reports, data tables, or structured documents</li>
-<li>You want complete table context in a single view</li>
-<li>Tables frequently break across page boundaries</li>
+<li><strong>Simple Text Extraction</strong>: Use <code>StructuredPDFParser</code> for basic text extraction</li>
+<li><strong>Only Visual Elements</strong>: Use <code>ChartTablePDFParser</code> for charts/tables only</li>
+<li><strong>No Restoration Needed</strong>: Use <code>StructuredPDFParser</code> if document quality is good</li>
 </ul>
-<p>Consider disabling when:</p>
-<ul>
-<li>Tables are intentionally separate across pages</li>
-<li>Processing speed is critical (adds minor overhead)</li>
-<li>Document structure is inconsistent</li>
-</ul>
-<h3 id="technical-details">Technical Details<a class="headerlink" href="#technical-details" title="Permanent link">&para;</a></h3>
-<p><strong>Algorithm</strong>: The detection uses OpenCV's LSD (Line Segment Detector), which is:
-- <strong>Adaptive</strong>: Works across different table structures without parameter tuning
-- <strong>Robust</strong>: Handles various line styles (solid, dashed, partially broken)
-- <strong>Efficient</strong>: Fast processing suitable for batch operations</p>
-<p><strong>Preprocessing</strong>: Before column detection, images undergo:
-- Grayscale conversion
-- Contrast enhancement (CLAHE)
-- Binary thresholding (OTSU)
-- Morphological operations to connect broken lines</p>
-<p><strong>Clustering</strong>: Detected line segments are clustered using adaptive thresholds based on image width, ensuring that multiple detections of the same column boundary are merged into a single column marker.</p>
-<p>For a complete, detailed explanation with visual schemas and examples, see the <a href="../features/split-table-merging.html">Split Table Merging Guide</a>.</p>
-<h2 id="output-structure">Output Structure<a class="headerlink" href="#output-structure" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>outputs/
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>└── document/
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    └── full_parse/
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        ├── result.md
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        ├── result.html
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        └── images/
+<h2 id="example-financial-report-processing">Example: Financial Report Processing<a class="headerlink" href="#example-financial-report-processing" title="Permanent link">&para;</a></h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCRVLPDFParser</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># Initialize parser for financial reports</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">restoration_task</span><span class="o">=</span><span class="s2">&quot;appearance&quot;</span><span class="p">,</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>      <span class="c1"># Important for financial charts</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>         <span class="c1"># Financial tables often span pages</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="p">)</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="c1"># Process financial report</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;annual_report.pdf&quot;</span><span class="p">)</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="c1"># Output includes:</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="c1"># - All text content</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="c1"># - Financial tables (including merged split tables)</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="c1"># - Charts converted to Excel format</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="c1"># - All in structured Excel file (tables.xlsx)</span>
 </span></code></pre></div>
-<h2 id="when-to-use_1">When to Use<a class="headerlink" href="#when-to-use_1" title="Permanent link">&para;</a></h2>
-<p>Use <code>StructuredPDFParser</code> for:</p>
-<ul>
-<li>General PDF processing</li>
-<li>Good quality documents</li>
-<li>When image restoration is not needed</li>
-<li>Extracting all content types</li>
-</ul>
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../features/split-table-merging.html">Split Table Merging</a> - Detailed guide to automatic table merging</li>
-<li><a href="enhanced-parser.html">Enhanced Parser</a> - With image restoration</li>
-<li><a href="chart-table-extractor.html">Chart &amp; Table Extractor</a> - Focused extraction</li>
+<li><a href="../engines/docres-engine.html">DocRes Engine</a> - Image restoration details</li>
+<li><a href="../features/split-table-merging.html">Split Table Merging Guide</a> - Comprehensive guide to split table detection</li>
+<li><a href="structured-parser.html">Structured Parser</a> - Base parser for comparison</li>
 <li><a href="../../api/parsers.html">API Reference</a> - Complete API documentation</li>
 </ul>
 
@@ -2714,7 +2857,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../core-concepts.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Core Concepts">
+          <a href="chart-table-extractor.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Chart &amp; Table Extractor">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2724,20 +2867,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Core Concepts
+                Chart & Table Extractor
               </div>
             </div>
           </a>
         
         
           
-          <a href="enhanced-parser.html" class="md-footer__link md-footer__link--next" aria-label="Next: Enhanced PDF Parser">
+          <a href="docx-parser.html" class="md-footer__link md-footer__link--next" aria-label="Next: DOCX Parser">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Enhanced PDF Parser
+                DOCX Parser
               </div>
             </div>
             <div class="md-footer__button md-icon">
