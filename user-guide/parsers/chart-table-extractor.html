@@ -981,6 +981,78 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#split-table-merging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Split Table Merging
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Split Table Merging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabling-split-table-merging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enabling Split Table Merging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-split-table-merging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use Split Table Merging
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-to-use" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2087,6 +2159,78 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#split-table-merging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Split Table Merging
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Split Table Merging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabling-split-table-merging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enabling Split Table Merging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-split-table-merging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use Split Table Merging
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-to-use" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2150,6 +2294,7 @@
 <li><strong>Focused Extraction</strong>: Extract only charts and/or tables</li>
 <li><strong>Selective Processing</strong>: Choose what to extract</li>
 <li><strong>VLM Integration</strong>: Convert visuals to structured data</li>
+<li><strong>Split Table Merging</strong>: Automatic detection and merging of tables split across pages</li>
 <li><strong>Faster Processing</strong>: Skips unnecessary elements</li>
 </ul>
 <h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
@@ -2194,6 +2339,59 @@
 </span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;report.pdf&quot;</span><span class="p">)</span>
 </span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="c1"># Outputs: tables.xlsx, tables.html, vlm_items.json</span>
 </span></code></pre></div>
+<h2 id="split-table-merging">Split Table Merging<a class="headerlink" href="#split-table-merging" title="Permanent link">&para;</a></h2>
+<p>The <code>ChartTablePDFParser</code> includes automatic detection and merging of tables that are split across multiple pages. This feature is especially useful for processing financial reports, data tables, and other documents where large tables span page boundaries.</p>
+<h3 id="enabling-split-table-merging">Enabling Split Table Merging<a class="headerlink" href="#enabling-split-table-merging" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChartTablePDFParser</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Enable split table merging with default settings</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">ChartTablePDFParser</span><span class="p">(</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">extract_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">)</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;document.pdf&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">ChartTablePDFParser</span><span class="p">(</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">extract_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="c1"># Position thresholds</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span>  <span class="c1"># 20% from bottom of page</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>     <span class="c1"># 15% from top of page</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="c1"># Gap tolerance</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>            <span class="c1"># 25% of page height max gap</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="c1"># Structural validation</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">column_alignment_tolerance</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>  <span class="c1"># Pixel tolerance for column alignment</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span>       <span class="c1"># Minimum confidence to merge (0-1)</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<p>The split table detection uses a two-phase approach:</p>
+<ol>
+<li><strong>Phase 1: Proximity Detection</strong> - Fast spatial heuristics to identify candidate pairs based on position, overlap, gap, and width similarity</li>
+<li><strong>Phase 2: Structural Validation</strong> - Deep structural analysis using LSD (Line Segment Detector) to validate column alignment and structure</li>
+</ol>
+<p>For detailed information about the algorithm, see the <a href="../features/split-table-merging.html">Split Table Merging Guide</a>.</p>
+<h3 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h3>
+<p>When split tables are detected and merged:</p>
+<ul>
+<li>Individual table segments are skipped (not saved separately)</li>
+<li>Merged table images are saved as <code>merged_table_&lt;page1&gt;_&lt;page2&gt;.png</code> in the tables directory</li>
+<li>If VLM is enabled, merged tables are processed and included in the structured output (Excel, HTML, JSON)</li>
+<li>Merged tables include metadata: page range and confidence score</li>
+</ul>
+<h3 id="when-to-use-split-table-merging">When to Use Split Table Merging<a class="headerlink" href="#when-to-use-split-table-merging" title="Permanent link">&para;</a></h3>
+<p>Enable split table merging when:</p>
+<ul>
+<li>Processing financial reports or data tables</li>
+<li>Tables span multiple pages</li>
+<li>You need complete table data for analysis</li>
+<li>Working with documents that have large data tables</li>
+</ul>
 <h2 id="when-to-use">When to Use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h2>
 <p>Use <code>ChartTablePDFParser</code> when:</p>
 <ul>
@@ -2205,7 +2403,8 @@
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../engines/vlm-integration.html">VLM Integration</a> - Structured data extraction</li>
-<li><a href="structured-parser.html">Structured Parser</a> - Full document parsing</li>
+<li><a href="structured-parser.html">Structured Parser</a> - Full document parsing with split table merging details</li>
+<li><a href="../features/split-table-merging.html">Split Table Merging Guide</a> - Comprehensive guide to split table detection</li>
 <li><a href="../../api/parsers.html">API Reference</a> - Complete API documentation</li>
 </ul>
 
