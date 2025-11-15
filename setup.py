@@ -32,6 +32,23 @@ class PostInstallCommand(install):
     
     def run(self):
         """Run the standard install, then install packages from specific indexes."""
+        # Check if we're in a build environment (pip not available or can't run)
+        # Skip post-install steps during build
+        try:
+            result = subprocess.run(
+                [sys.executable, "-m", "pip", "--version"],
+                capture_output=True,
+                timeout=5
+            )
+            if result.returncode != 0:
+                # pip is not available, skip post-install
+                install.run(self)
+                return
+        except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
+            # pip is not available, skip post-install
+            install.run(self)
+            return
+        
         # Temporarily remove paddlepaddle-gpu and torch from install_requires
         # to avoid installation failures if they're not on PyPI
         original_requires = self.distribution.install_requires[:]
@@ -109,11 +126,9 @@ setup(
         'install': PostInstallCommand,
     },
     install_requires=[
-        # Note: paddlepaddle-gpu and torch are reinstalled via PostInstallCommand
-        # to ensure they come from the correct index URLs (PaddlePaddle index for paddlepaddle-gpu)
-        "paddlepaddle-gpu==3.2.0",
+        # Note: paddlepaddle-gpu is installed via PostInstallCommand from PaddlePaddle index
+        # (not available on PyPI). torch is also installed via PostInstallCommand to ensure version.
         "paddleocr[doc-parser]>=3.2.0",
-        "torch==2.8.0",
         "pillow>=8.0.0",
         "opencv-python>=4.5.0",
         "pandas>=1.3.0",
