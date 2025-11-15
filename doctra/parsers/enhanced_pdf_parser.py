@@ -30,6 +30,7 @@ from doctra.exporters.html_writer import write_html, write_structured_html, rend
 from doctra.exporters.excel_writer import write_structured_excel
 from doctra.utils.structured_utils import to_structured_dict
 from doctra.exporters.markdown_table import render_markdown_table
+from doctra.parsers.split_table_detector import SplitTableMatch
 
 
 class EnhancedPDFParser(StructuredPDFParser):
@@ -53,6 +54,12 @@ class EnhancedPDFParser(StructuredPDFParser):
     :param ocr_engine: OCR engine instance (PytesseractOCREngine or PaddleOCREngine). 
                        If None, creates a default PytesseractOCREngine with lang="eng", psm=4, oem=3.
     :param box_separator: Separator between text boxes in output (default: "\n")
+    :param merge_split_tables: Whether to detect and merge split tables (default: False)
+    :param bottom_threshold_ratio: Ratio for "too close to bottom" detection (default: 0.20)
+    :param top_threshold_ratio: Ratio for "too close to top" detection (default: 0.15)
+    :param max_gap_ratio: Maximum allowed gap between tables (default: 0.25)
+    :param column_alignment_tolerance: Pixel tolerance for column alignment (default: 10.0)
+    :param min_merge_confidence: Minimum confidence score for merging (default: 0.65)
     """
 
     def __init__(
@@ -68,11 +75,16 @@ class EnhancedPDFParser(StructuredPDFParser):
         min_score: float = 0.0,
         ocr_engine: Optional[Union[PytesseractOCREngine, PaddleOCREngine]] = None,
         box_separator: str = "\n",
+        merge_split_tables: bool = False,
+        bottom_threshold_ratio: float = 0.20,
+        top_threshold_ratio: float = 0.15,
+        max_gap_ratio: float = 0.25,
+        column_alignment_tolerance: float = 10.0,
+        min_merge_confidence: float = 0.65,
     ):
         """
         Initialize the Enhanced PDF Parser with image restoration capabilities.
         """
-        # Initialize parent class
         super().__init__(
             vlm=vlm,
             layout_model_name=layout_model_name,
@@ -80,6 +92,12 @@ class EnhancedPDFParser(StructuredPDFParser):
             min_score=min_score,
             ocr_engine=ocr_engine,
             box_separator=box_separator,
+            merge_split_tables=merge_split_tables,
+            bottom_threshold_ratio=bottom_threshold_ratio,
+            top_threshold_ratio=top_threshold_ratio,
+            max_gap_ratio=max_gap_ratio,
+            column_alignment_tolerance=column_alignment_tolerance,
+            min_merge_confidence=min_merge_confidence,
         )
         
         self.use_image_restoration = use_image_restoration
@@ -209,15 +227,30 @@ class EnhancedPDFParser(StructuredPDFParser):
         Process the parsing logic with enhanced pages.
         This is extracted from the parent class to allow customization.
         """
+        split_table_matches: List[SplitTableMatch] = []
+        merged_table_segments = []
+        
+        if self.merge_split_tables and self.split_table_detector:
+            try:
+                split_table_matches = self.split_table_detector.detect_split_tables(pages, pil_pages)
+                if split_table_matches:
+                    print(f"🔗 Detected {len(split_table_matches)} split table(s) to merge")
+                for match in split_table_matches:
+                    merged_table_segments.append(match.segment1)
+                    merged_table_segments.append(match.segment2)
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                split_table_matches = []
         
         fig_count = sum(sum(1 for b in p.boxes if b.label == "figure") for p in pages)
         chart_count = sum(sum(1 for b in p.boxes if b.label == "chart") for p in pages)
         table_count = sum(sum(1 for b in p.boxes if b.label == "table") for p in pages)
 
         md_lines: List[str] = ["# Enhanced Document Content\n"]
-        html_lines: List[str] = ["<h1>Enhanced Document Content</h1>"]  # For direct HTML generation
+        html_lines: List[str] = ["<h1>Enhanced Document Content</h1>"]
         structured_items: List[Dict[str, Any]] = []
-        page_content: Dict[int, List[str]] = {}  # Store content by page
+        page_content: Dict[int, List[str]] = {}
 
         charts_desc = "Charts (VLM → table)" if self.vlm is not None else "Charts (cropped)"
         tables_desc = "Tables (VLM → table)" if self.vlm is not None else "Tables (cropped)"
@@ -300,6 +333,10 @@ class EnhancedPDFParser(StructuredPDFParser):
                             if charts_bar: charts_bar.update(1)
 
                         elif box.label == "table":
+                            is_merged = any(seg.match_box(box, page_num) for seg in merged_table_segments)
+                            if is_merged:
+                                continue
+                            
                             if self.vlm is not None:
                                 wrote_table = False
                                 try:
@@ -345,6 +382,73 @@ class EnhancedPDFParser(StructuredPDFParser):
                                 html_lines.append("<br>")
                             page_content[page_num].append(text)
                             page_content[page_num].append(self.box_separator if self.box_separator else "")
+
+            if split_table_matches and self.split_table_detector:
+                for match_idx, match in enumerate(split_table_matches):
+                    try:
+                        merged_img = self.split_table_detector.merge_table_images(match)
+                        
+                        tables_dir = os.path.join(out_dir, "tables")
+                        os.makedirs(tables_dir, exist_ok=True)
+                        merged_filename = f"merged_table_{match.segment1.page_index}_{match.segment2.page_index}.png"
+                        merged_path = os.path.join(tables_dir, merged_filename)
+                        merged_img.save(merged_path)
+                        
+                        abs_merged_path = os.path.abspath(merged_path)
+                        rel_merged = os.path.relpath(abs_merged_path, out_dir)
+                        
+                        pages_str = f"pages {match.segment1.page_index}-{match.segment2.page_index}"
+                        
+                        if self.vlm is not None:
+                            wrote_table = False
+                            try:
+                                table = self.vlm.extract_table(abs_merged_path)
+                                item = to_structured_dict(table)
+                                if item:
+                                    item["page"] = f"{match.segment1.page_index}-{match.segment2.page_index}"
+                                    item["type"] = "Table (Merged)"
+                                    item["split_merge"] = True
+                                    item["merge_confidence"] = match.confidence
+                                    structured_items.append(item)
+                                    
+                                    table_md = render_markdown_table(
+                                        item.get("headers"), 
+                                        item.get("rows"),
+                                        title=item.get("title") or f"Merged Table ({pages_str})"
+                                    )
+                                    table_html = render_html_table(
+                                        item.get("headers"), 
+                                        item.get("rows"),
+                                        title=item.get("title") or f"Merged Table ({pages_str})"
+                                    )
+                                    
+                                    md_lines.append(f"\n### Merged Table ({pages_str})\n")
+                                    md_lines.append(table_md)
+                                    html_lines.append(f'<h3>Merged Table ({pages_str})</h3>')
+                                    html_lines.append(table_html)
+                                    wrote_table = True
+                            except Exception as e:
+                                pass
+                            
+                            if not wrote_table:
+                                table_md = f"![Merged Table — {pages_str}]({rel_merged})\n"
+                                table_html = f'<img src="{rel_merged}" alt="Merged Table — {pages_str}" />'
+                                md_lines.append(f"\n### Merged Table ({pages_str})\n")
+                                md_lines.append(table_md)
+                                html_lines.append(f'<h3>Merged Table ({pages_str})</h3>')
+                                html_lines.append(table_html)
+                        else:
+                            table_md = f"![Merged Table — {pages_str}]({rel_merged})\n"
+                            table_html = f'<img src="{rel_merged}" alt="Merged Table — {pages_str}" />'
+                            md_lines.append(f"\n### Merged Table ({pages_str})\n")
+                            md_lines.append(table_md)
+                            html_lines.append(f'<h3>Merged Table ({pages_str})</h3>')
+                            html_lines.append(table_html)
+                        
+                        if tables_bar: tables_bar.update(1)
+                        
+                    except Exception as e:
+                        print(f"⚠️  Warning: Failed to merge table {match_idx + 1}: {e}")
 
         md_path = write_markdown(md_lines, out_dir)
         
