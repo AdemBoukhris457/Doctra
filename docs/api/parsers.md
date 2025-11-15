@@ -132,7 +132,24 @@ parser = EnhancedPDFParser(
     # VLM Engine (pass initialized engine instance)
     vlm: Optional[VLMStructuredExtractor] = None,
     
-    # All StructuredPDFParser parameters...
+    # Layout Detection
+    layout_model_name: str = "PP-DocLayout_plus-L",
+    dpi: int = 200,
+    min_score: float = 0.0,
+    
+    # OCR Engine (optional)
+    ocr_engine: Optional[Union[PytesseractOCREngine, PaddleOCREngine]] = None,
+    
+    # Split Table Merging
+    merge_split_tables: bool = False,
+    bottom_threshold_ratio: float = 0.20,
+    top_threshold_ratio: float = 0.15,
+    max_gap_ratio: float = 0.25,
+    column_alignment_tolerance: float = 10.0,
+    min_merge_confidence: float = 0.65,
+    
+    # Output Settings
+    box_separator: str = "\n"
 )
 
 # Parse with enhancement
@@ -291,6 +308,8 @@ parser = StructuredPDFParser(vlm=vlm_engine)
 | `restoration_dpi` | int | 200 | DPI for restoration processing |
 
 ### Split Table Merging Parameters
+
+Available for both `StructuredPDFParser` and `EnhancedPDFParser`.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
