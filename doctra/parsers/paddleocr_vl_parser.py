@@ -11,9 +11,11 @@ import sys
 import re
 import numpy as np
 from typing import List, Dict, Any, Optional, Union
-from contextlib import ExitStack
+from contextlib import ExitStack, contextlib
 from PIL import Image
 import tempfile
+import logging
+import warnings
 
 from doctra.engines.image_restoration import DocResEngine
 from doctra.parsers.split_table_detector import SplitTableDetector, SplitTableMatch, TableSegment
@@ -33,6 +35,73 @@ try:
     PADDLEOCR_VL_AVAILABLE = True
 except ImportError:
     PADDLEOCR_VL_AVAILABLE = False
+
+
+@contextlib.contextmanager
+def silence():
+    """Context manager to suppress stdout, stderr, and logging output."""
+    # Store original logging levels
+    original_levels = {}
+    loggers_to_suppress = [
+        'paddleocr', 'paddle', 'paddlex', 'paddlepaddle', 'ppocr',
+        'transformers', 'huggingface_hub', 'urllib3', 'requests'
+    ]
+    
+    # Suppress logging for various libraries
+    for logger_name in loggers_to_suppress:
+        logger = logging.getLogger(logger_name)
+        original_levels[logger_name] = logger.level
+        logger.setLevel(logging.CRITICAL)
+    
+    # Also suppress root logger
+    root_logger = logging.getLogger()
+    original_root_level = root_logger.level
+    root_logger.setLevel(logging.CRITICAL)
+    
+    # Set environment variables to suppress PaddleOCR output
+    original_env = {}
+    env_vars_to_set = {
+        'DISABLE_AUTO_LOGGING_CONFIG': '1',
+        'PADDLE_LOG_LEVEL': '3',  # Only show fatal errors
+        'GLOG_minloglevel': '3',  # Suppress glog output
+        'TF_CPP_MIN_LOG_LEVEL': '3'  # Suppress TensorFlow output
+    }
+    
+    for key, value in env_vars_to_set.items():
+        original_env[key] = os.environ.get(key)
+        os.environ[key] = value
+    
+    # Temporarily disable all logging handlers
+    original_handlers = {}
+    for logger_name in loggers_to_suppress + ['']:
+        logger = logging.getLogger(logger_name)
+        original_handlers[logger_name] = logger.handlers[:]
+        logger.handlers.clear()
+    
+    try:
+        with open(os.devnull, "w") as devnull, \
+             contextlib.redirect_stdout(devnull), \
+             contextlib.redirect_stderr(devnull), \
+             warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            yield
+    finally:
+        # Restore original logging levels
+        for logger_name, level in original_levels.items():
+            logging.getLogger(logger_name).setLevel(level)
+        root_logger.setLevel(original_root_level)
+        
+        # Restore original handlers
+        for logger_name, handlers in original_handlers.items():
+            logger = logging.getLogger(logger_name)
+            logger.handlers = handlers
+        
+        # Restore original environment variables
+        for key, value in original_env.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
 
 
 class PaddleOCRVLPDFParser:
@@ -89,11 +158,14 @@ class PaddleOCRVLPDFParser:
             )
         
         try:
-            self.paddleocr_vl = PaddleOCRVL(
-                use_doc_orientation_classify=use_doc_orientation_classify,
-                use_doc_unwarping=use_doc_unwarping,
-                use_layout_detection=use_layout_detection,
-            )
+            with silence():
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    self.paddleocr_vl = PaddleOCRVL(
+                        use_doc_orientation_classify=use_doc_orientation_classify,
+                        use_doc_unwarping=use_doc_unwarping,
+                        use_layout_detection=use_layout_detection,
+                    )
             print("✅ PaddleOCRVL pipeline initialized")
         except Exception as e:
             raise RuntimeError(f"Failed to initialize PaddleOCRVL: {e}")
@@ -186,11 +258,15 @@ class PaddleOCRVLPDFParser:
                         page_img.save(tmp_path, "JPEG", quality=95)
                     
                     try:
-                        output = self.paddleocr_vl.predict(
-                            input=tmp_path,
-                            device=self.device,
-                            use_chart_recognition=self.use_chart_recognition
-                        )
+                        with warnings.catch_warnings():
+                            warnings.simplefilter("ignore")
+                            with open(os.devnull, "w") as devnull:
+                                with contextlib.redirect_stderr(devnull):
+                                    output = self.paddleocr_vl.predict(
+                                        input=tmp_path,
+                                        device=self.device,
+                                        use_chart_recognition=self.use_chart_recognition
+                                    )
                         
                         if output and len(output) > 0:
                             result = output[0]
@@ -435,7 +511,7 @@ class PaddleOCRVLPDFParser:
                         md_lines.append(f"\n### Chart\n\n```\n{content}\n```\n")
                         html_lines.append(f"<h3>Chart</h3>\n<pre>{content}</pre>")
                 
-                elif label in ['header', 'text', 'figure_title', 'vision_footnote']:
+                elif label in ['header', 'text', 'figure_title', 'vision_footnote', 'number', 'numbers', 'paragraph_title', 'paragraph_titles']:
                     md_lines.append(f"{content}\n")
                     html_lines.append(f"<p>{content.replace(chr(10), '<br>')}</p>")
                 
@@ -464,11 +540,15 @@ class PaddleOCRVLPDFParser:
                         merged_img.save(tmp_path, "PNG")
                     
                     try:
-                        merged_output = self.paddleocr_vl.predict(
-                            input=tmp_path,
-                            device=self.device,
-                            use_chart_recognition=self.use_chart_recognition
-                        )
+                        with warnings.catch_warnings():
+                            warnings.simplefilter("ignore")
+                            with open(os.devnull, "w") as devnull:
+                                with contextlib.redirect_stderr(devnull):
+                                    merged_output = self.paddleocr_vl.predict(
+                                        input=tmp_path,
+                                        device=self.device,
+                                        use_chart_recognition=self.use_chart_recognition
+                                    )
                         
                         if merged_output and len(merged_output) > 0:
                             merged_result = merged_output[0]
