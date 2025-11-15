@@ -48,20 +48,20 @@ class PostInstallCommand(install):
         self.distribution.install_requires = original_requires
         
         # Install paddlepaddle-gpu from PaddlePaddle's index
-        paddle_index = "https://www.paddlepaddle.org.cn/packages/stable/cu126/"
-        print(f"\n📦 Installing paddlepaddle-gpu==3.2.1 from {paddle_index}")
+        paddle_index = "https://www.paddlepaddle.org.cn/packages/stable/cu118/"
+        print(f"\n📦 Installing paddlepaddle-gpu==3.2.0 from {paddle_index}")
         try:
             subprocess.check_call([
                 sys.executable, "-m", "pip", "install", 
-                "paddlepaddle-gpu==3.2.1",
+                "paddlepaddle-gpu==3.2.0",
                 "-i", paddle_index,
                 "--upgrade", "--force-reinstall"
             ])
-            print("✅ Successfully installed paddlepaddle-gpu==3.2.1")
+            print("✅ Successfully installed paddlepaddle-gpu==3.2.0")
         except subprocess.CalledProcessError as e:
             print(f"⚠️ Warning: Failed to install paddlepaddle-gpu from custom index: {e}")
             print(f"   You may need to install it manually:")
-            print(f"   pip install paddlepaddle-gpu==3.2.1 -i {paddle_index}")
+            print(f"   pip install paddlepaddle-gpu==3.2.0 -i {paddle_index}")
         
         # Install torch==2.8.0
         print(f"\n📦 Installing torch==2.8.0")
@@ -111,7 +111,7 @@ setup(
     install_requires=[
         # Note: paddlepaddle-gpu and torch are reinstalled via PostInstallCommand
         # to ensure they come from the correct index URLs (PaddlePaddle index for paddlepaddle-gpu)
-        "paddlepaddle-gpu==3.2.1",
+        "paddlepaddle-gpu==3.2.0",
         "paddleocr[doc-parser]>=3.2.0",
         "torch==2.8.0",
         "pillow>=8.0.0",
