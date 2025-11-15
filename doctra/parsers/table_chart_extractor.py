@@ -24,7 +24,8 @@ from doctra.exporters.excel_writer import write_structured_excel
 from doctra.utils.structured_utils import to_structured_dict
 from doctra.exporters.markdown_table import render_markdown_table
 from doctra.exporters.markdown_writer import write_markdown
-from doctra.exporters.html_writer import write_structured_html
+from doctra.exporters.html_writer import write_structured_html, render_html_table
+from doctra.parsers.split_table_detector import SplitTableDetector, SplitTableMatch
 import json
 
 
@@ -42,6 +43,12 @@ class ChartTablePDFParser:
     :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
     :param dpi: DPI for PDF rendering (default: 200)
     :param min_score: Minimum confidence score for layout detection (default: 0.0)
+    :param merge_split_tables: Whether to detect and merge split tables (default: False)
+    :param bottom_threshold_ratio: Ratio for "too close to bottom" detection (default: 0.20)
+    :param top_threshold_ratio: Ratio for "too close to top" detection (default: 0.15)
+    :param max_gap_ratio: Maximum allowed gap between tables (default: 0.25, accounts for headers/footers)
+    :param column_alignment_tolerance: Pixel tolerance for column alignment (default: 10.0)
+    :param min_merge_confidence: Minimum confidence score for merging (default: 0.65)
     """
 
     def __init__(
@@ -53,6 +60,12 @@ class ChartTablePDFParser:
             layout_model_name: str = "PP-DocLayout_plus-L",
             dpi: int = 200,
             min_score: float = 0.0,
+            merge_split_tables: bool = False,
+            bottom_threshold_ratio: float = 0.20,
+            top_threshold_ratio: float = 0.15,
+            max_gap_ratio: float = 0.25,
+            column_alignment_tolerance: float = 10.0,
+            min_merge_confidence: float = 0.65,
     ):
         """
         Initialize the ChartTablePDFParser with extraction configuration.
@@ -63,6 +76,12 @@ class ChartTablePDFParser:
         :param layout_model_name: Layout detection model name (default: "PP-DocLayout_plus-L")
         :param dpi: DPI for PDF rendering (default: 200)
         :param min_score: Minimum confidence score for layout detection (default: 0.0)
+        :param merge_split_tables: Whether to detect and merge split tables (default: False)
+        :param bottom_threshold_ratio: Ratio for "too close to bottom" detection (default: 0.20)
+        :param top_threshold_ratio: Ratio for "too close to top" detection (default: 0.15)
+        :param max_gap_ratio: Maximum allowed gap between tables (default: 0.25, accounts for headers/footers)
+        :param column_alignment_tolerance: Pixel tolerance for column alignment (default: 10.0)
+        :param min_merge_confidence: Minimum confidence score for merging (default: 0.65)
         """
         if not extract_charts and not extract_tables:
             raise ValueError("At least one of extract_charts or extract_tables must be True")
@@ -83,6 +102,19 @@ class ChartTablePDFParser:
                 f"vlm must be an instance of VLMStructuredExtractor or None, "
                 f"got {type(vlm).__name__}"
             )
+        
+        # Initialize split table detector if enabled
+        self.merge_split_tables = merge_split_tables
+        if self.merge_split_tables and self.extract_tables:
+            self.split_table_detector = SplitTableDetector(
+                bottom_threshold_ratio=bottom_threshold_ratio,
+                top_threshold_ratio=top_threshold_ratio,
+                max_gap_ratio=max_gap_ratio,
+                column_alignment_tolerance=column_alignment_tolerance,
+                min_merge_confidence=min_merge_confidence,
+            )
+        else:
+            self.split_table_detector = None
 
     def parse(self, pdf_path: str, output_base_dir: str = "outputs") -> None:
         """
@@ -111,6 +143,24 @@ class ChartTablePDFParser:
             pdf_path, batch_size=1, layout_nms=True, dpi=self.dpi, min_score=self.min_score
         )
         pil_pages = [im for (im, _, _) in render_pdf_to_images(pdf_path, dpi=self.dpi)]
+
+        # Detect split tables if enabled
+        split_table_matches: List[SplitTableMatch] = []
+        merged_table_segments = []
+        
+        if self.merge_split_tables and self.extract_tables:
+            if self.split_table_detector:
+                try:
+                    split_table_matches = self.split_table_detector.detect_split_tables(pages, pil_pages)
+                    if split_table_matches:
+                        print(f"🔗 Detected {len(split_table_matches)} split table(s) to merge")
+                    for match in split_table_matches:
+                        merged_table_segments.append(match.segment1)
+                        merged_table_segments.append(match.segment2)
+                except Exception as e:
+                    import traceback
+                    traceback.print_exc()
+                    split_table_matches = []
 
         target_labels = []
         if self.extract_charts:
@@ -203,6 +253,11 @@ class ChartTablePDFParser:
                             charts_bar.update(1)
 
                     elif box.label == "table" and self.extract_tables:
+                        # Skip table segments that are part of merged tables
+                        is_merged = any(seg.match_box(box, page_num) for seg in merged_table_segments)
+                        if is_merged:
+                            continue
+                        
                         table_filename = f"table_{table_counter:03d}.png"
                         table_path = os.path.join(tables_dir, table_filename)
 
@@ -246,6 +301,63 @@ class ChartTablePDFParser:
                         table_counter += 1
                         if tables_bar:
                             tables_bar.update(1)
+
+        # Process merged tables if any were detected
+        if split_table_matches and self.split_table_detector and self.extract_tables:
+            for match_idx, match in enumerate(split_table_matches):
+                try:
+                    merged_img = self.split_table_detector.merge_table_images(match)
+                    
+                    merged_filename = f"merged_table_{match.segment1.page_index}_{match.segment2.page_index}.png"
+                    merged_path = os.path.join(tables_dir, merged_filename)
+                    merged_img.save(merged_path)
+                    
+                    abs_merged_path = os.path.abspath(merged_path)
+                    rel_merged = os.path.relpath(abs_merged_path, out_dir)
+                    
+                    pages_str = f"pages {match.segment1.page_index}-{match.segment2.page_index}"
+                    
+                    if self.vlm is not None:
+                        wrote_table = False
+                        try:
+                            extracted_table = self.vlm.extract_table(abs_merged_path)
+                            structured_item = to_structured_dict(extracted_table)
+                            if structured_item:
+                                structured_item["page"] = f"{match.segment1.page_index}-{match.segment2.page_index}"
+                                structured_item["type"] = "Table (Merged)"
+                                structured_item["split_merge"] = True
+                                structured_item["merge_confidence"] = match.confidence
+                                structured_items.append(structured_item)
+                                
+                                vlm_items.append({
+                                    "kind": "table",
+                                    "page": pages_str,
+                                    "image_rel_path": rel_merged,
+                                    "title": structured_item.get("title"),
+                                    "headers": structured_item.get("headers"),
+                                    "rows": structured_item.get("rows"),
+                                    "split_merge": True,
+                                    "merge_confidence": match.confidence,
+                                })
+                                
+                                md_lines.append(f"\n### Merged Table ({pages_str})\n")
+                                md_lines.append(
+                                    render_markdown_table(
+                                        structured_item.get("headers"),
+                                        structured_item.get("rows"),
+                                        title=structured_item.get("title") or f"Merged Table ({pages_str})"
+                                    )
+                                )
+                                wrote_table = True
+                        except Exception as e:
+                            pass
+                        
+                        if not wrote_table:
+                            md_lines.append(f"\n### Merged Table ({pages_str})\n")
+                            md_lines.append(f"![Merged Table ({pages_str})]({rel_merged})\n")
+                except Exception as e:
+                    import traceback
+                    traceback.print_exc()
 
         excel_path = None
 

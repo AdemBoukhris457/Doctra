@@ -182,7 +182,15 @@ parser = ChartTablePDFParser(
     # Layout Detection
     layout_model_name: str = "PP-DocLayout_plus-L",
     dpi: int = 200,
-    min_score: float = 0.0
+    min_score: float = 0.0,
+    
+    # Split Table Merging
+    merge_split_tables: bool = False,
+    bottom_threshold_ratio: float = 0.20,
+    top_threshold_ratio: float = 0.15,
+    max_gap_ratio: float = 0.25,
+    column_alignment_tolerance: float = 10.0,
+    min_merge_confidence: float = 0.65,
 )
 
 # Extract charts/tables
