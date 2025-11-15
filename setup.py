@@ -53,8 +53,7 @@ setup(
     ],
     python_requires=">=3.8",
     install_requires=[
-        "paddlepaddle-gpu>=3.2.1; platform_system != 'Darwin'",
-        "paddlepaddle>=2.4.0; platform_system == 'Darwin'",
+        "paddlepaddle-gpu>=2.6.0",
         "paddleocr[doc-parser]>=3.2.0",
         "pillow>=8.0.0",
         "opencv-python>=4.5.0",
