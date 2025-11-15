@@ -41,8 +41,9 @@ setup(
     ],
     python_requires=">=3.8",
     install_requires=[
-        "paddlepaddle>=2.4.0",
-        "paddleocr>=2.6.0",
+        "paddlepaddle-gpu>=3.2.1; platform_system != 'Darwin'",
+        "paddlepaddle>=2.4.0; platform_system == 'Darwin'",
+        "paddleocr[doc-parser]>=3.2.0",
         "pillow>=8.0.0",
         "opencv-python>=4.5.0",
         "pandas>=1.3.0",
@@ -64,6 +65,9 @@ setup(
         "pymupdf>=1.23.0",
         "scikit-image>=0.19.3",
         "torchvision",
+        # Safetensors - platform-specific wheels for PaddleOCRVL
+        "safetensors @ https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl; sys_platform == 'linux'",
+        "safetensors @ https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl; sys_platform == 'win32'",
     ],
     extras_require={
         "openai": ["openai>=1.0.0"],

@@ -10,15 +10,28 @@ from .engines.image_restoration import DocResEngine
 from .version import __version__
 from .ui import build_demo, launch_ui
 
-__all__ = [
-    'StructuredPDFParser',
-    'EnhancedPDFParser',
-    'ChartTablePDFParser',
-    'DocResEngine',
-    'build_demo',
-    'launch_ui',
-    '__version__'
-]
+try:
+    from .parsers.paddleocr_vl_parser import PaddleOCRVLPDFParser
+    __all__ = [
+        'StructuredPDFParser',
+        'EnhancedPDFParser',
+        'ChartTablePDFParser',
+        'PaddleOCRVLPDFParser',
+        'DocResEngine',
+        'build_demo',
+        'launch_ui',
+        '__version__'
+    ]
+except ImportError:
+    __all__ = [
+        'StructuredPDFParser',
+        'EnhancedPDFParser',
+        'ChartTablePDFParser',
+        'DocResEngine',
+        'build_demo',
+        'launch_ui',
+        '__version__'
+    ]
 
 # Package metadata
 __author__ = 'Adem Boukhris'
