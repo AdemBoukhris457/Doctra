@@ -956,6 +956,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2217,6 +2228,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2483,6 +2505,21 @@
 
 <h1 id="paddleocrvl-pdf-parser">PaddleOCRVL PDF Parser<a class="headerlink" href="#paddleocrvl-pdf-parser" title="Permanent link">&para;</a></h1>
 <p>Guide to using the <code>PaddleOCRVLPDFParser</code> for end-to-end document parsing with Vision-Language Model capabilities.</p>
+<h2 id="installation-requirements">Installation Requirements<a class="headerlink" href="#installation-requirements" title="Permanent link">&para;</a></h2>
+<p>Before using the <code>PaddleOCRVLPDFParser</code>, you need to install the required dependencies:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s2">&quot;paddleocr[doc-parser]&quot;</span>
+</span></code></pre></div>
+<p>Additionally, you need to install platform-specific safetensors wheels:</p>
+<p><strong>For Linux systems:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
+</span></code></pre></div></p>
+<p><strong>For Windows systems:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
+</span></code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">Required Before Use</p>
+<p>These installation steps are <strong>required</strong> before using <code>PaddleOCRVLPDFParser</code>. Without them, you may encounter import errors.</p>
+</div>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>The <code>PaddleOCRVLPDFParser</code> uses PaddleOCRVL (Vision-Language Model) for comprehensive document understanding. It combines PaddleOCRVL's advanced document parsing capabilities with DocRes image restoration and split table merging, providing a complete solution for complex document processing tasks.</p>
 <h2 id="key-features">Key Features<a class="headerlink" href="#key-features" title="Permanent link">&para;</a></h2>
@@ -2495,78 +2532,78 @@
 <li><strong>Multiple Element Types</strong>: Handles headers, text, tables, charts, footnotes, figure titles, and more</li>
 </ul>
 <h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCRVLPDFParser</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Basic parser with default settings</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>      <span class="c1"># Enable DocRes restoration</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>       <span class="c1"># Enable chart recognition</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>          <span class="c1"># Enable split table merging</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span>                      <span class="c1"># Use GPU for processing</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">)</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># Parse a PDF document</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;document.pdf&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCRVLPDFParser</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Basic parser with default settings</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>      <span class="c1"># Enable DocRes restoration</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>       <span class="c1"># Enable chart recognition</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>          <span class="c1"># Enable split table merging</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span>                      <span class="c1"># Use GPU for processing</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">)</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="c1"># Parse a PDF document</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;document.pdf&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">&para;</a></h2>
 <h3 id="docres-image-restoration">DocRes Image Restoration<a class="headerlink" href="#docres-image-restoration" title="Permanent link">&para;</a></h3>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="c1"># Image Restoration Settings</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">restoration_task</span><span class="o">=</span><span class="s2">&quot;appearance&quot;</span><span class="p">,</span>    <span class="c1"># Options: appearance, dewarping, deshadowing, deblurring, binarization, end2end</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">restoration_device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span>        <span class="c1"># or &quot;cpu&quot; or None for auto-detect</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">restoration_dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>              <span class="c1"># DPI for restoration processing</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="c1"># Image Restoration Settings</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">restoration_task</span><span class="o">=</span><span class="s2">&quot;appearance&quot;</span><span class="p">,</span>    <span class="c1"># Options: appearance, dewarping, deshadowing, deblurring, binarization, end2end</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">restoration_device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span>        <span class="c1"># or &quot;cpu&quot; or None for auto-detect</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">restoration_dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>              <span class="c1"># DPI for restoration processing</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="paddleocrvl-settings">PaddleOCRVL Settings<a class="headerlink" href="#paddleocrvl-settings" title="Permanent link">&para;</a></h3>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="c1"># PaddleOCRVL Configuration</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>       <span class="c1"># Enable chart recognition and extraction</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">use_doc_orientation_classify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># Enable document orientation classification</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">use_doc_unwarping</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>           <span class="c1"># Enable document unwarping</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">use_layout_detection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>        <span class="c1"># Enable layout detection</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">,</span>                     <span class="c1"># &quot;gpu&quot; or &quot;cpu&quot;</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="c1"># PaddleOCRVL Configuration</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>       <span class="c1"># Enable chart recognition and extraction</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">use_doc_orientation_classify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># Enable document orientation classification</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">use_doc_unwarping</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>           <span class="c1"># Enable document unwarping</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">use_layout_detection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>        <span class="c1"># Enable layout detection</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">,</span>                     <span class="c1"># &quot;gpu&quot; or &quot;cpu&quot;</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="split-table-merging">Split Table Merging<a class="headerlink" href="#split-table-merging" title="Permanent link">&para;</a></h3>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="c1"># Split Table Merging Settings</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>          <span class="c1"># Enable split table detection and merging</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span>      <span class="c1"># Ratio for &quot;too close to bottom&quot; detection</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>         <span class="c1"># Ratio for &quot;too close to top&quot; detection</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>               <span class="c1"># Maximum allowed gap between tables</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">column_alignment_tolerance</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>  <span class="c1"># Pixel tolerance for column alignment</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.65</span>         <span class="c1"># Minimum confidence score for merging</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="c1"># Split Table Merging Settings</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>          <span class="c1"># Enable split table detection and merging</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span>      <span class="c1"># Ratio for &quot;too close to bottom&quot; detection</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>         <span class="c1"># Ratio for &quot;too close to top&quot; detection</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>               <span class="c1"># Maximum allowed gap between tables</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">column_alignment_tolerance</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>  <span class="c1"># Pixel tolerance for column alignment</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.65</span>         <span class="c1"># Minimum confidence score for merging</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="advanced-configuration">Advanced Configuration<a class="headerlink" href="#advanced-configuration" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCRVLPDFParser</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="c1"># DocRes Image Restoration Settings</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">restoration_task</span><span class="o">=</span><span class="s2">&quot;end2end&quot;</span><span class="p">,</span>       <span class="c1"># Full restoration pipeline</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">restoration_device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span>        <span class="c1"># Force GPU usage</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">restoration_dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>              <span class="c1"># Higher DPI for better quality</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="c1"># PaddleOCRVL Settings</span>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">use_doc_orientation_classify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Enable orientation detection</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">use_doc_unwarping</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>            <span class="c1"># Enable unwarping</span>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">use_layout_detection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">,</span>
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>    <span class="c1"># Split Table Merging Settings</span>
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    <span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span>
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    <span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    <span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
-</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>    <span class="n">column_alignment_tolerance</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
-</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>    <span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.65</span>
-</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="p">)</span>
-</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>
-</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="c1"># Parse with custom output directory</span>
-</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;document.pdf&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;custom_output&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCRVLPDFParser</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="c1"># DocRes Image Restoration Settings</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">restoration_task</span><span class="o">=</span><span class="s2">&quot;end2end&quot;</span><span class="p">,</span>       <span class="c1"># Full restoration pipeline</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">restoration_device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span>        <span class="c1"># Force GPU usage</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="n">restoration_dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>              <span class="c1"># Higher DPI for better quality</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    <span class="c1"># PaddleOCRVL Settings</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    <span class="n">use_doc_orientation_classify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Enable orientation detection</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>    <span class="n">use_doc_unwarping</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>            <span class="c1"># Enable unwarping</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>    <span class="n">use_layout_detection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">,</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    <span class="c1"># Split Table Merging Settings</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>    <span class="n">bottom_threshold_ratio</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>    <span class="n">top_threshold_ratio</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>    <span class="n">max_gap_ratio</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>    <span class="n">column_alignment_tolerance</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>    <span class="n">min_merge_confidence</span><span class="o">=</span><span class="mf">0.65</span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="p">)</span>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="c1"># Parse with custom output directory</span>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;document.pdf&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;custom_output&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="output-structure">Output Structure<a class="headerlink" href="#output-structure" title="Permanent link">&para;</a></h2>
 <p>The parser generates output in <code>outputs/{document_name}/paddleocr_vl_parse/</code> with:</p>
@@ -2592,9 +2629,9 @@
 <h2 id="chart-recognition">Chart Recognition<a class="headerlink" href="#chart-recognition" title="Permanent link">&para;</a></h2>
 <p>PaddleOCRVL automatically recognizes charts and converts them to structured table format. Charts are extracted in a pipe-delimited format and then converted to Excel-compatible tables.</p>
 <p>Example chart output:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Category | Percentage
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>PCT system fees | 358.6%
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Madrid system fees | 76.2%
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Category | Percentage
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>PCT system fees | 358.6%
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>Madrid system fees | 76.2%
 </span></code></pre></div></p>
 <p>This is automatically converted to a structured table with headers and rows for inclusion in the Excel output.</p>
 <h2 id="split-table-merging_1">Split Table Merging<a class="headerlink" href="#split-table-merging_1" title="Permanent link">&para;</a></h2>
@@ -2793,25 +2830,25 @@
 <li><strong>No Restoration Needed</strong>: Use <code>StructuredPDFParser</code> if document quality is good</li>
 </ul>
 <h2 id="example-financial-report-processing">Example: Financial Report Processing<a class="headerlink" href="#example-financial-report-processing" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCRVLPDFParser</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># Initialize parser for financial reports</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">restoration_task</span><span class="o">=</span><span class="s2">&quot;appearance&quot;</span><span class="p">,</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>      <span class="c1"># Important for financial charts</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>         <span class="c1"># Financial tables often span pages</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="p">)</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="c1"># Process financial report</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;annual_report.pdf&quot;</span><span class="p">)</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="c1"># Output includes:</span>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="c1"># - All text content</span>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="c1"># - Financial tables (including merged split tables)</span>
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="c1"># - Charts converted to Excel format</span>
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="c1"># - All in structured Excel file (tables.xlsx)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">doctra</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCRVLPDFParser</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># Initialize parser for financial reports</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">parser</span> <span class="o">=</span> <span class="n">PaddleOCRVLPDFParser</span><span class="p">(</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">use_image_restoration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">restoration_task</span><span class="o">=</span><span class="s2">&quot;appearance&quot;</span><span class="p">,</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="n">use_chart_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>      <span class="c1"># Important for financial charts</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    <span class="n">merge_split_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>         <span class="c1"># Financial tables often span pages</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="p">)</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="c1"># Process financial report</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;annual_report.pdf&quot;</span><span class="p">)</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="c1"># Output includes:</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="c1"># - All text content</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="c1"># - Financial tables (including merged split tables)</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="c1"># - Charts converted to Excel format</span>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="c1"># - All in structured Excel file (tables.xlsx)</span>
 </span></code></pre></div>
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
