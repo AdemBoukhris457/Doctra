@@ -376,6 +376,24 @@ parser = ChartTablePDFParser(
 
 The `PaddleOCRVLPDFParser` uses PaddleOCRVL (Vision-Language Model) for end-to-end document parsing. It combines PaddleOCRVL's advanced document understanding capabilities with DocRes image restoration and split table merging, providing a comprehensive solution for complex document processing.
 
+#### Installation Requirements
+
+Before using `PaddleOCRVLPDFParser`, install the required dependencies:
+
+```bash
+pip install -U "paddleocr[doc-parser]"
+```
+
+**For Linux systems:**
+```bash
+python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
+```
+
+**For Windows systems:**
+```bash
+python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
+```
+
 #### Key Features:
 - **End-to-End Parsing**: Uses PaddleOCRVL for complete document understanding in a single pass
 - **Chart Recognition**: Automatically extracts and converts charts to structured table format

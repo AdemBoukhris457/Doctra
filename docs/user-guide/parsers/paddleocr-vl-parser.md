@@ -2,6 +2,29 @@
 
 Guide to using the `PaddleOCRVLPDFParser` for end-to-end document parsing with Vision-Language Model capabilities.
 
+## Installation Requirements
+
+Before using the `PaddleOCRVLPDFParser`, you need to install the required dependencies:
+
+```bash
+pip install -U "paddleocr[doc-parser]"
+```
+
+Additionally, you need to install platform-specific safetensors wheels:
+
+**For Linux systems:**
+```bash
+python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
+```
+
+**For Windows systems:**
+```bash
+python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
+```
+
+!!! warning "Required Before Use"
+    These installation steps are **required** before using `PaddleOCRVLPDFParser`. Without them, you may encounter import errors.
+
 ## Overview
 
 The `PaddleOCRVLPDFParser` uses PaddleOCRVL (Vision-Language Model) for comprehensive document understanding. It combines PaddleOCRVL's advanced document parsing capabilities with DocRes image restoration and split table merging, providing a complete solution for complex document processing tasks.
