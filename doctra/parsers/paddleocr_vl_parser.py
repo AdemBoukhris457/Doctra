@@ -11,7 +11,8 @@ import sys
 import re
 import numpy as np
 from typing import List, Dict, Any, Optional, Union
-from contextlib import ExitStack, contextlib
+from contextlib import ExitStack
+import contextlib
 from PIL import Image
 import tempfile
 import logging
