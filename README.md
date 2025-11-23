@@ -2,7 +2,11 @@
 
 ![Doctra Logo](https://raw.githubusercontent.com/AdemBoukhris457/Doctra/main/assets/Doctra_Banner_MultiDoc.png)
 
-**Language / 语言:** [English](README.md) | [中文](README_CN.md)
+<div align="center">
+
+[English](README.md) | [中文](README_CN.md)
+
+</div>
 
 <div align="center">
 
