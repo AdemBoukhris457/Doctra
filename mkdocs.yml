@@ -13,6 +13,8 @@ use_directory_urls: false
 
 theme:
   name: material
+  language: en
+  locale: en
   palette:
     - media: "(prefers-color-scheme)"
       toggle:
@@ -45,9 +47,9 @@ theme:
     - navigation.expand
     - navigation.footer
     - navigation.indexes
-    - navigation.instant
-    - navigation.instant.prefetch
-    - navigation.instant.progress
+    # - navigation.instant  # Disabled: incompatible with i18n plugin
+    # - navigation.instant.prefetch
+    # - navigation.instant.progress
     - navigation.sections
     - navigation.tabs
     - navigation.tabs.sticky
@@ -104,6 +106,56 @@ markdown_extensions:
   - pymdownx.tilde
 
 plugins:
+  - i18n:
+      docs_structure: folder
+      languages:
+        - locale: en
+          name: English
+          default: true
+          build: true
+        - locale: zh
+          name: 中文
+          build: true
+          nav:
+            - 首页: index.md
+            - 入门指南:
+                - 安装: getting-started/installation.md
+                - 快速开始: getting-started/quick-start.md
+                - 系统要求: getting-started/system-requirements.md
+            - 用户指南:
+                - 核心概念: user-guide/core-concepts.md
+                - 解析器:
+                    - 结构化 PDF 解析器: user-guide/parsers/structured-parser.md
+                    - 增强 PDF 解析器: user-guide/parsers/enhanced-parser.md
+                    - 图表和表格提取器: user-guide/parsers/chart-table-extractor.md
+                    - PaddleOCRVL PDF 解析器: user-guide/parsers/paddleocr-vl-parser.md
+                    - DOCX 解析器: user-guide/parsers/docx-parser.md
+                    - 分割表格合并: user-guide/features/split-table-merging.md
+                - 引擎:
+                    - DocRes 引擎: user-guide/engines/docres-engine.md
+                    - 布局检测: user-guide/engines/layout-detection.md
+                    - OCR 引擎: user-guide/engines/ocr-engine.md
+                    - VLM 集成: user-guide/engines/vlm-integration.md
+                - 输出:
+                    - 导出格式: user-guide/outputs/export-formats.md
+                    - 可视化: user-guide/outputs/visualization.md
+            - 界面:
+                - Web UI: interfaces/web-ui.md
+                - 命令行: interfaces/cli.md
+            - API 参考:
+                - 解析器: api/parsers.md
+                - 引擎: api/engines.md
+                - 导出器: api/exporters.md
+                - 工具: api/utils.md
+            - 示例:
+                - 基本用法: examples/basic-usage.md
+                - 高级示例: examples/advanced-examples.md
+                - 集成: examples/integration.md
+            - 贡献:
+                - 开发指南: contributing/development.md
+                - 行为准则: contributing/code-of-conduct.md
+            - 更新日志: changelog.md
+      fallback_to_default: true
   - search:
       separator: '[\s\-,:!=\[\]()"/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
   - mkdocstrings:
@@ -123,6 +175,8 @@ extra:
       link: https://pypi.org/project/doctra/
   version:
     provider: mike
+  css:
+    - stylesheets/extra.css
 
 nav:
   - Home: index.md
