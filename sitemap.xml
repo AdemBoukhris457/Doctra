@@ -1,119 +1,409 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/index.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/index.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/index.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/index.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/changelog.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/changelog.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/changelog.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/changelog.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/api/engines.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/api/engines.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/api/engines.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/api/engines.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/api/exporters.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/api/exporters.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/api/exporters.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/api/exporters.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/api/parsers.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/api/parsers.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/api/parsers.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/api/parsers.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/api/utils.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/api/utils.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/api/utils.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/api/utils.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/contributing/code-of-conduct.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/contributing/code-of-conduct.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/contributing/code-of-conduct.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/contributing/code-of-conduct.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/contributing/development.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/contributing/development.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/contributing/development.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/contributing/development.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/examples/advanced-examples.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/examples/advanced-examples.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/examples/advanced-examples.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/examples/advanced-examples.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/examples/basic-usage.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/examples/basic-usage.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/examples/basic-usage.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/examples/basic-usage.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/examples/integration.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/examples/integration.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/examples/integration.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/examples/integration.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/getting-started/installation.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/getting-started/installation.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/getting-started/installation.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/getting-started/installation.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/getting-started/quick-start.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/getting-started/quick-start.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/getting-started/quick-start.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/getting-started/quick-start.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/getting-started/system-requirements.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/getting-started/system-requirements.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/getting-started/system-requirements.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/getting-started/system-requirements.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/interfaces/cli.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/interfaces/cli.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/interfaces/cli.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/interfaces/cli.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/interfaces/web-ui.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/interfaces/web-ui.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/interfaces/web-ui.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/interfaces/web-ui.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/core-concepts.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/core-concepts.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/core-concepts.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/core-concepts.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/engines/docres-engine.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/engines/docres-engine.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/engines/docres-engine.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/engines/docres-engine.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/engines/layout-detection.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/engines/layout-detection.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/engines/layout-detection.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/engines/layout-detection.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/engines/ocr-engine.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/engines/ocr-engine.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/engines/ocr-engine.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/engines/ocr-engine.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/engines/vlm-integration.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/engines/vlm-integration.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/engines/vlm-integration.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/engines/vlm-integration.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/features/split-table-merging.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/features/split-table-merging.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/features/split-table-merging.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/features/split-table-merging.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/outputs/export-formats.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/outputs/export-formats.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/outputs/export-formats.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/outputs/export-formats.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/outputs/visualization.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/outputs/visualization.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/outputs/visualization.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/outputs/visualization.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/chart-table-extractor.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/chart-table-extractor.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/chart-table-extractor.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/chart-table-extractor.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/docx-parser.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/docx-parser.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/docx-parser.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/docx-parser.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/enhanced-parser.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/enhanced-parser.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/enhanced-parser.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/enhanced-parser.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/paddleocr-vl-parser.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/paddleocr-vl-parser.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/paddleocr-vl-parser.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/paddleocr-vl-parser.html"/>
     </url>
     <url>
-         <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/structured-parser.html</loc>
-         <lastmod>2025-11-16</lastmod>
+        <loc>https://ademboukhris457.github.io/Doctra/user-guide/parsers/structured-parser.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/structured-parser.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/structured-parser.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/index.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/index.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/index.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/changelog.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/changelog.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/changelog.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/api/engines.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/api/engines.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/api/engines.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/api/exporters.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/api/exporters.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/api/exporters.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/api/parsers.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/api/parsers.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/api/parsers.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/api/utils.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/api/utils.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/api/utils.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/contributing/code-of-conduct.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/contributing/code-of-conduct.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/contributing/code-of-conduct.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/contributing/development.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/contributing/development.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/contributing/development.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/examples/advanced-examples.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/examples/advanced-examples.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/examples/advanced-examples.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/examples/basic-usage.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/examples/basic-usage.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/examples/basic-usage.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/examples/integration.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/examples/integration.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/examples/integration.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/getting-started/installation.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/getting-started/installation.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/getting-started/installation.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/getting-started/quick-start.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/getting-started/quick-start.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/getting-started/quick-start.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/getting-started/system-requirements.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/getting-started/system-requirements.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/getting-started/system-requirements.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/interfaces/cli.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/interfaces/cli.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/interfaces/cli.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/interfaces/web-ui.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/interfaces/web-ui.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/interfaces/web-ui.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/core-concepts.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/core-concepts.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/core-concepts.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/engines/docres-engine.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/engines/docres-engine.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/engines/docres-engine.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/engines/layout-detection.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/engines/layout-detection.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/engines/layout-detection.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/engines/ocr-engine.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/engines/ocr-engine.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/engines/ocr-engine.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/engines/vlm-integration.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/engines/vlm-integration.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/engines/vlm-integration.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/features/split-table-merging.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/features/split-table-merging.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/features/split-table-merging.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/outputs/export-formats.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/outputs/export-formats.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/outputs/export-formats.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/outputs/visualization.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/outputs/visualization.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/outputs/visualization.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/chart-table-extractor.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/chart-table-extractor.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/chart-table-extractor.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/docx-parser.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/docx-parser.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/docx-parser.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/enhanced-parser.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/enhanced-parser.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/enhanced-parser.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/paddleocr-vl-parser.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/paddleocr-vl-parser.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/paddleocr-vl-parser.html"/>
+    </url>
+    <url>
+        <loc>https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/structured-parser.html</loc>
+        <lastmod>2025-11-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://ademboukhris457.github.io/Doctra/zh/user-guide/parsers/structured-parser.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ademboukhris457.github.io/Doctra/user-guide/parsers/structured-parser.html"/>
     </url>
 </urlset>

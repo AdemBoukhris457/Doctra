@@ -1,0 +1,47 @@
+/* Position language switcher dropdown next to search field in header */
+.md-header__inner {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+/* Language switcher dropdown - position right before search button */
+.md-header__option[data-md-component="i18n"],
+.md-header__option:has(.md-select--lang) {
+  order: 1;
+  margin-right: 0.4rem;
+  margin-left: auto;
+}
+
+/* Search button - position after language switcher */
+.md-header__button[for="__search"] {
+  order: 2;
+  margin-left: 0;
+}
+
+/* Theme toggle - keep at end */
+.md-header__option[data-md-component="palette"] {
+  order: 3;
+}
+
+/* Style the language dropdown to match Material theme */
+.md-header__option .md-select--lang,
+.md-header__option .md-select {
+  margin: 0;
+}
+
+.md-header__option .md-select--lang .md-select__inner,
+.md-header__option .md-select__inner {
+  font-size: 0.8rem;
+  padding: 0.4rem 0.8rem;
+  min-width: 100px;
+  border-radius: 0.2rem;
+}
+
+/* Ensure proper spacing */
+.md-header__option[data-md-component="i18n"],
+.md-header__option:has(.md-select--lang) {
+  display: flex;
+  align-items: center;
+}
+
