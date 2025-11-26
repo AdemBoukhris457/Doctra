@@ -107,6 +107,7 @@ parser.parse("document.pdf")
 | 笔记本 | Colab 徽章 | 描述 |
 |--------|-----------|------|
 | **01_doctra_quick_start** | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Z9UH9r1ZxGHm2cAFVKy7W9cKjcgBDOlG?usp=sharing) | 涵盖布局检测、内容提取和多格式输出的综合教程，带视觉示例 |
+| **case_study_01_financial_report_analysis** | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/AdemBoukhris457/Doctra/blob/main/notebooks/case_study_01_financial_report_analysis.ipynb) | 财务报告分析：从 PDF 报告中提取表格和图表，使用 VLM 将视觉元素转换为结构化数据，并使用 pandas 分析财务数据 |
 
 ## 下一步？
 

@@ -107,6 +107,7 @@ parser.parse("document.pdf")
 | Notebook | Colab Badge | Description |
 |----------|-------------|-------------|
 | **01_doctra_quick_start** | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Z9UH9r1ZxGHm2cAFVKy7W9cKjcgBDOlG?usp=sharing) | Comprehensive tutorial covering layout detection, content extraction, and multi-format outputs with visual examples |
+| **case_study_01_financial_report_analysis** | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/AdemBoukhris457/Doctra/blob/main/notebooks/case_study_01_financial_report_analysis.ipynb) | Financial report analysis: Extract tables and charts from PDF reports, convert visual elements to structured data using VLM, and analyze financial data with pandas |
 
 ## What's Next?
 
